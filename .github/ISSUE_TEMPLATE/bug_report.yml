@@ -1,6 +1,6 @@
 name: 버그 보고
 description: 버그 해결에 도움이 되는 보고서 작성
-title: '[버그] '
+title: '[bug] '
 labels: bug
 body:
   - type: textarea

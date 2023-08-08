@@ -1,7 +1,7 @@
 name: 디자인 반영
 description: 업데이트된 디자인 반영 요청
 labels: [design]
-title: '[디자인] '
+title: '[design] '
 body:
   - type: input
     id: link

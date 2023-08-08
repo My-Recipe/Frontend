@@ -1,6 +1,6 @@
 name: 개선사항
 description: 기능 개선을 위한 제안서
-title: '[개선] '
+title: '[improvement] '
 labels: improvements
 body:
   - type: textarea
