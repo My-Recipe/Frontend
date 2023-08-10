@@ -1,21 +1,19 @@
-import { css } from '@emotion/react';
-
-const navButton = css(`
-  background: none;
-  border: none;
-  color: black;
-  padding: 0;
-  &:focus{
-    outline:none;
-    color: #ffb94d;
-  }
-  `);
-function NavBar() {
+function TopNavBar() {
   const menu = ['RECIPE PAPER', 'INVENTORY', 'RECIPE RESEARCH'];
-  const menuButton: JSX.Element[] = menu.map((name, idx) => {
+  const menuButton = menu.map((name, idx) => {
     return (
       <li key={`${idx}-${name}`}>
-        <button css={navButton}>{name}</button>
+        <button
+          css={{
+            background: 'none',
+            border: 'none',
+            color: 'black',
+            padding: 0,
+            '&:focus': { outline: 'none', color: '#ffb94d' },
+          }}
+        >
+          {name}
+        </button>
       </li>
     );
   });
@@ -49,4 +47,4 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+export default TopNavBar;
