@@ -13,6 +13,7 @@ module.exports = {
   rules: {
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
+    'no-console': ["warn", { allow: ["warn", "error"] }],
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },

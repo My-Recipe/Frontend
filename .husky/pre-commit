@@ -1,20 +1,27 @@
-#!/bin/sh
-# Redirect output to stderr.
-exec 1>&2
-# enable user input
-exec < /dev/tty
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-consoleregexp='console.log'
-# CHECK
-if test $(git diff --cached | grep $consoleregexp | wc -l) != 0
-then 
-  exec git diff --cached | grep -ne $consoleregexp
-  read -p "There are some occurrences of console.log at your modification. Are you sure want to continue? (y/n)" yn
-  echo $yn | grep ^[Yy]$
-  if [ $? -eq 0 ] 
-  then
-    exit 0; #THE USER WANTS TO CONTINUE
-  else
-    exit 1; # THE USER DONT WANT TO CONTINUE SO ROLLBACK
-  fi
+red='\033[0;31m'
+green='\033[0;32m'
+yellow='\033[0;33m'
+no_color='\033[0m'
+
+echo -e "\n${yellow}Executing pre-commit hook...${no_color}\n"
+
+FILES_PATTERN='\.(tsx)(\..+)?$'
+FORBIDDEN='console\.[clear|dir|log|info|warn|error]'
+
+#check for console. references in your code
+
+if git diff --cached --name-only | \
+    grep -E $FILES_PATTERN | \
+    xargs grep --with-filename -n $FORBIDDEN | \
+    grep -v '//';
+then
+    echo -e "\n${red}COMMIT REJECTED!  Found console. references. Please remove them before committing.\n${no_color}"
+    exit 1;
 fi
+echo -e "${green}No console. references found!${no_color}\n"
+echo -e "${green}Git pre-commit hook was successful!${no_color}\n"
+exit 0;
+
