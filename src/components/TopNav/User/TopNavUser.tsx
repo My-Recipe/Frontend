@@ -1,34 +1,33 @@
 import { useEffect, useRef, useState } from 'react';
-import UserInfo from './UserInfo';
+import UserDropdownMenu from './UserDropdownMenu';
 
-function User() {
+function TopNavUser() {
   const [open, setOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const onClick = () => {
     setOpen(!open);
   };
   useEffect(() => {
-    console.log(menuRef.current);
-    console.log(open);
-    const menuHandle = (event: any) => {
-      if (menuRef.current !== null && !menuRef.current.contains(event.target)) {
-        console.log('외부클릭');
+    const menuHandle = (event: MouseEvent) => {
+      if (
+        event.target instanceof HTMLElement &&
+        userMenuRef.current !== null &&
+        !userMenuRef.current.contains(event.target)
+      ) {
         setOpen(!open);
       }
     };
 
     if (open) {
-      console.log('감지 시작');
       document.addEventListener('click', menuHandle);
     }
 
     return () => {
-      console.log('감지 종료');
       document.removeEventListener('click', menuHandle);
     };
   }, [open]);
   return (
-    <div css={{ marginLeft: 'auto', position: 'relative' }} ref={menuRef}>
+    <div css={{ marginLeft: 'auto', position: 'relative' }} ref={userMenuRef}>
       <button
         css={{
           width: '67px',
@@ -43,8 +42,12 @@ function User() {
       >
         <div>아이콘</div>
       </button>
-      {open ? <UserInfo /> : null}
+      {open ? (
+        <UserDropdownMenu
+          userMenu={['전체 레시피 보기', '피드백 남기기', '로그아웃']}
+        />
+      ) : null}
     </div>
   );
 }
-export default User;
+export default TopNavUser;

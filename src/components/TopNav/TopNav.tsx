@@ -1,5 +1,5 @@
-import NavBar from './NavBar';
-import User from './User';
+import TopNavBar from './TopNavBar';
+import TopNavUser from './User/TopNavUser';
 
 function TopNav() {
   return (
@@ -14,8 +14,8 @@ function TopNav() {
       }}
     >
       <div css={{ color: 'black', marginRight: 'auto' }}>logo</div>
-      <NavBar />
-      <User />
+      <TopNavBar />
+      <TopNavUser />
     </div>
   );
 }
