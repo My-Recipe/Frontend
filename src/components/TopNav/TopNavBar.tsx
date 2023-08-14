@@ -1,22 +1,9 @@
-function TopNavBar() {
-  const menu = ['RECIPE PAPER', 'INVENTORY', 'RECIPE RESEARCH'];
-  const menuButton = menu.map((name, idx) => {
-    return (
-      <li key={`${idx}-${name}`}>
-        <button
-          css={{
-            background: 'none',
-            border: 'none',
-            color: 'black',
-            padding: 0,
-            '&:focus': { outline: 'none', color: '#ffb94d' },
-          }}
-        >
-          {name}
-        </button>
-      </li>
-    );
-  });
+import { ReactNode } from 'react';
+
+interface TopNavBarChild {
+  children: ReactNode;
+}
+function TopNavBar({ children }: TopNavBarChild) {
   return (
     <div
       css={{
@@ -41,7 +28,7 @@ function TopNavBar() {
           alignItems: 'center',
         }}
       >
-        {menuButton}
+        {children}
       </ul>
     </div>
   );
