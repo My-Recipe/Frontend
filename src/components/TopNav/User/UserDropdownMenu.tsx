@@ -1,22 +1,9 @@
-interface UserDropdownMenuProps {
-  userMenu: string[];
+import { ReactNode } from 'react';
+
+interface UserDropdownMenuChild {
+  children: ReactNode;
 }
-function UserDropdownMenu(props: UserDropdownMenuProps) {
-  const userDropdownmenuButton = props.userMenu.map((name, idx) => {
-    return (
-      <button
-        key={`${idx}-${name}`}
-        css={{
-          color: 'black',
-          background: 'none',
-          width: '100%',
-          height: '25%',
-        }}
-      >
-        {name}
-      </button>
-    );
-  });
+function UserDropdownMenu({ children }: UserDropdownMenuChild) {
   return (
     <div
       css={{
@@ -34,20 +21,10 @@ function UserDropdownMenu(props: UserDropdownMenuProps) {
         boxShadow: '0 13px 30px -3px rgba(186, 147,112,60)',
         width: '522px',
         height: '456px',
-        borderRadius: '16px',
+        borderRadius: '8px',
       }}
     >
-      <button
-        css={{
-          color: 'black',
-          background: 'none',
-          width: '100%',
-          height: '25%',
-        }}
-      >
-        Jorjy
-      </button>
-      {userDropdownmenuButton}
+      {children}
     </div>
   );
 }

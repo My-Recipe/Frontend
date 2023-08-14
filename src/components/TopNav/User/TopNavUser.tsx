@@ -3,6 +3,7 @@ import UserDropdownMenu from './UserDropdownMenu';
 
 function TopNavUser() {
   const [open, setOpen] = useState(false);
+  const userMenu = ['Jorjy', '전체 레시피 보기', '피드백 남기기', '로그아웃'];
   const userMenuRef = useRef<HTMLDivElement>(null);
   const onClick = () => {
     setOpen(!open);
@@ -27,7 +28,13 @@ function TopNavUser() {
     };
   }, [open]);
   return (
-    <div css={{ marginLeft: 'auto', position: 'relative' }} ref={userMenuRef}>
+    <div
+      css={{
+        marginLeft: 'auto',
+        position: 'relative',
+      }}
+      ref={userMenuRef}
+    >
       <button
         css={{
           width: '67px',
@@ -37,16 +44,38 @@ function TopNavUser() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          '&:focus': { outline: 'none' },
+          border: 'none',
         }}
         onClick={onClick}
       >
         <div>아이콘</div>
       </button>
-      {open ? (
-        <UserDropdownMenu
-          userMenu={['전체 레시피 보기', '피드백 남기기', '로그아웃']}
-        />
-      ) : null}
+      {open && (
+        <UserDropdownMenu>
+          {userMenu.map((name, idx) => {
+            return (
+              <button
+                key={`${idx}-${name}`}
+                css={{
+                  color: 'black',
+                  background: 'none',
+                  width: '100%',
+                  height: '25%',
+                  '&:focus': { outline: 'none' },
+                  border: 'none',
+                  borderTop: 'solid 1px #e0e0e0',
+                  '&:hover': { borderTop: 'solid 1px #e0e0e0' },
+                  ':nth-of-type(1)': { border: 'none' },
+                  borderRadius: '0',
+                }}
+              >
+                {name}
+              </button>
+            );
+          })}
+        </UserDropdownMenu>
+      )}
     </div>
   );
 }

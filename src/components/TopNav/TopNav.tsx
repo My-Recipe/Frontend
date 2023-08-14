@@ -2,6 +2,7 @@ import TopNavBar from './TopNavBar';
 import TopNavUser from './User/TopNavUser';
 
 function TopNav() {
+  const NavBarmenu = ['RECIPE PAPER', 'INVENTORY', 'RECIPE RESEARCH'];
   return (
     <div
       css={{
@@ -14,7 +15,25 @@ function TopNav() {
       }}
     >
       <div css={{ color: 'black', marginRight: 'auto' }}>logo</div>
-      <TopNavBar />
+      <TopNavBar>
+        {NavBarmenu.map((name, idx) => {
+          return (
+            <li key={`${idx}-${name}`}>
+              <button
+                css={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'black',
+                  padding: 0,
+                  '&:focus': { outline: 'none', color: '#ffb94d' },
+                }}
+              >
+                {name}
+              </button>
+            </li>
+          );
+        })}
+      </TopNavBar>
       <TopNavUser />
     </div>
   );
