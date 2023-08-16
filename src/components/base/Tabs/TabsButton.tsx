@@ -1,17 +1,27 @@
 import { DEFAULT_PROPS_PREFIX } from '@/utils/constants';
-import { HTMLAttributes, useContext } from 'react';
+import { CSSProperties, HTMLAttributes, useContext } from 'react';
 import { TabValueType, TabsContext } from './TabsMain';
 
 export interface TabsButtonProps extends HTMLAttributes<HTMLButtonElement> {
   value: TabValueType;
+  bgColor?: CSSProperties['backgroundColor'];
 }
 export const tabsButtonType = 'tabs-button';
 
-function TabsButton({ children, value, ...props }: TabsButtonProps) {
+function TabsButton({
+  children,
+  value,
+  bgColor: backgroundColor,
+  ...props
+}: TabsButtonProps) {
   const [, setTabValue] = useContext(TabsContext);
 
   return (
-    <button onClick={() => setTabValue(value)} {...props}>
+    <button
+      css={{ backgroundColor }}
+      onClick={() => setTabValue(value)}
+      {...props}
+    >
       {children}
     </button>
   );
