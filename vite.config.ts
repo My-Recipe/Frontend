@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react-swc';
 import { fileURLToPath, URL } from 'url';
 import { defineConfig } from 'vite';
+import Pages from 'vite-plugin-pages';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,6 +9,9 @@ export default defineConfig({
     react({
       jsxImportSource: '@emotion/react',
       plugins: [['@swc/plugin-emotion', {}]],
+    }),
+    Pages({
+      exclude: ['**/components/*.tsx', '**/*.ts'],
     }),
   ],
   resolve: {
