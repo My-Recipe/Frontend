@@ -39,17 +39,11 @@ export interface GroupProps extends HTMLAttributes<HTMLDivElement> {
   grow?: boolean;
 }
 
-function Group({
-  children,
-  position = 'left',
-  className,
-  grow,
-  ...props
-}: GroupProps) {
+function Group({ children, position = 'left', grow, ...props }: GroupProps) {
   return (
     <div
       css={[grow && growStyle, commonStyle, groupStyle[position]]}
-      className={className}
+      {...props}
     >
       {children}
     </div>
