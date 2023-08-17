@@ -8,7 +8,6 @@ export interface StackProps extends HTMLAttributes<HTMLDivElement> {
 
 function Stack({
   children,
-  className,
   justify: justifyContent = 'center',
   align: alignItems = 'stretch',
   spacing: gap,
@@ -23,7 +22,7 @@ function Stack({
         alignItems,
         gap,
       }}
-      className={className}
+      {...props}
     >
       {children}
     </div>
