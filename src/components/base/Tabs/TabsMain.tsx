@@ -1,5 +1,5 @@
 import { getComponentFromType } from '@/utils/components';
-import Group from '@base/Group';
+import { Group } from '@base';
 import { SerializedStyles } from '@emotion/react';
 import {
   Children,
@@ -47,13 +47,18 @@ function TabsMain({
 
   const tabsButton = getComponentFromType(children, tabsButtonType);
   const tabsBody = getComponentFromType(children, tabsBodyType);
+
   const currentBody = Children.toArray(tabsBody).filter(
     (child) => isValidElement(child) && child.props['value'] === tabValue,
   );
 
   useEffect(() => {
     const firstTabButton = Children.toArray(tabsButton)[0];
-    if (firstTabButton && isValidElement(firstTabButton)) {
+    if (
+      defaultValue === undefined &&
+      firstTabButton &&
+      isValidElement(firstTabButton)
+    ) {
       const firstTabButtonValue = firstTabButton.props.value;
       setLocalTabState(firstTabButtonValue);
     }

@@ -1,4 +1,4 @@
-import { Tabs } from '@base/Tabs';
+import { Tabs } from '@base';
 import { TabValueType } from '@base/Tabs/TabsMain';
 import { css } from '@emotion/react';
 import { useState } from 'react';

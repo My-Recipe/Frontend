@@ -12,14 +12,18 @@ function TabsButton({
   children,
   value,
   bgColor: backgroundColor,
+  onClick,
   ...props
 }: TabsButtonProps) {
-  const [, setTabValue] = useContext(TabsContext);
+  const [, onTabChange] = useContext(TabsContext);
 
   return (
     <button
       css={{ backgroundColor }}
-      onClick={() => setTabValue(value)}
+      onClick={(e) => {
+        onTabChange(value);
+        onClick && onClick(e);
+      }}
       {...props}
     >
       {children}
