@@ -1,5 +1,5 @@
 import { Stack } from '../../components/base';
-import Banner from './Banner';
+import Banner from './components/Banner';
 
 export interface HomeProps {}
 

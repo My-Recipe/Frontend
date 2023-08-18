@@ -18,7 +18,8 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.15.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.7",
@@ -38,6 +39,7 @@
     "prettier": "3.0.1",
     "prettier-plugin-organize-imports": "^3.2.3",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "vite-plugin-pages": "^0.31.0"
   }
 }
