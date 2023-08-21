@@ -1,41 +1,50 @@
+import { Group } from '@base';
 import TopNavBar from './TopNavBar';
-import TopNavUser from './User/TopNavUser';
+import TopNavUser from './TopNavUser';
 
 function TopNav() {
-  const NavBarmenu = ['RECIPE PAPER', 'INVENTORY', 'RECIPE RESEARCH'];
+  const navBarmenu = ['MY RECIPE', 'INVENTORY', 'RECIPE RESEARCH'];
+  const userMenu = ['마이 레시피 보기', '피드백 남기기', '로그아웃'];
   return (
-    <div
-      css={{
-        display: 'flex',
-        padding: '45px 89px',
-        backgroundColor: 'white',
-        boxSizing: 'border-box',
-        width: '100vw',
-        justifyContent: 'center',
-      }}
-    >
-      <div css={{ color: 'black', marginRight: 'auto' }}>logo</div>
-      <TopNavBar>
-        {NavBarmenu.map((name, idx) => {
-          return (
-            <li key={`${idx}-${name}`}>
-              <button
-                css={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'black',
-                  padding: 0,
-                  '&:focus': { outline: 'none', color: '#ffb94d' },
-                }}
-              >
-                {name}
-              </button>
-            </li>
-          );
-        })}
+    <Group css={{ borderBottom: 'solid 1px #141414' }}>
+      <div
+        css={{
+          color: '#141414',
+          fontFamily: 'Archivo Black',
+          fontSize: '34.307px',
+          fontStyle: 'normal',
+          fontWeight: 400,
+          lineHeight: '150%',
+          letterSpacing: '-0.377px',
+          // width: '285.803px',
+          // height: '37.882px',
+        }}
+      >
+        FRiED NOTE
+      </div>
+      <TopNavBar
+        icon={
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="19"
+            height="18"
+            viewBox="0 0 19 18"
+            fill="none"
+          >
+            <circle
+              cx="9.52295"
+              cy="8.73682"
+              r="7.5"
+              stroke="#292929"
+              strokeWidth="2.4"
+            />
+          </svg>
+        }
+      >
+        {navBarmenu}
       </TopNavBar>
-      <TopNavUser />
-    </div>
+      <TopNavUser userImg="">{userMenu}</TopNavUser>
+    </Group>
   );
 }
 

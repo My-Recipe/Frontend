@@ -1,36 +1,72 @@
+import { Group, Tabs } from '@base';
+import TabsButton from '@base/Tabs/TabsButton';
+import { css } from '@emotion/react';
 import { ReactNode } from 'react';
 
 interface TopNavBarChild {
-  children: ReactNode;
+  children: string[];
+  icon: ReactNode;
 }
-function TopNavBar({ children }: TopNavBarChild) {
+function TopNavBar({ icon, children }: TopNavBarChild) {
+  // const [isClicked, setIsClicked] = useState();
+
   return (
-    <div
-      css={{
-        display: 'flex',
-        alignItems: 'center',
-        backgroundColor: '#f0f0f0',
-        borderRadius: '40px',
-        justifySelf: 'center',
-        padding: '22px 61px',
-      }}
-    >
-      <ul
+    <Tabs buttonGroupCss={css({ gap: '65px' })}>
+      <TabsButton
+        value={'myrecipe'}
         css={{
-          listStyle: 'none',
-          margin: 0,
-          padding: 0,
-          width: '100%',
-          display: 'flex',
-          color: 'black',
+          // fontFamily: 'Pretendard',
           fontSize: '20px',
-          gap: '126px',
-          alignItems: 'center',
+          fontStyle: 'normal',
+          fontWeight: 500,
+          lineHeight: 'normal',
+          color: '#292929',
+          background: 'transparent',
+          border: 'none',
         }}
       >
-        {children}
-      </ul>
-    </div>
+        <Group css={{ gap: 6 }}>
+          {icon}
+          {children[0]}
+        </Group>
+      </TabsButton>
+      <TabsButton
+        value={'inventory'}
+        css={{
+          // fontFamily: 'Pretendard',
+          fontSize: '20px',
+          fontStyle: 'normal',
+          fontWeight: 500,
+          lineHeight: 'normal',
+          color: '#292929',
+          background: 'transparent',
+          border: 'none',
+        }}
+      >
+        <Group css={{ gap: 6 }}>
+          {icon}
+          {children[1]}
+        </Group>
+      </TabsButton>
+      <TabsButton
+        value={'search'}
+        css={{
+          // fontFamily: 'Pretendard',
+          fontSize: '20px',
+          fontStyle: 'normal',
+          fontWeight: 500,
+          lineHeight: 'normal',
+          color: '#292929',
+          background: 'transparent',
+          border: 'none',
+        }}
+      >
+        <Group css={{ gap: 6 }}>
+          {icon}
+          {children[2]}
+        </Group>
+      </TabsButton>
+    </Tabs>
   );
 }
 
