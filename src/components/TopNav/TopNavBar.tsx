@@ -1,71 +1,43 @@
 import { Group, Tabs } from '@base';
-import TabsButton from '@base/Tabs/TabsButton';
+import { TabValueType } from '@base/Tabs/TabsMain';
 import { css } from '@emotion/react';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
 interface TopNavBarChild {
   children: string[];
-  icon: ReactNode;
+  icon: ReactNode[];
 }
 function TopNavBar({ icon, children }: TopNavBarChild) {
-  // const [isClicked, setIsClicked] = useState();
-
+  const [tabValue, setTabValue] = useState(children[0]);
+  const tabChange = (value: TabValueType) => {
+    typeof value === 'string' && value && setTabValue(value);
+  };
   return (
-    <Tabs buttonGroupCss={css({ gap: '65px' })}>
-      <TabsButton
-        value={'myrecipe'}
-        css={{
-          // fontFamily: 'Pretendard',
-          fontSize: '20px',
-          fontStyle: 'normal',
-          fontWeight: 500,
-          lineHeight: 'normal',
-          color: '#292929',
-          background: 'transparent',
-          border: 'none',
-        }}
-      >
-        <Group css={{ gap: 6 }}>
-          {icon}
-          {children[0]}
-        </Group>
-      </TabsButton>
-      <TabsButton
-        value={'inventory'}
-        css={{
-          // fontFamily: 'Pretendard',
-          fontSize: '20px',
-          fontStyle: 'normal',
-          fontWeight: 500,
-          lineHeight: 'normal',
-          color: '#292929',
-          background: 'transparent',
-          border: 'none',
-        }}
-      >
-        <Group css={{ gap: 6 }}>
-          {icon}
-          {children[1]}
-        </Group>
-      </TabsButton>
-      <TabsButton
-        value={'search'}
-        css={{
-          // fontFamily: 'Pretendard',
-          fontSize: '20px',
-          fontStyle: 'normal',
-          fontWeight: 500,
-          lineHeight: 'normal',
-          color: '#292929',
-          background: 'transparent',
-          border: 'none',
-        }}
-      >
-        <Group css={{ gap: 6 }}>
-          {icon}
-          {children[2]}
-        </Group>
-      </TabsButton>
+    <Tabs
+      buttonGroupCss={css({ gap: '65px' })}
+      value={tabValue}
+      onTabChange={tabChange}
+    >
+      {children.map((menuItem, idx) => {
+        return (
+          <Tabs.Button
+            value={`${menuItem}`}
+            key={`${idx}-${menuItem}`}
+            css={{
+              fontSize: '20px',
+              color: '#292929',
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+            }}
+          >
+            <Group css={{ gap: 6 }}>
+              {tabValue === menuItem ? icon[1] : icon[0]}
+              {menuItem}
+            </Group>
+          </Tabs.Button>
+        );
+      })}
     </Tabs>
   );
 }
