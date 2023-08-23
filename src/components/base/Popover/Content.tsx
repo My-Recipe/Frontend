@@ -39,15 +39,9 @@ const getPopoverCoords = ({
   triggerPopoverMargin?: number;
 }) => {
   const triggerHeight = triggerRect.height;
-
   const triggerWidth = triggerRect.width;
   const popoverWidth = popoverRect.width;
 
-  let top = triggerRect.top + triggerRect.height + 10;
-  const left = Math.max(
-    triggerRect.left + triggerRect.width / 2 - popoverRect.width / 2,
-    10,
-  );
   switch (position) {
     case 'bottom-center':
       return {
@@ -66,13 +60,7 @@ const getPopoverCoords = ({
         left: 'auto',
       };
     default:
-      if (top + popoverRect.height > window.innerHeight - 10) {
-        top = triggerRect.top - 10 - popoverRect.height;
-      }
-      return {
-        top,
-        left,
-      };
+      return {};
   }
 };
 
