@@ -1,4 +1,5 @@
-import { Popover, Stack } from '@base';
+import { Stack } from '@base';
+import InputBox from '@copmonents/InputBox';
 import Banner from './components/Banner';
 
 export interface HomeProps {}
@@ -6,13 +7,14 @@ export interface HomeProps {}
 function Home({ ...props }: HomeProps) {
   return (
     <Stack>
-      <Popover position="bottom-left">
+      {/* <Popover preventCloseOnClickTrigger position="bottom-left">
         <Popover.Trigger>
           <button>asdf</button>
         </Popover.Trigger>
         <Popover.Content triggerPopoverMargin={3}>asdf</Popover.Content>
-      </Popover>
+      </Popover> */}
       <Banner />
+      <InputBox searchItems={['a', 'b', 'c']} />
     </Stack>
   );
 }
