@@ -6,9 +6,9 @@ export interface HomeProps {}
 function Home({ ...props }: HomeProps) {
   return (
     <Stack>
-      <Popover preventCloseOnClickTrigger position="bottom-left">
+      <Popover position="bottom-left">
         <Popover.Trigger>
-          <input type="text"></input>
+          <button>asdf</button>
         </Popover.Trigger>
         <Popover.Content triggerPopoverMargin={3}>asdf</Popover.Content>
       </Popover>
