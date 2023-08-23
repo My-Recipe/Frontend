@@ -1,7 +1,7 @@
-import PopoverClose from './Close';
-import PopoverContent from './Content';
 import PopoverMain from './Popover';
-import PopoverTrigger from './Trigger';
+import PopoverClose from './components/Close';
+import PopoverContent from './components/Content';
+import PopoverTrigger from './components/Trigger';
 
 const Popover = Object.assign(PopoverMain, {
   Trigger: PopoverTrigger,

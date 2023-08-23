@@ -1,33 +1,96 @@
-import { RefObject, useEffect, useRef } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
+import { Position, Rect } from './Popover';
 
-export function useClickOutside(
-  outsideOnClick: () => void,
-  preventTriggerTargetRef?: RefObject<HTMLElement>,
+/**
+ * 대상 ref를 제외한 바깥쪽 클릭이벤트를 감지해주는 hooks 입니다.
+ * @param handler - outside click시 실행되는 callback 함수
+ * @param preventClickRefs - click 이벤트에서 제외할 ref / refs
+ * @returns 기준이 되는 ref
+ */
+export function useClickOutside<T extends HTMLElement>(
+  handler: () => void,
+  preventClickRefs?: RefObject<HTMLElement>[] | RefObject<HTMLElement>,
 ) {
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<T>();
 
   useEffect(() => {
-    const element = ref.current;
-    if (element === null) return;
+    const listener = (e: MouseEvent) => {
+      const element = e.target;
 
-    const onClick = (e: MouseEvent) => {
+      if (element instanceof Node && preventClickRefs) {
+        if (Array.isArray(preventClickRefs)) {
+          for (const ref of preventClickRefs) {
+            if (ref.current && ref.current.contains(element)) return;
+          }
+        } else if (preventClickRefs.current?.contains(element)) {
+          return;
+        }
+      }
+
       if (
-        e.target instanceof Node &&
-        preventTriggerTargetRef?.current &&
-        preventTriggerTargetRef.current.contains(e.target)
-      )
-        return;
-      if (e.target instanceof Node && element && !element.contains(e.target)) {
-        // e.currentTarge 이 element의 자손인지
-        outsideOnClick();
+        element instanceof Node &&
+        ref.current &&
+        !ref.current.contains(element)
+      ) {
+        handler();
       }
     };
 
-    setTimeout(() => document.addEventListener('click', onClick), 0);
-    return () => {
-      setTimeout(() => document.removeEventListener('click', onClick), 0);
-    };
-  }, []);
+    document.addEventListener('click', listener);
+    return () => document.removeEventListener('click', listener);
+  }, [ref, handler, preventClickRefs]);
 
   return ref;
+}
+
+interface Params {
+  triggerRect: Rect;
+  // popoverRect: Rect; => to Ref
+  position: Position;
+  triggerPopoverMargin?: number;
+}
+
+export function useRect(initialStateParams: Params) {
+  const popoverRectRef = useRef<HTMLElement>(null);
+  const popoverRect = popoverRectRef.current?.getBoundingClientRect();
+  const getPopoverCoords = ({
+    triggerRect,
+    position,
+    triggerPopoverMargin = 10,
+  }: Params) => {
+    const triggerHeight = triggerRect.height;
+    const triggerWidth = triggerRect.width;
+    const popoverWidth = popoverRect?.width || 0;
+
+    switch (position) {
+      case 'bottom-center':
+        return {
+          top: triggerHeight + triggerPopoverMargin,
+          left: triggerWidth / 2 - popoverWidth / 2,
+        };
+      case 'bottom-left':
+        return {
+          top: triggerHeight + triggerPopoverMargin,
+          left: 0,
+        };
+      case 'bottom-right':
+        return {
+          top: triggerHeight + triggerPopoverMargin,
+          right: 0,
+          left: 'auto',
+        };
+      default:
+        return {};
+    }
+  };
+
+  const [rectCoords, setRectCoords] = useState(
+    getPopoverCoords(initialStateParams),
+  );
+
+  const setRect = (newStateParams: Params) => {
+    setRectCoords(getPopoverCoords(newStateParams));
+  };
+
+  return { ref: popoverRectRef, rect: rectCoords, setRect };
 }

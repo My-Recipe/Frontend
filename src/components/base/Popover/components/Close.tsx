@@ -1,5 +1,5 @@
 import { MouseEvent, ReactElement, cloneElement, useContext } from 'react';
-import { PopoverContext } from './Popover';
+import { PopoverContext } from '../context';
 
 export interface PopoverCloseProps {
   children: ReactElement;
