@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { HTMLAttributes } from 'react';
+import { CSSProperties, HTMLAttributes } from 'react';
 
 const commonStyle = css({
   boxSizing: 'border-box',
@@ -37,12 +37,19 @@ const growStyle = css({
 export interface GroupProps extends HTMLAttributes<HTMLDivElement> {
   position?: 'left' | 'right' | 'center' | 'apart';
   grow?: boolean;
+  gap?: CSSProperties['gap'];
 }
 
-function Group({ children, position = 'left', grow, ...props }: GroupProps) {
+function Group({
+  children,
+  position = 'left',
+  grow,
+  gap,
+  ...props
+}: GroupProps) {
   return (
     <div
-      css={[grow && growStyle, commonStyle, groupStyle[position]]}
+      css={[grow && growStyle, commonStyle, groupStyle[position], { gap }]}
       {...props}
     >
       {children}
