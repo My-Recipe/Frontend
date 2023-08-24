@@ -1,5 +1,5 @@
-import IconSearch from '@/assets/icon_search.svg';
-import IconSearchXs from '@/assets/icon_search_xs.svg';
+import IconSearchXs from '@/assets/icon-search-xs.svg';
+import IconSearch from '@/assets/icon-search.svg';
 import { Group, Popover, Stack } from '@base';
 import hangul from 'hangul-js';
 import { useState } from 'react';
