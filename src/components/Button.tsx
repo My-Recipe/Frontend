@@ -1,7 +1,6 @@
 import IconNavigateXs from '@/assets/icon-navigate-xs.svg';
 import { Color } from '@/utils/designSystem';
-import { Group } from '@base';
-import Typography from '@base/Typography';
+import { Group, Typography } from '@base';
 import { css } from '@emotion/react';
 import { HTMLAttributes } from 'react';
 
