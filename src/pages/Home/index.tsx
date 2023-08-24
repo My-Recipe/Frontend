@@ -1,4 +1,4 @@
-import { Stack } from '@base';
+import { Stack, Stroke } from '@base';
 import InputBox from '@copmonents/InputBox';
 import Tag from '@copmonents/Tag';
 import Banner from './components/Banner';
@@ -7,7 +7,7 @@ export interface HomeProps {}
 
 function Home({ ...props }: HomeProps) {
   return (
-    <Stack>
+    <Stack spacing={10}>
       <Banner />
       <InputBox
         searchItems={[
@@ -25,6 +25,8 @@ function Home({ ...props }: HomeProps) {
           # 재료 3
         </Tag>
       </div>
+      <Stroke />
+      <Stroke variant="bold" marginX={10} />
     </Stack>
   );
 }
