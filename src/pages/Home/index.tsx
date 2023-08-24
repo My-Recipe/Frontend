@@ -1,5 +1,6 @@
 import { Stack } from '@base';
 import InputBox from '@copmonents/InputBox';
+import Tag from '@copmonents/Tag';
 import Banner from './components/Banner';
 
 export interface HomeProps {}
@@ -15,6 +16,15 @@ function Home({ ...props }: HomeProps) {
           '최고로 맛있는 메밀소면',
         ]}
       />
+      <div>
+        <Tag
+          onClick={(e, value) => value}
+          value="123asdf"
+          onClose={(value) => value}
+        >
+          # 재료 3
+        </Tag>
+      </div>
     </Stack>
   );
 }
