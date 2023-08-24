@@ -7,14 +7,14 @@ export interface HomeProps {}
 function Home({ ...props }: HomeProps) {
   return (
     <Stack>
-      {/* <Popover preventCloseOnClickTrigger position="bottom-left">
-        <Popover.Trigger>
-          <button>asdf</button>
-        </Popover.Trigger>
-        <Popover.Content triggerPopoverMargin={3}>asdf</Popover.Content>
-      </Popover> */}
       <Banner />
-      <InputBox searchItems={['a', 'b', 'c']} />
+      <InputBox
+        searchItems={[
+          '여름나기 좋은 메밀 소바',
+          '메밀 소고기 레시피',
+          '최고로 맛있는 메밀소면',
+        ]}
+      />
     </Stack>
   );
 }
