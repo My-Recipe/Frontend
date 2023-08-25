@@ -1,7 +1,10 @@
 import type { Preview } from '@storybook/react';
 
+import '@/index.css';
+
 const preview: Preview = {
   parameters: {
+    layout: 'centered',
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
