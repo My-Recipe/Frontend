@@ -1,5 +1,5 @@
-import IconSearch from '@/assets/icon_search.svg';
-import IconSearchXs from '@/assets/icon_search_xs.svg';
+import IconSearchXs from '@/assets/icon-search-xs.svg';
+import IconSearch from '@/assets/icon-search.svg';
 import { Group, Popover, Stack } from '@base';
 import hangul from 'hangul-js';
 import { useState } from 'react';
@@ -19,7 +19,7 @@ function InputBox({ searchItems, ...props }: InputBoxProps) {
     <Popover preventCloseOnClickTrigger position="bottom-left">
       <Popover.Trigger>
         <div css={{ padding: '16px 26px', backgroundColor: 'white' }}>
-          <Group css={{ gap: 13 }}>
+          <Group gap={13}>
             <img src={IconSearch} />
             <input
               onChange={(e) => setInputValue(e.target.value)}
@@ -34,10 +34,7 @@ function InputBox({ searchItems, ...props }: InputBoxProps) {
         {filterdSearchItems && (
           <Stack spacing={10}>
             {filterdSearchItems.map((itemValue, index) => (
-              <Group
-                key={`search-item-${itemValue}-${index}`}
-                css={{ gap: 10 }}
-              >
+              <Group gap={10} key={`search-item-${itemValue}-${index}`}>
                 <img src={IconSearchXs} />
                 {itemValue}
               </Group>
