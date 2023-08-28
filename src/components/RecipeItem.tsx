@@ -3,7 +3,7 @@ import { Group, Stack, Stroke, Typography } from '@base';
 import { useState } from 'react';
 import MinusIcon from '../assets/icon-minus.svg';
 import PlusIcon from '../assets/icon-plus.svg';
-interface RecipeItemProps {
+export interface RecipeItemProps {
   name: string;
   author: string;
   img?: string;
@@ -12,24 +12,21 @@ interface RecipeItemProps {
 function Recipe({ name, author, img, contents }: RecipeItemProps) {
   const [hover, setHover] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const handleHover = (newHoverState: boolean) => {
-    setHover(newHoverState);
+  const handleHover = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.type === 'mouseenter') setHover(true);
+    else if (e.type === 'mouseleave') setHover(false);
   };
   return (
     <Stack
       css={{
-        width: '305px',
+        width: 305,
         backgroundColor: 'transparent',
-        gap: '15px',
       }}
-      onMouseEnter={() => {
-        handleHover(true);
-      }}
-      onMouseLeave={() => {
-        handleHover(false);
-      }}
+      spacing={15}
+      onMouseEnter={handleHover}
+      onMouseLeave={handleHover}
     >
-      <Stroke variant="bold" width="100%" />
+      <Stroke variant="bold" />
       <Group position="apart" css={{ padding: '0 5px' }}>
         <Stack>
           <Typography variant="subtitle" color="text.black">
@@ -39,12 +36,14 @@ function Recipe({ name, author, img, contents }: RecipeItemProps) {
             {author}
           </Typography>
         </Stack>
-        <img
-          src={hover ? (isSaved ? MinusIcon : PlusIcon) : ''}
-          onClick={() => {
-            setIsSaved(!isSaved);
-          }}
-        />
+        {hover && (
+          <img
+            src={isSaved ? MinusIcon : PlusIcon}
+            onClick={() => {
+              setIsSaved(!isSaved);
+            }}
+          />
+        )}
       </Group>
       {img ? (
         <img
