@@ -2,25 +2,18 @@ import IconSearchXs from '@/assets/icon-search-xs.svg';
 import IconSearch from '@/assets/icon-search.svg';
 import { Group, Popover, Stack } from '@base';
 import hangul from 'hangul-js';
-import { useMemo } from 'react';
+import { useState } from 'react';
 
 export interface InputBoxProps {
   searchItems?: string[];
-  value: string;
-  onChange: (value: string) => void;
 }
 
-function InputBox({
-  value: inputValue,
-  onChange,
-  searchItems,
-  ...props
-}: InputBoxProps) {
+function InputBox({ searchItems, ...props }: InputBoxProps) {
+  const [inputValue, setInputValue] = useState('');
+
   const filterdSearchItems = searchItems?.filter(
     (itemValue) => hangul.search(itemValue, inputValue) >= 0,
   );
-
-  const iconSearchXs = useMemo(() => <img src={IconSearchXs} />, []);
 
   return (
     <Popover preventCloseOnClickTrigger position="bottom-left">
@@ -29,7 +22,7 @@ function InputBox({
           <Group gap={13}>
             <img src={IconSearch} />
             <input
-              onChange={(e) => onChange(e.target.value)}
+              onChange={(e) => setInputValue(e.target.value)}
               value={inputValue}
               css={{ color: 'black', flex: 1 }}
               type="text"
@@ -42,7 +35,7 @@ function InputBox({
           <Stack spacing={10}>
             {filterdSearchItems.map((itemValue, index) => (
               <Group gap={10} key={`search-item-${itemValue}-${index}`}>
-                {iconSearchXs}
+                <img src={IconSearchXs} />
                 {itemValue}
               </Group>
             ))}
