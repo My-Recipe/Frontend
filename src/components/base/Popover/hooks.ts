@@ -52,15 +52,16 @@ interface Params {
 
 export function useRect(initialStateParams: Params) {
   const popoverRectRef = useRef<HTMLElement>(null);
-  const popoverRect = popoverRectRef.current?.getBoundingClientRect();
   const getPopoverCoords = ({
     triggerRect,
     position,
     triggerPopoverMargin = 10,
   }: Params) => {
+    const popoverRect = popoverRectRef.current?.getBoundingClientRect();
+    if (!popoverRect?.width) return {};
     const triggerHeight = triggerRect.height;
     const triggerWidth = triggerRect.width;
-    const popoverWidth = popoverRect?.width || 0;
+    const popoverWidth = popoverRect.width;
 
     switch (position) {
       case 'bottom-center':
