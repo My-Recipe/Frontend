@@ -1,5 +1,5 @@
 import { getComponentFromType } from '@/utils/components';
-import { Group } from '@base';
+import { Group, GroupProps } from '@base';
 import {
   CSSProperties,
   Children,
@@ -19,6 +19,7 @@ export interface TabsMainProps extends HTMLAttributes<HTMLDivElement> {
   value?: TabValueType;
   onTabChange?: (value: TabValueType) => void;
   buttonGroupCss?: CSSProperties;
+  buttonGroupProps: GroupProps;
   buttonCss?: CSSProperties;
   bodyWrapperCss?: CSSProperties;
   bodyCss?: CSSProperties;
@@ -34,6 +35,7 @@ function TabsMain({
   value: propsTabValue,
   onTabChange: propsOnTabChange,
   buttonGroupCss,
+  buttonGroupProps,
   bodyWrapperCss,
   buttonCss,
   bodyCss,
@@ -68,7 +70,10 @@ function TabsMain({
     <TabsContext.Provider value={[tabValue, onTabChange]}>
       <div {...props}>
         {tabsButton && (
-          <Group css={[{ ...buttonGroupCss }, { '& > *': { ...buttonCss } }]}>
+          <Group
+            css={[{ ...buttonGroupCss }, { '& > *': { ...buttonCss } }]}
+            {...buttonGroupProps}
+          >
             {tabsButton}
           </Group>
         )}
