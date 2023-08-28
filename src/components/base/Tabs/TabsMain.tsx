@@ -1,7 +1,7 @@
 import { getComponentFromType } from '@/utils/components';
 import { Group } from '@base';
-import { SerializedStyles } from '@emotion/react';
 import {
+  CSSProperties,
   Children,
   HTMLAttributes,
   createContext,
@@ -18,10 +18,10 @@ export interface TabsMainProps extends HTMLAttributes<HTMLDivElement> {
   defaultValue?: TabValueType;
   value?: TabValueType;
   onTabChange?: (value: TabValueType) => void;
-  buttonGroupCss?: SerializedStyles;
-  buttonCss?: SerializedStyles;
-  bodyWrapperCss?: SerializedStyles;
-  bodyCss?: SerializedStyles;
+  buttonGroupCss?: CSSProperties;
+  buttonCss?: CSSProperties;
+  bodyWrapperCss?: CSSProperties;
+  bodyCss?: CSSProperties;
 }
 
 export const TabsContext = createContext<
@@ -68,12 +68,14 @@ function TabsMain({
     <TabsContext.Provider value={[tabValue, onTabChange]}>
       <div {...props}>
         {tabsButton && (
-          <Group css={[buttonGroupCss, { '& > *': buttonCss }]}>
+          <Group css={[{ ...buttonGroupCss }, { '& > *': { ...buttonCss } }]}>
             {tabsButton}
           </Group>
         )}
         {tabsBody && (
-          <div css={[bodyWrapperCss, { '& > *': bodyCss }]}>{currentBody}</div>
+          <div css={[{ ...bodyWrapperCss }, { '& > *': { ...bodyCss } }]}>
+            {currentBody}
+          </div>
         )}
       </div>
     </TabsContext.Provider>
