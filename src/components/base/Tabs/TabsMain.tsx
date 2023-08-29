@@ -19,7 +19,7 @@ export interface TabsMainProps extends HTMLAttributes<HTMLDivElement> {
   value?: TabValueType;
   onTabChange?: (value: TabValueType) => void;
   buttonGroupCss?: CSSProperties;
-  buttonGroupProps: GroupProps;
+  buttonGroupProps?: GroupProps;
   buttonCss?: CSSProperties;
   bodyWrapperCss?: CSSProperties;
   bodyCss?: CSSProperties;
