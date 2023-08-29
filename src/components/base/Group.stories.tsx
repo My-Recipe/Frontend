@@ -9,10 +9,16 @@ const meta: Meta<typeof Group> = {
     position: {
       control: 'inline-radio',
       options: ['left', 'right', 'center', 'apart'],
+      description: 'children을 정렬할 기준입니다',
     },
-    grow: { control: 'boolean' },
+    grow: {
+      control: 'boolean',
+      description: 'children을 부모 사이즈에 꽉 맞춰 채울지 여부입니다',
+    },
     gap: {
       control: { type: 'range', min: 0, max: 20, step: 2 },
+      description:
+        'children사이의 간격입니다. px 단위이며, 20px을 초과해도 됩니다',
     },
   },
 };

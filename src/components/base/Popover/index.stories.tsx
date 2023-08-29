@@ -2,6 +2,7 @@ import { Color } from '@/utils/designSystem';
 import { StoryObjWithCSSProp } from '@/utils/types';
 import { Stack } from '@base';
 import type { Meta } from '@storybook/react';
+import { userEvent, within } from '@storybook/testing-library';
 import Popover from '.';
 
 const meta: Meta<typeof Popover> = {
@@ -10,14 +11,21 @@ const meta: Meta<typeof Popover> = {
     position: {
       control: 'inline-radio',
       options: ['bottom-left', 'bottom-center', 'bottom-right'],
+      description: 'popover content가 표시될 위치입니다.',
     },
     preventCloseOnClickTrigger: {
       control: 'boolean',
+      description:
+        'popover trigger를 클릭 시 content를 닫을지 여부입니다. `true`라면 닫히지 않습니다',
     },
   },
   args: {
     position: 'bottom-center',
     preventCloseOnClickTrigger: false,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button'));
   },
 };
 

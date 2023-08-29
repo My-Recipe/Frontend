@@ -19,6 +19,8 @@ const meta: Meta<typeof Stack> = {
         'space-evenly',
         'stretch',
       ],
+      description:
+        '세로 정렬의 기준값입니다. `CSSProperties.justifyContent` 속성의 값을 받습니다',
     },
     align: {
       control: 'inline-radio',
@@ -31,9 +33,12 @@ const meta: Meta<typeof Stack> = {
         'flex-start',
         'flex-end',
       ],
+      description:
+        '가로 정렬의 기준값입니다. `CSSProperties.alignItems` 속성의 값을 받습니다',
     },
     spacing: {
       control: { type: 'range', min: 0, max: 20, step: 2 },
+      description: '`gap` 속성값입니다',
     },
   },
 };

@@ -9,7 +9,18 @@ const meta: Meta<typeof Typography> = {
     color: {
       control: 'select',
       options: COLOR_VARIANT_TEXT,
+      description: '디자인시스템의 color나 기본 CSS의 color를 받습니다',
     },
+    variant: {
+      control: 'inline-radio',
+      options: ['button', 'display', 'headline', 'subtitle', 'body', 'info'],
+      description: '디자인시스템의 Typography를 받습니다',
+    },
+  },
+  args: {
+    children: 'Sample text',
+
+    variant: 'body',
   },
 };
 
@@ -19,7 +30,6 @@ type Story = StoryObjWithCSSProp<typeof Typography>;
 
 export const TypographyDefault: Story = {
   args: {
-    children: 'Sample text',
     color: 'text.black',
   },
 };
@@ -31,7 +41,6 @@ export const TypographyCustomColor: Story = {
     },
   },
   args: {
-    children: 'Sample text',
     color: '#ababab',
   },
 };

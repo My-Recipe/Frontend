@@ -3,7 +3,13 @@ import Button from './Button';
 
 const meta: Meta<typeof Button> = {
   component: Button,
-  argTypes: { onClick: { action: 'clicked' } },
+  argTypes: {
+    onClick: {
+      action: 'clicked',
+      description: '`HTMLButtonElement`의 `onCilck` 속성입니다',
+    },
+    children: { description: 'string 제공 시에는 내용을 그대로 보여줍니다' },
+  },
 };
 
 export default meta;
