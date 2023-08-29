@@ -18,7 +18,7 @@ export const TagDefault: Story = {
 };
 export const TagWithValue: Story = {
   args: {
-    children: 'tag-example',
+    children: 'tag-example1',
     value: 'tag-value-1',
   },
 };
