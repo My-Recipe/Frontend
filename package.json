@@ -57,7 +57,5 @@
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
     "vite-plugin-pages": "^0.31.0"
-  },
-  "readme": "ERROR: No README data found!",
-  "_id": "my-recipe-fe@0.0.0"
+  }
 }
