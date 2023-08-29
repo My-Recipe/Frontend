@@ -19,7 +19,7 @@ function TabsButton({
 
   return (
     <button
-      css={{ backgroundColor }}
+      css={{ backgroundColor, color: 'inherit' }}
       onClick={(e) => {
         onTabChange(value);
         onClick && onClick(e);
