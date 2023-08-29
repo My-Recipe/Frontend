@@ -61,16 +61,14 @@ const InputBoxWithHooks = () => {
   );
 };
 
-export const Default: Story = {
-  args: {},
-
+export const InputBoxWithControl: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole('textbox'));
   },
 };
 
-export const InputBoxAction: Story = {
+export const InputBoxWithoutControl: Story = {
   render: () => <InputBoxWithHooks />,
   args: {
     value: undefined,
@@ -79,7 +77,6 @@ export const InputBoxAction: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-
     await userEvent.type(canvas.getByRole('textbox'), '메밀 소바');
   },
 };
