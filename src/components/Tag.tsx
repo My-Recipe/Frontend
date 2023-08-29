@@ -21,7 +21,7 @@ const hoverStyle = css({
 
 export interface TagProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'onClick'> {
-  onClose?: (value: string) => void;
+  onClose?: (e: MouseEvent, value: string) => void;
   value?: string;
   onClick?: (e: MouseEvent, value: string) => void;
 }
@@ -53,7 +53,7 @@ function Tag({
       >
         {children}
         {isHover && (
-          <img onClick={(e) => onClose && onClose(value)} src={IconCacel} />
+          <img onClick={(e) => onClose && onClose(e, value)} src={IconCacel} />
         )}
       </Group>
     </div>
