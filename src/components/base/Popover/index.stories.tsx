@@ -114,4 +114,8 @@ export const PopoverWithInput: Story = {
     position: 'bottom-left',
     preventCloseOnClickTrigger: true,
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('textbox'));
+  },
 };
