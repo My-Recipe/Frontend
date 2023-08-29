@@ -24,7 +24,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-storybook
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-storybook
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         # 👇 Install dependencies with the same package manager used in the project (replace it as needed), e.g. yarn, npm, pnpm
