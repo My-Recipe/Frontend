@@ -1,31 +1,24 @@
-import { Group, Tabs } from '@base';
+import { Group, Tabs, Typography } from '@base';
 import { TabValueType } from '@base/Tabs/TabsMain';
-import { css } from '@emotion/react';
 import { ReactNode, useState } from 'react';
 
-interface TopNavBarChild {
+interface TopNavBarProps {
   children: string[];
   icon: ReactNode[];
 }
-function TopNavBar({ icon, children }: TopNavBarChild) {
+function TopNavBar({ icon, children }: TopNavBarProps) {
   const [tabValue, setTabValue] = useState(children[0]);
   const tabChange = (value: TabValueType) => {
     typeof value === 'string' && value && setTabValue(value);
   };
   return (
-    <Tabs
-      buttonGroupCss={css({ gap: '65px' })}
-      value={tabValue}
-      onTabChange={tabChange}
-    >
+    <Tabs buttonGroupCss={{ gap: 65 }} value={tabValue} onTabChange={tabChange}>
       {children.map((menuItem, idx) => {
         return (
           <Tabs.Button
             value={`${menuItem}`}
             key={`${idx}-${menuItem}`}
             css={{
-              fontSize: '20px',
-              color: '#292929',
               background: 'transparent',
               border: 'none',
               cursor: 'pointer',
@@ -33,7 +26,9 @@ function TopNavBar({ icon, children }: TopNavBarChild) {
           >
             <Group css={{ gap: 6 }}>
               {tabValue === menuItem ? icon[1] : icon[0]}
-              {menuItem}
+              <Typography variant="subtitle" css={{ marginTop: 3 }}>
+                {menuItem}
+              </Typography>
             </Group>
           </Tabs.Button>
         );
