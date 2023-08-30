@@ -49,4 +49,3 @@ jobs:
           autoAcceptChanges: true # 👈 Option to accept all changes
           exitOnceUploaded: true
           onlyChanged: true
-          untraced: '.github/\*\*'
