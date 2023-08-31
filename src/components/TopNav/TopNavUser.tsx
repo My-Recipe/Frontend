@@ -1,7 +1,7 @@
+import DefaultProfile from '@/assets/default-profile.svg';
+import IconDropdown from '@/assets/icon-dropdown.svg';
+import IconSettings from '@/assets/icon-settings.svg';
 import { Group, Popover, Stack, Typography } from '@base';
-import DefaultProfile from '../../assets/default-profile.svg';
-import IconDropdown from '../../assets/icon-dropdown.svg';
-import IconSettings from '../../assets/icon-settings.svg';
 import { UserType } from './TopNav';
 interface TopNavUserProps {
   children: string[];

@@ -1,6 +1,6 @@
+import EmptyMenuIcon from '@/assets/menu-empty.svg';
+import FilledMenuIcon from '@/assets/menu-fill.svg';
 import { Group, Stack, Stroke } from '@base';
-import EmptyMenuIcon from '../../assets/menu-empty.svg';
-import FilledMenuIcon from '../../assets/menu-fill.svg';
 import TopNavBar from './TopNavBar';
 import TopNavUser from './TopNavUser';
 
