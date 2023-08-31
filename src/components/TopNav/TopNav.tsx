@@ -17,7 +17,7 @@ function TopNav({ user }: TopNavProps) {
   const userMenu = ['마이 레시피 보기', '피드백 남기기', '로그아웃'];
 
   return (
-    <Stack css={{ background: 'transparent' }}>
+    <Stack css={{ background: 'transparent', width: '100%' }}>
       <Group position="apart" css={{ height: 90 }}>
         <div
           css={{
