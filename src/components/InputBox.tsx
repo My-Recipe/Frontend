@@ -1,49 +1,100 @@
-import IconSearchXs from '@/assets/icon-search-xs.svg';
+import { ReactComponent as IconSearchXs } from '@/assets/icon-search-xs.svg';
 import IconSearch from '@/assets/icon-search.svg';
-import { Group, Popover, Stack } from '@base';
+import DesignSystem from '@/utils/designSystem';
+import { Group, Popover, Stack, Typography } from '@base';
+import { css } from '@emotion/react';
 import hangul from 'hangul-js';
-import { useMemo } from 'react';
+import { CSSProperties, HTMLAttributes } from 'react';
 
-export interface InputBoxProps {
+export interface InputBoxProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   searchItems?: string[];
   value: string;
   onChange: (value: string) => void;
+  onItemClick?: (value: string, index: number) => void;
+  placeholder?: string;
+  width?: CSSProperties['width'];
 }
+
+const triggerStyle = {
+  wrapper: css({
+    padding: '16px 26px',
+    backgroundColor: DesignSystem.Color.background.white,
+    borderRadius: 4,
+    border: `1px solid var(--text-gray, ${DesignSystem.Color.text.gray})`,
+  }),
+  group: css({
+    height: 24,
+  }),
+  input: css({
+    color: DesignSystem.Color.text.black,
+    flex: 1,
+    height: '100%',
+    padding: 0,
+  }),
+};
+
+const contentStyle = {
+  wrapper: css({
+    boxShadow: DesignSystem.Shadow,
+  }),
+  stack: css({
+    padding: '24px 32px',
+    borderRadius: 4,
+    background: DesignSystem.Color.background.white,
+  }),
+  item: css({
+    userSelect: 'none',
+    cursor: 'pointer',
+  }),
+  text: css({
+    padding: 10,
+  }),
+};
 
 function InputBox({
   value: inputValue,
   onChange,
+  onItemClick,
   searchItems,
+  placeholder = '#태그로 재료를 검색해보세요.',
+  width,
+  style,
   ...props
 }: InputBoxProps) {
   const filterdSearchItems = searchItems?.filter(
     (itemValue) => hangul.search(itemValue, inputValue) >= 0,
   );
 
-  const iconSearchXs = useMemo(() => <img src={IconSearchXs} />, []);
-
   return (
-    <Popover preventCloseOnClickTrigger position="bottom-left">
+    <Popover style={{ width }} preventCloseOnClickTrigger position="full-width">
       <Popover.Trigger>
-        <div css={{ padding: '16px 26px', backgroundColor: 'white' }}>
-          <Group gap={13}>
+        <div css={triggerStyle.wrapper} style={{ ...style }} {...props}>
+          <Group css={triggerStyle.group} gap={13}>
             <img src={IconSearch} />
             <input
+              placeholder={placeholder}
               onChange={(e) => onChange(e.target.value)}
               value={inputValue}
-              css={{ color: 'black', flex: 1 }}
+              css={[triggerStyle.input, DesignSystem.Text.body]}
               type="text"
             />
           </Group>
         </div>
       </Popover.Trigger>
-      <Popover.Content>
+      <Popover.Content triggerPopoverMargin={0} css={contentStyle.wrapper}>
         {filterdSearchItems && (
-          <Stack spacing={10}>
+          <Stack css={contentStyle.stack} spacing={5}>
             {filterdSearchItems.map((itemValue, index) => (
-              <Group gap={10} key={`search-item-${itemValue}-${index}`}>
-                {iconSearchXs}
-                {itemValue}
+              <Group
+                css={contentStyle.item}
+                key={`search-item-${itemValue}-${index}`}
+                onClick={() => onItemClick && onItemClick(itemValue, index)}
+              >
+                <IconSearchXs />
+                <Typography css={contentStyle.text} variant="body">
+                  {itemValue}
+                </Typography>
               </Group>
             ))}
           </Stack>
