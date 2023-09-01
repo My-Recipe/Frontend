@@ -1,5 +1,5 @@
 import IconCacel from '@/assets/icon-cancel.svg';
-import { Color, TextStyle } from '@/utils/designSystem';
+import DesignSystem from '@/utils/designSystem';
 import { Group } from '@base';
 import { css } from '@emotion/react';
 import { HTMLAttributes, MouseEvent, useState } from 'react';
@@ -9,13 +9,13 @@ const defaultStyle = css({
   height: 42,
   padding: '9px 15px',
   borderRadius: 4,
-  background: Color.primary.yellow,
+  background: DesignSystem.Color.primary.yellow,
   cursor: 'pointer',
   userSelect: 'none',
 });
 const hoverStyle = css({
   ':hover': {
-    background: Color.primary['yellow-hover'],
+    background: DesignSystem.Color.primary['yellow-hover'],
   },
 });
 
@@ -45,7 +45,7 @@ function Tag({
         gap={12}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        css={[defaultStyle, hoverStyle, TextStyle.button]}
+        css={[defaultStyle, hoverStyle, DesignSystem.Text.button]}
         onClick={(e) =>
           onClick && e.target === e.currentTarget && onClick(e, value)
         }

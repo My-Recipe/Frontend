@@ -22,7 +22,7 @@ type ColorDetailType =
   | 'pink'
   | 'blue';
 export type ShortColorType = `${ColorVariantType}.${string}`;
-export const Color: {
+const Color: {
   [key in ColorVariantType]: { [color in ColorDetailType]?: string };
 } = {
   background: {
@@ -52,7 +52,7 @@ export const Color: {
   },
 };
 
-export const colorGenerator = (value: string) => {
+const colorGenerator = (value: string) => {
   const splitValue = value.split('.');
   if (splitValue[0] in Color && splitValue[0] && splitValue[1]) {
     const prefix: ColorVariantType = splitValue[0] as ColorVariantType;
@@ -64,11 +64,11 @@ export const colorGenerator = (value: string) => {
   return value;
 };
 
-export const Shadow: CSSProperties['boxShadow'] =
+const Shadow: CSSProperties['boxShadow'] =
   '0px 4px 16px 0px rgba(140, 140, 140, 0.13)';
 
 const color = Color.text.black;
-export const TextStyle = {
+const Text = {
   display: css({
     color,
     fontFamily: 'ChosunSm',
@@ -113,4 +113,14 @@ export const TextStyle = {
     fontWeight: 400,
   }),
 };
-export type TextType = keyof typeof TextStyle;
+export type TextType = keyof typeof Text;
+
+const DesignSystem = {
+  Color: Object.assign(Color, {
+    colorGenerator,
+  }),
+  Shadow,
+  Text,
+};
+
+export default DesignSystem;

@@ -1,5 +1,6 @@
 import { ReactComponent as IconNavigateXs } from '@/assets/icon-navigate-xs.svg';
-import { Color } from '@/utils/designSystem';
+import DesignSystem from '@/utils/designSystem';
+
 import { Group, Typography } from '@base';
 import { css } from '@emotion/react';
 import { HTMLAttributes } from 'react';
@@ -21,7 +22,7 @@ const style = css({
   paddingRight: 29,
   paddingLeft: 29,
   borderRadius: 12,
-  background: Color.background.black,
+  background: DesignSystem.Color.background.black,
 });
 const outline = css({
   justifyContent: 'center',

@@ -1,4 +1,4 @@
-import { Color } from '@/utils/designSystem';
+import DesignSystem from '@/utils/designSystem';
 import { StoryObjWithCSSProp } from '@/utils/types';
 import type { Meta } from '@storybook/react';
 import TabsButton from './TabsButton';
@@ -13,7 +13,7 @@ type Story = StoryObjWithCSSProp<typeof TabsButton>;
 
 export const DefaultTabsButton: Story = {
   args: {
-    bgColor: Color.primary['yellow'],
+    bgColor: DesignSystem.Color.primary['yellow'],
     children: 'mybutton',
   },
   render: (args) => <TabsButton {...args} />,
@@ -25,8 +25,8 @@ export const TabsButtonWithCssProps: Story = {
     css: {
       borderRadius: 40,
       padding: 10,
-      border: `1px solid ${Color.text.gray}`,
-      color: Color.text.gray,
+      border: `1px solid ${DesignSystem.Color.text.gray}`,
+      color: DesignSystem.Color.text.gray,
     },
   },
   render: (args) => <TabsButton {...args} />,

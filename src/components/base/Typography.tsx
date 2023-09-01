@@ -1,9 +1,4 @@
-import {
-  ShortColorType,
-  TextStyle,
-  TextType,
-  colorGenerator,
-} from '@/utils/designSystem';
+import DesignSystem, { ShortColorType, TextType } from '@/utils/designSystem';
 import { CSSProperties, HTMLAttributes } from 'react';
 
 export interface TypographyProps extends HTMLAttributes<HTMLDivElement> {
@@ -12,8 +7,8 @@ export interface TypographyProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 function Typography({ variant, color: propsColor, ...props }: TypographyProps) {
-  const color = propsColor && colorGenerator(propsColor);
-  return <div css={[TextStyle[variant], { color }]} {...props} />;
+  const color = propsColor && DesignSystem.Color.colorGenerator(propsColor);
+  return <div css={[DesignSystem.Text[variant], { color }]} {...props} />;
 }
 
 export default Typography;
