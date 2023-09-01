@@ -1,10 +1,10 @@
 import { ReactComponent as IconSearchXs } from '@/assets/icon-search-xs.svg';
-import IconSearch from '@/assets/icon-search.svg';
+import { ReactComponent as IconSearch } from '@/assets/icon-search.svg';
 import DesignSystem from '@/utils/designSystem';
 import { Group, Popover, Stack, Typography } from '@base';
 import { css } from '@emotion/react';
 import hangul from 'hangul-js';
-import { CSSProperties, HTMLAttributes } from 'react';
+import { CSSProperties, HTMLAttributes, ReactNode } from 'react';
 
 export interface InputBoxProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
@@ -14,6 +14,7 @@ export interface InputBoxProps
   onItemClick?: (value: string, index: number) => void;
   placeholder?: string;
   width?: CSSProperties['width'];
+  tags?: ReactNode;
 }
 
 const triggerStyle = {
@@ -24,7 +25,8 @@ const triggerStyle = {
     border: `1px solid var(--text-gray, ${DesignSystem.Color.text.gray})`,
   }),
   group: css({
-    height: 24,
+    alignContent: 'center',
+    height: 33,
   }),
   input: css({
     color: DesignSystem.Color.text.black,
@@ -60,6 +62,7 @@ function InputBox({
   placeholder = '#태그로 재료를 검색해보세요.',
   width,
   style,
+  tags,
   ...props
 }: InputBoxProps) {
   const filterdSearchItems = searchItems?.filter(
@@ -68,17 +71,21 @@ function InputBox({
 
   return (
     <Popover style={{ width }} preventCloseOnClickTrigger position="full-width">
-      <Popover.Trigger>
+      <Popover.Trigger preventTrigger={!!tags}>
         <div css={triggerStyle.wrapper} style={{ ...style }} {...props}>
           <Group css={triggerStyle.group} gap={13}>
-            <img src={IconSearch} />
-            <input
-              placeholder={placeholder}
-              onChange={(e) => onChange(e.target.value)}
-              value={inputValue}
-              css={[triggerStyle.input, DesignSystem.Text.body]}
-              type="text"
-            />
+            <IconSearch />
+            {tags ? (
+              tags
+            ) : (
+              <input
+                placeholder={placeholder}
+                onChange={(e) => onChange(e.target.value)}
+                value={inputValue}
+                css={[triggerStyle.input, DesignSystem.Text.body]}
+                type="text"
+              />
+            )}
           </Group>
         </div>
       </Popover.Trigger>

@@ -3,16 +3,17 @@ import { PopoverContext } from '../context';
 
 export interface PopoverTriggerProps {
   children: ReactElement;
+  preventTrigger?: boolean;
 }
 
-function PopoverTrigger({ children }: PopoverTriggerProps) {
+function PopoverTrigger({ children, preventTrigger }: PopoverTriggerProps) {
   const { triggerOnClick, setTriggerRect, triggerRef } =
     useContext(PopoverContext);
 
   const ref = triggerRef;
   const onClick = () => {
     const element = ref?.current;
-    if (!element) return;
+    if (!element || preventTrigger) return;
 
     const rect = element.getBoundingClientRect();
     setTriggerRect(rect);

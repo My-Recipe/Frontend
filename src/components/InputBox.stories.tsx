@@ -3,6 +3,7 @@ import { userEvent, within } from '@storybook/testing-library';
 
 import { useState } from 'react';
 import InputBox, { InputBoxProps } from './InputBox';
+import Tag from './Tag';
 
 const meta: Meta<typeof InputBox> = {
   parameters: {
@@ -96,5 +97,16 @@ export const InputBoxWithoutControl: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByRole('textbox'), '메밀 소바');
+  },
+};
+
+export const InputBoxWithTags: Story = {
+  args: {
+    tags: (
+      <>
+        <Tag># 재료</Tag>
+        <Tag># 재료 1</Tag>
+      </>
+    ),
   },
 };
