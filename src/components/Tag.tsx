@@ -1,4 +1,4 @@
-import IconCacel from '@/assets/icon-cancel.svg';
+import { ReactComponent as IconCacel } from '@/assets/icon-cancel.svg';
 import DesignSystem from '@/utils/designSystem';
 import { Group } from '@base';
 import { css } from '@emotion/react';
@@ -52,9 +52,7 @@ function Tag({
         {...props}
       >
         {children}
-        {isHover && (
-          <img onClick={(e) => onClose && onClose(e, value)} src={IconCacel} />
-        )}
+        {isHover && <IconCacel onClick={(e) => onClose && onClose(e, value)} />}
       </Group>
     </div>
   );

@@ -29,12 +29,12 @@ type Story = StoryObjWithCSSProp<typeof Tag>;
 
 export const TagDefault: Story = {
   args: {
-    children: 'tag-example',
+    children: '# 재료 3',
   },
 };
 export const TagWithValue: Story = {
   args: {
-    children: 'tag-example1',
+    children: '# 재료',
     value: 'tag-value-1',
   },
 };
