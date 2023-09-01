@@ -6,7 +6,11 @@ export type Rect = Pick<
   'left' | 'right' | 'top' | 'bottom' | 'height' | 'width'
 >;
 
-export type Position = 'bottom-center' | 'bottom-left' | 'bottom-right';
+export type Position =
+  | 'bottom-center'
+  | 'bottom-left'
+  | 'bottom-right'
+  | 'full-width';
 
 export interface PopoverMainProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
