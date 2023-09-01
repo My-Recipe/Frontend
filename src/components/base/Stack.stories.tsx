@@ -59,7 +59,9 @@ export const StackDefault: Story = {
       {...args}
     >
       <div css={{ backgroundColor: Color.primary.yellow }}>child-1</div>
-      <div css={{ backgroundColor: Color.primary.yellow_hover }}>child-2</div>
+      <div css={{ backgroundColor: Color.primary['yellow-hover'] }}>
+        child-2
+      </div>
       <div css={{ backgroundColor: Color.primary.green }}>child-3</div>
     </Stack>
   ),

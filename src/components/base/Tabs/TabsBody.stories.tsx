@@ -14,7 +14,7 @@ type Story = StoryObjWithCSSProp<typeof TabsBody>;
 export const DefaultTabsBody: Story = {
   args: {
     value: 'tab-value',
-    bgColor: Color.primary['yellow_hover'],
+    bgColor: Color.primary['yellow-hover'],
     children: 'mybody',
   },
   render: (args) => <TabsBody {...args} />,

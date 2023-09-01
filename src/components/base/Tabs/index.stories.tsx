@@ -58,14 +58,14 @@ export const TabsNoStyle: Story = {
         <Tabs.Button bgColor={Color.primary['yellow']} value="tab1">
           tab1 button
         </Tabs.Button>
-        <Tabs.Button bgColor={Color.primary['yellow_hover']} value="tab2">
+        <Tabs.Button bgColor={Color.primary['yellow-hover']} value="tab2">
           tab2 button
         </Tabs.Button>
         <Tabs.Body bgColor={Color.primary['yellow']} value="tab1">
           tab1 body <br />
           when `value` is defined, tab button doesn't work.
         </Tabs.Body>
-        <Tabs.Body bgColor={Color.primary['yellow_hover']} value="tab2">
+        <Tabs.Body bgColor={Color.primary['yellow-hover']} value="tab2">
           tab2 body <br />
           when `defaultValue` is defined with `value`, defaultValue doesn't
           work.

@@ -15,7 +15,7 @@ const defaultStyle = css({
 });
 const hoverStyle = css({
   ':hover': {
-    background: Color.primary.yellow_hover,
+    background: Color.primary['yellow-hover'],
   },
 });
 

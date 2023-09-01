@@ -1,10 +1,29 @@
 import { css } from '@emotion/react';
 import { CSSProperties } from 'react';
-
-export type ColorVariantType = 'background' | 'text' | 'primary' | 'sub';
+export type ColorVariantType =
+  | 'background'
+  | 'text'
+  | 'warning'
+  | 'secondary'
+  | 'primary'
+  | 'sub';
+type ColorDetailType =
+  | 'white'
+  | 'gray'
+  | 'black'
+  | 'disabled'
+  | 'gray'
+  | 'black'
+  | 'red'
+  | 'yellow'
+  | 'yellow-hover'
+  | 'green'
+  | 'brown'
+  | 'pink'
+  | 'blue';
 export type ShortColorType = `${ColorVariantType}.${string}`;
 export const Color: {
-  [key in ColorVariantType]: { [color: string]: string };
+  [key in ColorVariantType]: { [color in ColorDetailType]?: string };
 } = {
   background: {
     white: '#FFFFFF',
@@ -15,11 +34,15 @@ export const Color: {
   text: {
     gray: '#9EA6B1',
     black: '#292929',
+  },
+  warning: {
     red: '#FB4747',
   },
   primary: {
     yellow: '#FFE24C',
-    yellow_hover: '#FCC252',
+    'yellow-hover': '#FCC252',
+  },
+  secondary: {
     green: '#4BC25E',
   },
   sub: {
@@ -28,12 +51,17 @@ export const Color: {
     blue: '#B6D5E6',
   },
 };
+
 export const colorGenerator = (value: string) => {
-  const prefix: string | ColorVariantType = value.split('.')[0] || '';
-  const colorValue = value.split('.')[1] || '';
-  return prefix in Color
-    ? Color[prefix as ColorVariantType][colorValue]
-    : value;
+  const splitValue = value.split('.');
+  if (splitValue[0] in Color && splitValue[0] && splitValue[1]) {
+    const prefix: ColorVariantType = splitValue[0] as ColorVariantType;
+    const postfix = splitValue[1];
+    if (postfix in Color[prefix])
+      return Color[prefix][postfix as ColorDetailType];
+    return value;
+  }
+  return value;
 };
 
 export const Shadow: CSSProperties['boxShadow'] =

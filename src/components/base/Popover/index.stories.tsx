@@ -45,7 +45,7 @@ export const PopoverNoStyle: Story = {
       </Popover.Trigger>
       <Popover.Content
         css={{
-          backgroundColor: Color.primary.yellow_hover,
+          backgroundColor: Color.primary['yellow-hover'],
           width: 50,
           height: 50,
         }}
@@ -68,7 +68,7 @@ export const PopoverWithExit: Story = {
       </Popover.Trigger>
       <Popover.Content
         css={{
-          backgroundColor: Color.primary.yellow_hover,
+          backgroundColor: Color.primary['yellow-hover'],
           width: 100,
           height: 100,
         }}
