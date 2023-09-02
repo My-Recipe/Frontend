@@ -109,4 +109,5 @@ export const InputBoxWithTags: Story = {
       </>
     ),
   },
+  play: () => {},
 };
