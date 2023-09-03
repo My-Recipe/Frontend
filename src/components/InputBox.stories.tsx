@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within } from '@storybook/testing-library';
 
-import { useState } from 'react';
+import { Stack } from '@base';
+import { ForwardedRef, MouseEvent, useState } from 'react';
 import InputBox, { InputBoxProps } from './InputBox';
 import Tag from './Tag';
 
@@ -110,4 +111,31 @@ export const InputBoxWithTags: Story = {
     ),
   },
   play: () => {},
+};
+
+const InputBoxWithTagWithHooks = (args: InputBoxProps) => {
+  const onClickTagClose = (
+    e: MouseEvent,
+    value: string,
+    ref: ForwardedRef<unknown>,
+  ) => {
+    // setTags(tags.filter((item) => item.props.value !== value));
+  };
+  const [tags, setTags] = useState([
+    <Tag onClose={onClickTagClose} value="ingr-1">
+      # 재료 1
+    </Tag>,
+    <Tag onClose={onClickTagClose} value="ingr-2">
+      # 재료 2
+    </Tag>,
+  ]);
+  return (
+    <Stack>
+      <InputBox {...args} tags={tags} />
+    </Stack>
+  );
+};
+
+export const InputBoxWithTagControled: Story = {
+  render: (args) => <InputBoxWithTagWithHooks {...args} />,
 };

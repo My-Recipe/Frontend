@@ -2,7 +2,13 @@ import { ReactComponent as IconCacel } from '@/assets/icon-cancel.svg';
 import DesignSystem from '@/utils/designSystem';
 import { Group } from '@base';
 import { css } from '@emotion/react';
-import { HTMLAttributes, MouseEvent, useState } from 'react';
+import {
+  ForwardedRef,
+  HTMLAttributes,
+  MouseEvent,
+  forwardRef,
+  useState,
+} from 'react';
 
 const defaultStyle = css({
   width: 'auto',
@@ -21,18 +27,15 @@ const hoverStyle = css({
 
 export interface TagProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'onClick'> {
-  onClose?: (e: MouseEvent, value: string) => void;
+  onClose?: (e: MouseEvent, value: string, ref: ForwardedRef<unknown>) => void;
   value?: string;
   onClick?: (e: MouseEvent, value: string) => void;
 }
 
-function Tag({
-  children,
-  onClose,
-  value: propsValue,
-  onClick,
-  ...props
-}: TagProps) {
+const Tag = forwardRef(function Tag(
+  { children, onClose, value: propsValue, onClick, ...props }: TagProps,
+  ref,
+) {
   const [isHover, setIsHover] = useState(false);
   const value =
     propsValue ||
@@ -52,10 +55,15 @@ function Tag({
         {...props}
       >
         {children}
-        {isHover && <IconCacel onClick={(e) => onClose && onClose(e, value)} />}
+        {isHover && (
+          <IconCacel
+            width={24}
+            onClick={(e) => onClose && onClose(e, value, ref)}
+          />
+        )}
       </Group>
     </div>
   );
-}
+});
 
 export default Tag;
