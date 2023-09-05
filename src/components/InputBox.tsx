@@ -27,6 +27,7 @@ const triggerStyle = {
   group: css({
     alignContent: 'center',
     height: 33,
+    flexWrap: 'nowrap',
   }),
   input: css({
     color: DesignSystem.Color.text.black,
@@ -76,11 +77,16 @@ function InputBox({
           <Group css={triggerStyle.group} gap={13}>
             <IconSearch />
             {tags ? (
-              tags
+              <Group gap={13} css={{ overflowX: 'scroll', flexWrap: 'nowrap' }}>
+                {tags}
+              </Group>
             ) : (
               <input
                 placeholder={placeholder}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={(e) => {
+                  e;
+                  onChange(e.target.value);
+                }}
                 value={inputValue}
                 css={[triggerStyle.input, DesignSystem.Text.body]}
                 type="text"
