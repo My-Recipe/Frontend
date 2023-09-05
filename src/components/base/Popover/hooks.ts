@@ -81,7 +81,11 @@ export function useRect(initialStateParams: Params) {
           left: 'auto',
         };
       default:
-        return {};
+        return {
+          top: triggerHeight + triggerPopoverMargin,
+          left: 0,
+          width: triggerWidth,
+        };
     }
   };
 

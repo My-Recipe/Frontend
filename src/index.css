@@ -31,6 +31,19 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+  --background-white: #ffffff;
+  --background-gray: #f6f7f8;
+  --background-black: #141414;
+  --background-disabled: #e4e6ea;
+  --text-gray: #9ea6b1;
+  --text-black: #292929;
+  --warning-red: #fb4747;
+  --primary-yellow: #ffe24c;
+  --primary-yellow-hover: #fcc252;
+  --secondary-green: #4bc25e;
+  --sub-brown: #b1976d;
+  --sub-pink: #ff85ce;
+  --sub-blue: #b6d5e6;
 }
 
 body {

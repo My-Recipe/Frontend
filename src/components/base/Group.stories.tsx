@@ -1,4 +1,4 @@
-import { Color } from '@/utils/designSystem';
+import DesignSystem from '@/utils/designSystem';
 import { StoryObjWithCSSProp } from '@/utils/types';
 import type { Meta } from '@storybook/react';
 import Group from './Group';
@@ -33,9 +33,17 @@ export const GroupDefault: Story = {
       css={{ '&>*': { padding: 10 }, width: 400, border: `1px solid gray` }}
       {...args}
     >
-      <div css={{ backgroundColor: Color.primary.yellow }}>child-1</div>
-      <div css={{ backgroundColor: Color.primary.yellow_hover }}>child-2</div>
-      <div css={{ backgroundColor: Color.primary.green }}>child-3</div>
+      <div css={{ backgroundColor: DesignSystem.Color.primary.yellow }}>
+        child-1
+      </div>
+      <div
+        css={{ backgroundColor: DesignSystem.Color.primary['yellow-hover'] }}
+      >
+        child-2
+      </div>
+      <div css={{ backgroundColor: DesignSystem.Color.primary.green }}>
+        child-3
+      </div>
     </Group>
   ),
   args: {

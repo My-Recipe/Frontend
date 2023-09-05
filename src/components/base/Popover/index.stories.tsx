@@ -1,4 +1,4 @@
-import { Color } from '@/utils/designSystem';
+import DesignSystem from '@/utils/designSystem';
 import { StoryObjWithCSSProp } from '@/utils/types';
 import { Stack } from '@base';
 import type { Meta } from '@storybook/react';
@@ -38,14 +38,17 @@ export const PopoverNoStyle: Story = {
     <Popover {...args}>
       <Popover.Trigger>
         <button
-          css={{ backgroundColor: Color.primary.yellow, padding: '10px 20px' }}
+          css={{
+            backgroundColor: DesignSystem.Color.primary.yellow,
+            padding: '10px 20px',
+          }}
         >
           Click to open popover!
         </button>
       </Popover.Trigger>
       <Popover.Content
         css={{
-          backgroundColor: Color.primary.yellow_hover,
+          backgroundColor: DesignSystem.Color.primary['yellow-hover'],
           width: 50,
           height: 50,
         }}
@@ -61,21 +64,24 @@ export const PopoverWithExit: Story = {
     <Popover {...args}>
       <Popover.Trigger>
         <button
-          css={{ backgroundColor: Color.primary.yellow, padding: '10px 20px' }}
+          css={{
+            backgroundColor: DesignSystem.Color.primary.yellow,
+            padding: '10px 20px',
+          }}
         >
           Click to open popover!
         </button>
       </Popover.Trigger>
       <Popover.Content
         css={{
-          backgroundColor: Color.primary.yellow_hover,
+          backgroundColor: DesignSystem.Color.primary['yellow-hover'],
           width: 100,
           height: 100,
         }}
       >
         <div>
           <Popover.Close>
-            <button css={{ backgroundColor: Color.text.gray }}>
+            <button css={{ backgroundColor: DesignSystem.Color.text.gray }}>
               Click to close
             </button>
           </Popover.Close>
@@ -96,7 +102,7 @@ export const PopoverWithInput: Story = {
           css={{
             border: `1px solid gray`,
             padding: 10,
-            color: Color.text.black,
+            color: DesignSystem.Color.text.black,
           }}
           placeholder="type text"
         />

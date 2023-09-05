@@ -1,4 +1,4 @@
-import { Color } from '@/utils/designSystem';
+import DesignSystem from '@/utils/designSystem';
 import { StoryObjWithCSSProp } from '@/utils/types';
 import type { Meta } from '@storybook/react';
 import Stack from './Stack';
@@ -58,9 +58,17 @@ export const StackDefault: Story = {
       }}
       {...args}
     >
-      <div css={{ backgroundColor: Color.primary.yellow }}>child-1</div>
-      <div css={{ backgroundColor: Color.primary.yellow_hover }}>child-2</div>
-      <div css={{ backgroundColor: Color.primary.green }}>child-3</div>
+      <div css={{ backgroundColor: DesignSystem.Color.primary.yellow }}>
+        child-1
+      </div>
+      <div
+        css={{ backgroundColor: DesignSystem.Color.primary['yellow-hover'] }}
+      >
+        child-2
+      </div>
+      <div css={{ backgroundColor: DesignSystem.Color.primary.green }}>
+        child-3
+      </div>
     </Stack>
   ),
   args: {},

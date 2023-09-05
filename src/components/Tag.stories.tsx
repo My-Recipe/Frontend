@@ -21,6 +21,12 @@ const meta: Meta<typeof Tag> = {
       description: '`event`, `value`를 파라미터로 전달합니다',
     },
   },
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/6Tcv8DaxZwjY4NYH0NAhmz/Design?type=design&node-id=537-1819&mode=dev',
+    },
+  },
 };
 
 export default meta;
@@ -29,12 +35,12 @@ type Story = StoryObjWithCSSProp<typeof Tag>;
 
 export const TagDefault: Story = {
   args: {
-    children: 'tag-example',
+    children: '# 재료 3',
   },
 };
 export const TagWithValue: Story = {
   args: {
-    children: 'tag-example1',
+    children: '# 재료',
     value: 'tag-value-1',
   },
 };

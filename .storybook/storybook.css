@@ -1,0 +1,15 @@
+.sb-show-main,
+.docs-story {
+  max-width: none;
+}
+
+.sb-show-main,
+.docs-story,
+#storybook-root {
+  background-color: #e4dbee;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
