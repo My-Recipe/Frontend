@@ -1,12 +1,23 @@
-import { ReactElement, cloneElement, useContext } from 'react';
+import { ReactElement, RefObject, cloneElement, useContext } from 'react';
 import { PopoverContext } from '../context';
 
 export interface PopoverTriggerProps {
-  children: ReactElement;
+  children?: ReactElement;
   preventTrigger?: boolean;
+  renderTriggerComponent?: ({
+    ref,
+    onClick,
+  }: {
+    ref: RefObject<HTMLElement> | undefined;
+    onClick: () => void;
+  }) => JSX.Element;
 }
 
-function PopoverTrigger({ children, preventTrigger }: PopoverTriggerProps) {
+function PopoverTrigger({
+  children,
+  preventTrigger,
+  renderTriggerComponent,
+}: PopoverTriggerProps) {
   const { triggerOnClick, setTriggerRect, triggerRef } =
     useContext(PopoverContext);
 
@@ -20,12 +31,15 @@ function PopoverTrigger({ children, preventTrigger }: PopoverTriggerProps) {
     triggerOnClick();
   };
 
-  const childrenToTriggerPopover = cloneElement(children, {
-    onClick,
-    ref,
-  });
+  if (renderTriggerComponent) return renderTriggerComponent({ ref, onClick });
 
-  return childrenToTriggerPopover;
+  if (children) {
+    const childrenToTriggerPopover = cloneElement(children, {
+      onClick,
+      ref,
+    });
+    return childrenToTriggerPopover;
+  }
 }
 
 export default PopoverTrigger;

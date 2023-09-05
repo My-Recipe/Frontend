@@ -1,10 +1,7 @@
-import type { Meta, StoryContext, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { fireEvent, userEvent, within } from '@storybook/testing-library';
 
-import { Group, Stack } from '@base';
-import { MouseEvent, useState } from 'react';
-import InputBox, { InputBoxProps } from './InputBox';
-import Tag from './Tag';
+import InputBox from './InputBox';
 
 const meta: Meta<typeof InputBox> = {
   parameters: {
@@ -17,15 +14,11 @@ const meta: Meta<typeof InputBox> = {
   argTypes: {
     onChange: {
       action: 'changed',
-      description: '`value` 파라미터로 변경된 string을 전달하는 함수입니다',
+      description: '변경되는 value / tag state를 전달하는 함수입니다',
     },
     onItemClick: {
       action: 'item-clicked',
       description: 'item들의 label과 index를 전달하는 함수입니다',
-    },
-    value: {
-      control: 'text',
-      description: '`value` state입니다',
     },
     searchItems: {
       control: 'check',
@@ -37,10 +30,24 @@ const meta: Meta<typeof InputBox> = {
         '수박화채 레시피',
         '최고로 맛있는 소고기',
       ],
+      description:
+        'popover content 부분에 보여줄 리스트입니다. 클릭시 검색어가 자동완성됩니다',
+    },
+    tags: {
+      control: 'check',
+      options: ['재료 1', '재료 2', '재료 3', '재료 4', '재료 5'],
+      mapping: {
+        '재료 1': { value: 'ingr-1', label: '# 재료 1' },
+        '재료 2': { value: 'ingr-2', label: '# 재료 2' },
+        '재료 3': { value: 'ingr-3', label: '# 재료 3' },
+        '재료 4': { value: 'ingr-4', label: '# 재료 4' },
+        '재료 5': { value: 'ingr-5', label: '# 재료 5' },
+      },
+      description:
+        '태그 리스트입니다. 클릭시 검색어를 숨기고 input창에 태그를 띄워줍니다',
     },
   },
   args: {
-    value: '',
     searchItems: [
       '여름나기 좋은 메밀 소바',
       '메밀 소고기 레시피',
@@ -61,128 +68,19 @@ export default meta;
 
 type Story = StoryObj<typeof InputBox>;
 
-const InputBoxWithHooks = (args: InputBoxProps) => {
-  const [value, setValue] = useState('');
-
-  const handleOnChange = (val: string) => {
-    setValue(val);
-  };
-  return (
-    <InputBox
-      {...args}
-      searchItems={[
-        '여름나기 좋은 메밀 소바',
-        '메밀 소고기 레시피',
-        '최고로 맛있는 메밀소면',
-      ]}
-      value={value}
-      onChange={handleOnChange}
-    />
-  );
-};
-
-export const InputBoxWithControl: Story = {
+export const InputBoxDefault: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole('textbox'));
-  },
-};
-
-export const InputBoxWithoutControl: Story = {
-  render: (args) => <InputBoxWithHooks {...args} />,
-  args: {
-    value: undefined,
-    onChange: undefined,
-    searchItems: undefined,
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.type(canvas.getByRole('textbox'), '메밀 소바');
+    fireEvent.change(canvas.getByRole('textbox'), {
+      target: { value: '메밀 소고기' },
+    });
   },
 };
 
 export const InputBoxWithTags: Story = {
-  args: {
-    tags: (
-      <>
-        <Tag># 재료</Tag>
-        <Tag># 재료 1</Tag>
-      </>
-    ),
-  },
-  play: () => {},
-};
-
-const InputBoxWithTagWithHooks = (
-  args: InputBoxProps,
-  context: StoryContext,
-) => {
-  const [tags, setTags] = useState([{ value: 'ingr-1', label: '# 재료 1' }]);
-  const [value, setValue] = useState('');
-  const allTags = [
-    { value: 'ingr-1', label: '# 재료 1' },
-    { value: 'ingr-2', label: '# 재료 2' },
-    { value: 'ingr-3', label: '# 재료 3' },
-    { value: 'ingr-4', label: '# 재료 4' },
-    { value: 'ingr-5', label: '# 재료 5' },
-  ];
-  const restTags = allTags.filter(
-    (tag) => !tags.some((targetTag) => targetTag.value === tag.value),
-  );
-  const onClickTagClose = (e: MouseEvent, value: string) => {
-    setTags(tags.filter((item) => item.value !== value));
-  };
-  const onClickTag = (e: MouseEvent, value: string) => {
-    const filterTag = allTags.find((item) => item.value === value);
-    if (filterTag) setTags([...tags, filterTag]);
-  };
-
-  return (
-    <Stack css={{ width: '100%' }} spacing={24}>
-      <InputBox
-        tags={
-          tags.length &&
-          tags.map((props, index) => (
-            <Tag
-              key={`${props.label}-${props.value}-${index}`}
-              {...props}
-              onClose={onClickTagClose}
-            />
-          ))
-        }
-        value={value}
-        onChange={(value) => {
-          setValue(value);
-        }}
-        searchItems={[
-          '여름나기 좋은 메밀 소바',
-          '메밀 소고기 레시피',
-          '최고로 맛있는 메밀소면',
-          '여름나기 좋은 수박',
-          '수박화채 레시피',
-          '최고로 맛있는 소고기',
-        ]}
-      />
-      <Group gap={12}>
-        {restTags.map((props, index) => (
-          <Tag
-            key={`${props.label}-${props.value}-${index}`}
-            {...props}
-            onClick={onClickTag}
-          />
-        ))}
-      </Group>
-    </Stack>
-  );
-};
-
-export const InputBoxWithTagsControled: Story = {
-  render: (args, { hooks }) => <InputBoxWithTagWithHooks {...args} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByText('# 재료 1');
-    await userEvent.hover(button, { delay: 200 });
-    await userEvent.click(canvas.getByTestId('tag-close-icon'));
     await userEvent.click(canvas.getByText('# 재료 3'));
     await userEvent.click(canvas.getByText('# 재료 5'));
     await userEvent.hover(canvas.getByText('# 재료 3'));
@@ -197,5 +95,12 @@ export const InputBoxWithTagsControled: Story = {
   },
   args: {
     width: '100%',
+    tags: [
+      { value: 'ingr-1', label: '# 재료 1' },
+      { value: 'ingr-2', label: '# 재료 2' },
+      { value: 'ingr-3', label: '# 재료 3' },
+      { value: 'ingr-4', label: '# 재료 4' },
+      { value: 'ingr-5', label: '# 재료 5' },
+    ],
   },
 };

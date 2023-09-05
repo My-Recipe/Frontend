@@ -2,7 +2,7 @@ import { ReactComponent as IconCacel } from '@/assets/icon-cancel.svg';
 import DesignSystem from '@/utils/designSystem';
 import { Group } from '@base';
 import { css } from '@emotion/react';
-import { HTMLAttributes, MouseEvent, useState } from 'react';
+import { HTMLAttributes, MouseEvent, ReactNode, useState } from 'react';
 
 const defaultStyle = css({
   width: 'auto',
@@ -20,6 +20,8 @@ const hoverStyle = css({
     background: DesignSystem.Color.primary['yellow-hover'],
   },
 });
+
+export type TagDataType = { value: string; label: string | ReactNode };
 
 export interface TagProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'onClick'> {

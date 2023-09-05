@@ -4,17 +4,25 @@ import DesignSystem from '@/utils/designSystem';
 import { Group, Popover, Stack, Typography } from '@base';
 import { css } from '@emotion/react';
 import hangul from 'hangul-js';
-import { CSSProperties, HTMLAttributes, ReactNode } from 'react';
+import {
+  CSSProperties,
+  HTMLAttributes,
+  LegacyRef,
+  MouseEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import Tag, { TagDataType } from './Tag';
 
 export interface InputBoxProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   searchItems?: string[];
-  value: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string | TagDataType[]) => void;
   onItemClick?: (value: string, index: number) => void;
   placeholder?: string;
   width?: CSSProperties['width'];
-  tags?: ReactNode;
+  tags?: TagDataType[];
 }
 
 const triggerStyle = {
@@ -22,10 +30,9 @@ const triggerStyle = {
     padding: '16px 26px',
     backgroundColor: DesignSystem.Color.background.white,
     borderRadius: 4,
-    border: `1px solid var(--text-gray, ${DesignSystem.Color.text.gray})`,
+    border: `1px solid ${DesignSystem.Color.text.gray}`,
   }),
   group: css({
-    alignContent: 'center',
     height: 33,
     flexWrap: 'nowrap',
   }),
@@ -56,7 +63,6 @@ const contentStyle = {
 };
 
 function InputBox({
-  value: inputValue,
   onChange,
   onItemClick,
   searchItems,
@@ -64,37 +70,95 @@ function InputBox({
   width,
   style,
   tags,
-  ...props
 }: InputBoxProps) {
+  const [inputValue, setInputValue] = useState('');
   const filterdSearchItems = searchItems?.filter(
     (itemValue) => hangul.search(itemValue, inputValue) >= 0,
   );
 
+  const [selectedTags, setSelectedTags] = useState<TagDataType[]>([]);
+  const restTags =
+    tags &&
+    tags.filter(
+      (tag) => !selectedTags.some((targetTag) => targetTag.value === tag.value),
+    );
+
+  const isTagSelected = !!selectedTags.length;
+
+  useEffect(() => {
+    if (onChange) onChange(inputValue);
+  }, [inputValue]);
+
+  useEffect(() => {
+    if (onChange) {
+      onChange(selectedTags.length ? selectedTags : inputValue);
+    }
+  }, [selectedTags]);
+
+  const onClickTagClose = (e: MouseEvent, value: string) => {
+    setSelectedTags(selectedTags.filter((item) => item.value !== value));
+  };
+
+  const onClickTag = (e: MouseEvent, value: string) => {
+    const filterTag = tags?.find((item) => item.value === value);
+    const duplicatedTag = selectedTags.find((item) => item.value === value);
+    if (filterTag && !duplicatedTag)
+      setSelectedTags([...selectedTags, filterTag]);
+  };
+
+  const tagGenerator = ({ label, value }: TagDataType, index: number) => (
+    <Tag
+      onClick={onClickTag}
+      onClose={onClickTagClose}
+      key={`${label}-${value}-${index}`}
+      value={value}
+    >
+      {label}
+    </Tag>
+  );
+
+  const searchInput = useMemo(() => {
+    if (isTagSelected)
+      return (
+        <Group gap={13} css={{ overflowX: 'scroll', flexWrap: 'nowrap' }}>
+          {selectedTags.map(tagGenerator)}
+        </Group>
+      );
+    else
+      return (
+        <input
+          placeholder={placeholder}
+          onChange={(e) => {
+            setInputValue(e.target.value);
+          }}
+          value={inputValue}
+          css={[triggerStyle.input, DesignSystem.Text.body]}
+          type="text"
+        />
+      );
+  }, [selectedTags, inputValue]);
+
   return (
     <Popover style={{ width }} preventCloseOnClickTrigger position="full-width">
-      <Popover.Trigger preventTrigger={!!tags}>
-        <div css={triggerStyle.wrapper} style={{ ...style }} {...props}>
-          <Group css={triggerStyle.group} gap={13}>
-            <IconSearch />
-            {tags ? (
-              <Group gap={13} css={{ overflowX: 'scroll', flexWrap: 'nowrap' }}>
-                {tags}
+      <Popover.Trigger
+        preventTrigger={isTagSelected}
+        renderTriggerComponent={({ ref, onClick }) => (
+          <Stack spacing={24}>
+            <div
+              ref={ref as LegacyRef<HTMLDivElement>}
+              onClick={onClick}
+              css={triggerStyle.wrapper}
+              style={{ ...style }}
+            >
+              <Group css={triggerStyle.group} gap={13}>
+                <IconSearch />
+                {searchInput}
               </Group>
-            ) : (
-              <input
-                placeholder={placeholder}
-                onChange={(e) => {
-                  e;
-                  onChange(e.target.value);
-                }}
-                value={inputValue}
-                css={[triggerStyle.input, DesignSystem.Text.body]}
-                type="text"
-              />
-            )}
-          </Group>
-        </div>
-      </Popover.Trigger>
+            </div>
+            <Group gap={12}>{restTags && restTags.map(tagGenerator)}</Group>
+          </Stack>
+        )}
+      />
       <Popover.Content triggerPopoverMargin={0} css={contentStyle.wrapper}>
         {filterdSearchItems && (
           <Stack css={contentStyle.stack} spacing={5}>
@@ -102,7 +166,10 @@ function InputBox({
               <Group
                 css={contentStyle.item}
                 key={`search-item-${itemValue}-${index}`}
-                onClick={() => onItemClick && onItemClick(itemValue, index)}
+                onClick={() => {
+                  setInputValue(itemValue);
+                  onItemClick && onItemClick(itemValue, index);
+                }}
               >
                 <IconSearchXs />
                 <Typography css={contentStyle.text} variant="body">
