@@ -3,13 +3,13 @@ import { Group, Stack, Stroke, Typography } from '@base';
 import { useState } from 'react';
 import MinusIcon from '../assets/icon-minus.svg';
 import PlusIcon from '../assets/icon-plus.svg';
-export interface RecipeItemProps {
+export interface RecipeProps {
   name: string;
   author: string;
   img?: string;
   contents: string;
 }
-function Recipe({ name, author, img, contents }: RecipeItemProps) {
+function Recipe({ name, author, img, contents }: RecipeProps) {
   const [hover, setHover] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const handleHover = (e: React.MouseEvent<HTMLDivElement>) => {

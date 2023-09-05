@@ -1,4 +1,5 @@
-import RecipeList from '@copmonents/RecipeList';
+import Recipe from '@copmonents/Recipe';
+
 const RECIPE_ITEMS = [
   {
     name: '게살 버거',
@@ -98,8 +99,20 @@ const RECIPE_ITEMS = [
       '소스 : 스리라차 소스, 요거트 소스 반죽 : 밀가루, 계란 오늘은 끝장나는 요리 레시피를 가져왔어요. 오늘은 끝장나는 요리 레시피를 가져왔어요. 에그 스크럼블을 특별하게 어쩌구저쩌구. 에그 스크럼블을 특별하게 어쩌구...',
   },
 ];
-function Recipe() {
-  return <RecipeList>{RECIPE_ITEMS}</RecipeList>;
+function RecipeList() {
+  return (
+    <div
+      css={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4, 1fr)',
+        gap: '67px 15px',
+      }}
+    >
+      {RECIPE_ITEMS.map((recipe, idx) => {
+        return <Recipe {...recipe} key={`${idx}${recipe.name}`}></Recipe>;
+      })}
+    </div>
+  );
 }
 
-export default Recipe;
+export default RecipeList;
