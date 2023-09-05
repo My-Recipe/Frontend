@@ -21,7 +21,7 @@ const hoverStyle = css({
 
 export interface TagProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'onClick'> {
-  onClose?: (value: string) => void;
+  onClose?: (e: MouseEvent, value: string) => void;
   value?: string;
   onClick?: (e: MouseEvent, value: string) => void;
 }
@@ -33,7 +33,7 @@ function Tag({
   onClick,
   ...props
 }: TagProps) {
-  const [isHover, setIsHover] = useState(true);
+  const [isHover, setIsHover] = useState(false);
   const value =
     propsValue ||
     (typeof children === 'string' && children) ||
@@ -46,12 +46,14 @@ function Tag({
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
         css={[defaultStyle, hoverStyle, TextStyle.button]}
-        onClick={(e) => onClick && onClick(e, value)}
+        onClick={(e) =>
+          onClick && e.target === e.currentTarget && onClick(e, value)
+        }
         {...props}
       >
         {children}
         {isHover && (
-          <img onClick={() => onClose && onClose(value)} src={IconCacel} />
+          <img onClick={(e) => onClose && onClose(e, value)} src={IconCacel} />
         )}
       </Group>
     </div>

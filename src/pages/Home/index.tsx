@@ -25,7 +25,7 @@ function Home({ ...props }: HomeProps) {
         <Tag
           onClick={(e, value) => value}
           value="123asdf"
-          onClose={(value) => value}
+          onClose={(e, value) => value}
         >
           # 재료 3
         </Tag>
