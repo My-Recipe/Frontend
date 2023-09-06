@@ -1,4 +1,4 @@
-import { Color } from '@/utils/designSystem';
+import DesignSystem from '@/utils/designSystem';
 import { StoryObjWithCSSProp } from '@/utils/types';
 import type { Meta } from '@storybook/react';
 import Tabs from '.';
@@ -55,17 +55,26 @@ export const TabsNoStyle: Story = {
   render: (args) => {
     return (
       <Tabs {...args}>
-        <Tabs.Button bgColor={Color.primary['yellow']} value="tab1">
+        <Tabs.Button
+          bgColor={DesignSystem.Color.primary['yellow']}
+          value="tab1"
+        >
           tab1 button
         </Tabs.Button>
-        <Tabs.Button bgColor={Color.primary['yellow_hover']} value="tab2">
+        <Tabs.Button
+          bgColor={DesignSystem.Color.primary['yellow-hover']}
+          value="tab2"
+        >
           tab2 button
         </Tabs.Button>
-        <Tabs.Body bgColor={Color.primary['yellow']} value="tab1">
+        <Tabs.Body bgColor={DesignSystem.Color.primary['yellow']} value="tab1">
           tab1 body <br />
           when `value` is defined, tab button doesn't work.
         </Tabs.Body>
-        <Tabs.Body bgColor={Color.primary['yellow_hover']} value="tab2">
+        <Tabs.Body
+          bgColor={DesignSystem.Color.primary['yellow-hover']}
+          value="tab2"
+        >
           tab2 body <br />
           when `defaultValue` is defined with `value`, defaultValue doesn't
           work.
@@ -81,7 +90,7 @@ export const TabsWithStyle: Story = {
     buttonCss: {
       borderRadius: '10px 10px 0 0',
       padding: 10,
-      border: `1px solid ${Color.text.gray}`,
+      border: `1px solid ${DesignSystem.Color.text.gray}`,
     },
     buttonGroupProps: {
       grow: true,
@@ -92,7 +101,7 @@ export const TabsWithStyle: Story = {
     },
     css: {
       width: 400,
-      color: Color.text.black,
+      color: DesignSystem.Color.text.black,
     },
   },
 };

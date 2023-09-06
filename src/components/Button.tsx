@@ -1,5 +1,6 @@
-import IconNavigateXs from '@/assets/icon-navigate-xs.svg';
-import { Color } from '@/utils/designSystem';
+import { ReactComponent as IconNavigateXs } from '@/assets/icon-navigate-xs.svg';
+import DesignSystem from '@/utils/designSystem';
+
 import { Group, Typography } from '@base';
 import { css } from '@emotion/react';
 import { HTMLAttributes } from 'react';
@@ -12,20 +13,23 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
 
 const layout = css({
   display: 'flex',
-  padding: '14.5px 29px',
+  padding: 14.5,
   justifyContent: 'center',
   alignItems: 'center',
   gap: 30,
 });
 const style = css({
+  paddingRight: 29,
+  paddingLeft: 29,
   borderRadius: 12,
-  background: Color.background.black,
+  background: DesignSystem.Color.background.black,
 });
 const outline = css({
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: 12,
   border: '2.4px solid #000',
+  // padding: '0 14.5px',
 });
 function Button({ children, variant = 'none', ...props }: ButtonProps) {
   if (variant === 'icon')
@@ -34,7 +38,7 @@ function Button({ children, variant = 'none', ...props }: ButtonProps) {
         <Typography color="background.white" variant="button">
           {children}
         </Typography>
-        <img src={IconNavigateXs} />
+        <IconNavigateXs stroke="#fff" />
       </button>
     );
 
@@ -47,7 +51,7 @@ function Button({ children, variant = 'none', ...props }: ButtonProps) {
           </Typography>
         </button>
         <button css={[layout, outline]}>
-          <img src={IconNavigateXs} />
+          <IconNavigateXs stroke="#000" />
         </button>
       </Group>
     );

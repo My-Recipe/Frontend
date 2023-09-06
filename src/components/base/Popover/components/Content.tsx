@@ -37,9 +37,11 @@ function PopoverContent({
       ref={mergedRef}
       css={{
         position: 'absolute',
-        ...rect,
+        backgroundColor: 'inherit',
         margin: 0,
         border: 0,
+        padding: 0,
+        ...rect,
       }}
       {...props}
     >
