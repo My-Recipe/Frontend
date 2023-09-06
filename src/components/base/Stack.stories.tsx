@@ -66,7 +66,7 @@ export const StackDefault: Story = {
       >
         child-2
       </div>
-      <div css={{ backgroundColor: DesignSystem.Color.primary.green }}>
+      <div css={{ backgroundColor: DesignSystem.Color.secondary.green }}>
         child-3
       </div>
     </Stack>
