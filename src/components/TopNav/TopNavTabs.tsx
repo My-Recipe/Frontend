@@ -1,16 +1,21 @@
+import EmptyMenuIcon from '@/assets/menu-empty.svg';
+import FilledMenuIcon from '@/assets/menu-fill.svg';
 import { Group, Tabs, Typography } from '@base';
 import { TabValueType } from '@base/Tabs/TabsMain';
-import { ReactNode, useState } from 'react';
-
+import { useEffect, useState } from 'react';
 interface TopNavBarProps {
   children: string[];
-  icon: ReactNode[];
+  onTabChange?: (currentTab: string) => void;
 }
-function TopNavBar({ icon, children }: TopNavBarProps) {
+function TopNavTabs({ children, onTabChange }: TopNavBarProps) {
   const [tabValue, setTabValue] = useState(children[0]);
   const tabChange = (value: TabValueType) => {
     typeof value === 'string' && value && setTabValue(value);
   };
+  useEffect(() => {
+    onTabChange && onTabChange(tabValue);
+  }, [tabValue]);
+
   return (
     <Tabs buttonGroupCss={{ gap: 65 }} value={tabValue} onTabChange={tabChange}>
       {children.map((menuItem, idx) => {
@@ -24,8 +29,12 @@ function TopNavBar({ icon, children }: TopNavBarProps) {
               cursor: 'pointer',
             }}
           >
-            <Group css={{ gap: 6 }}>
-              {tabValue === menuItem ? icon[1] : icon[0]}
+            <Group nowrap css={{ gap: 6 }}>
+              {tabValue === menuItem ? (
+                <img src={FilledMenuIcon} />
+              ) : (
+                <img src={EmptyMenuIcon} />
+              )}
               <Typography variant="subtitle" css={{ marginTop: 3 }}>
                 {menuItem}
               </Typography>
@@ -37,4 +46,4 @@ function TopNavBar({ icon, children }: TopNavBarProps) {
   );
 }
 
-export default TopNavBar;
+export default TopNavTabs;
