@@ -1,8 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { userEvent, within } from '@storybook/testing-library';
 import TopNav from '.';
 
 const meta: Meta<typeof TopNav> = {
   component: TopNav,
+  argTypes: {
+    onTabChange: {
+      action: 'tab-change',
+    },
+  },
   args: {
     user: {
       email: 'test@gmail.com',
@@ -14,4 +20,11 @@ export default meta;
 
 type Story = StoryObj<typeof TopNav>;
 
-export const TopNavDefault: Story = {};
+export const TopNavDefault: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByText('INVENTORY'));
+    await userEvent.click(canvas.getByText('SEARCH'));
+    await userEvent.click(canvas.getByText('MY RECIPE'));
+  },
+};
