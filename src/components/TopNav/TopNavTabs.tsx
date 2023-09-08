@@ -2,7 +2,21 @@ import EmptyMenuIcon from '@/assets/menu-empty.svg';
 import FilledMenuIcon from '@/assets/menu-fill.svg';
 import { Group, Tabs, Typography } from '@base';
 import { TabValueType } from '@base/Tabs/TabsMain';
+import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
+
+const topNavTabsStyle = {
+  wrapper: {
+    gap: 65,
+  },
+  item: css({
+    background: 'transparent',
+    border: 'none',
+    cursor: 'pointer',
+  }),
+  itemText: css({ marginTop: 3 }),
+};
+
 interface TopNavBarProps {
   children: string[];
   onTabChange?: (currentTab: string) => void;
@@ -17,25 +31,25 @@ function TopNavTabs({ children, onTabChange }: TopNavBarProps) {
   }, [tabValue]);
 
   return (
-    <Tabs buttonGroupCss={{ gap: 65 }} value={tabValue} onTabChange={tabChange}>
+    <Tabs
+      buttonGroupCss={topNavTabsStyle.wrapper}
+      value={tabValue}
+      onTabChange={tabChange}
+    >
       {children.map((menuItem, idx) => {
         return (
           <Tabs.Button
             value={`${menuItem}`}
             key={`${idx}-${menuItem}`}
-            css={{
-              background: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-            }}
+            css={topNavTabsStyle.item}
           >
-            <Group nowrap css={{ gap: 6 }}>
+            <Group nowrap gap={6}>
               {tabValue === menuItem ? (
                 <img src={FilledMenuIcon} />
               ) : (
                 <img src={EmptyMenuIcon} />
               )}
-              <Typography variant="subtitle" css={{ marginTop: 3 }}>
+              <Typography variant="subtitle" css={topNavTabsStyle.itemText}>
                 {menuItem}
               </Typography>
             </Group>

@@ -2,68 +2,65 @@ import DefaultProfile from '@/assets/default-profile.svg';
 import IconDropdown from '@/assets/icon-dropdown.svg';
 import IconSettings from '@/assets/icon-settings.svg';
 import { Group, Popover, Stack, Typography } from '@base';
+import { css } from '@emotion/react';
 import { UserType } from './TopNav';
+
+const topNavUserStyle = {
+  trigger: css({ cursor: 'pointer' }),
+  content: {
+    root: css({
+      backgroundColor: 'white',
+      width: 354,
+      borderRadius: 4,
+      padding: '28px 0 14px 0',
+    }),
+    user: css({ padding: '0 25px', paddingBottom: 33 }),
+    setting: css({ alignSelf: 'baseline' }),
+    buttons: css({
+      textAlign: 'left',
+      borderTop: 'solid 1px #F6F7F8',
+      padding: '20px 25px',
+    }),
+  },
+};
 interface TopNavUserProps {
   children: string[];
   user: UserType;
 }
+
 function TopNavUser({ user, children }: TopNavUserProps) {
   return (
     <Popover position="bottom-right">
       <Popover.Trigger>
-        <div css={{ display: 'flex', alignItems: 'center', gap: 15 }}>
-          <button
-            css={{
-              width: 47,
-              height: 48,
-              borderRadius: 13,
-              border: 'none',
-            }}
-          >
-            {<img src={user.img || DefaultProfile} />}
-          </button>
-          <img src={IconDropdown} css={{ cursor: 'pointer' }} />
+        <div>
+          <Group nowrap gap={14} css={topNavUserStyle.trigger}>
+            <img src={user.img || DefaultProfile} />
+            <img src={IconDropdown} />
+          </Group>
         </div>
       </Popover.Trigger>
       <Popover.Content
         triggerPopoverMargin={9}
-        css={{
-          backgroundColor: 'white',
-          width: 354,
-          height: 303,
-          borderRadius: 4,
-          padding: 0,
-        }}
+        css={topNavUserStyle.content.root}
       >
         <Stack>
-          <Group position="apart" css={{ padding: '0 25px' }}>
-            <button
-              css={{
-                display: 'flex',
-                border: 'none',
-                padding: '24px 0 33px 0',
-              }}
-            >
-              {<img src={user.img || DefaultProfile} />}
-              <Stack css={{ textAlign: 'left', margin: '3px 0 0 12px' }}>
+          <Group position="apart" css={topNavUserStyle.content.user}>
+            <Group gap={12}>
+              <img src={user.img || DefaultProfile} />
+              <Stack justify="left">
                 <Typography variant="subtitle">{user.name}</Typography>
                 <Typography variant="info" color="#848484">
                   {user.email}
                 </Typography>
               </Stack>
-            </button>
-            <img src={IconSettings} css={{ marginBottom: 30 }} />
+            </Group>
+            <img src={IconSettings} css={topNavUserStyle.content.setting} />
           </Group>
-
           {children.map((menuName, idx) => {
             return (
               <button
                 key={`${idx}-${menuName}`}
-                css={{
-                  textAlign: 'left',
-                  borderTop: 'solid 1px #F6F7F8',
-                  padding: '20px 25px',
-                }}
+                css={topNavUserStyle.content.buttons}
               >
                 <Typography variant="button">{menuName}</Typography>
               </button>
