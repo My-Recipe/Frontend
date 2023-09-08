@@ -10,7 +10,7 @@ const defaultStyle = css([
     width: 'auto',
     height: 42,
     padding: '9px 15px',
-    borderRadius: 4,
+    borderRadius: DesignSystem.Round.solid,
     background: DesignSystem.Color.primary.yellow,
 
     whiteSpace: 'nowrap',

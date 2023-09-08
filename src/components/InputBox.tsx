@@ -30,7 +30,7 @@ const triggerStyle = {
   wrapper: css({
     padding: '16px 26px',
     backgroundColor: DesignSystem.Color.background.white,
-    borderRadius: 4,
+    borderRadius: DesignSystem.Round.solid,
     border: `1px solid ${DesignSystem.Color.text.gray}`,
   }),
   group: css({
@@ -51,7 +51,7 @@ const contentStyle = {
   }),
   stack: css({
     padding: '24px 32px',
-    borderRadius: 4,
+    borderRadius: DesignSystem.Round.solid,
     background: DesignSystem.Color.background.white,
   }),
   item: css(globalStyles.button),

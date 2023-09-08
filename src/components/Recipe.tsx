@@ -1,4 +1,4 @@
-import { Color } from '@/utils/designSystem';
+import DesignSystem from '@/utils/designSystem';
 import { Group, Stack, Stroke, Typography } from '@base';
 import { useState } from 'react';
 import MinusIcon from '../assets/icon-minus.svg';
@@ -58,7 +58,7 @@ function Recipe({ name, author, img, contents }: RecipeProps) {
         <Typography
           variant="info"
           css={{
-            background: Color.background.gray,
+            background: DesignSystem.Color.background.gray,
             width: '100%',
             height: '216px',
           }}

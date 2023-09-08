@@ -1,3 +1,4 @@
+import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Typography } from '@base';
 import { css } from '@emotion/react';
@@ -15,7 +16,7 @@ const pagenumberStyle = {
     justifyContent: 'center',
     alignItems: 'flex-start',
     gap: 20,
-    borderRadius: 4,
+    borderRadius: DesignSystem.Round.solid,
     position: 'relative',
   }),
   inner: css([
