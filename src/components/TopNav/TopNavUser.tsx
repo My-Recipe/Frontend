@@ -1,12 +1,13 @@
 import DefaultProfile from '@/assets/default-profile.svg';
 import IconDropdown from '@/assets/icon-dropdown.svg';
 import IconSettings from '@/assets/icon-settings.svg';
+import globalStyles from '@/utils/styles';
 import { Group, Popover, Stack, Typography } from '@base';
 import { css } from '@emotion/react';
 import { UserType } from './TopNav';
 
 const topNavUserStyle = {
-  trigger: css({ cursor: 'pointer' }),
+  trigger: globalStyles.button,
   content: {
     root: css({
       backgroundColor: 'white',

@@ -1,6 +1,7 @@
 import { ReactComponent as IconSearchXs } from '@/assets/icon-search-xs.svg';
 import { ReactComponent as IconSearch } from '@/assets/icon-search.svg';
 import DesignSystem from '@/utils/designSystem';
+import globalStyles from '@/utils/styles';
 import { Group, Popover, Stack, Typography } from '@base';
 import { css } from '@emotion/react';
 import hangul from 'hangul-js';
@@ -53,10 +54,7 @@ const contentStyle = {
     borderRadius: 4,
     background: DesignSystem.Color.background.white,
   }),
-  item: css({
-    userSelect: 'none',
-    cursor: 'pointer',
-  }),
+  item: css(globalStyles.button),
   text: css({
     padding: 10,
   }),

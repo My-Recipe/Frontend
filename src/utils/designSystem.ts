@@ -115,12 +115,18 @@ const Text = {
 };
 export type TextType = keyof typeof Text;
 
+const Round = {
+  button: 12,
+  solid: 4,
+};
+
 const DesignSystem = {
   Color: Object.assign(Color, {
     colorGenerator,
   }),
   Shadow,
   Text,
+  Round,
 };
 
 export default DesignSystem;

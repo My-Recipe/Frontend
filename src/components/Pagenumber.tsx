@@ -1,3 +1,4 @@
+import globalStyles from '@/utils/styles';
 import { Typography } from '@base';
 import { css } from '@emotion/react';
 import { useEffect, useRef, useState } from 'react';
@@ -17,15 +18,16 @@ const pagenumberStyle = {
     borderRadius: 4,
     position: 'relative',
   }),
-  inner: css({
-    display: 'flex',
-    width: '35px',
-    height: '35px',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    userSelect: 'none',
-  }),
+  inner: css([
+    {
+      display: 'flex',
+      width: '35px',
+      height: '35px',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    globalStyles.button,
+  ]),
   label: css({
     position: 'absolute',
     width: 30,

@@ -1,5 +1,6 @@
 import DesignSystem from '@/utils/designSystem';
 import { useElementSize } from '@/utils/hooks';
+import globalStyles from '@/utils/styles';
 import { Typography } from '@base';
 import { css } from '@emotion/react';
 import { useEffect, useRef, useState } from 'react';
@@ -43,19 +44,20 @@ const toggleStyle = {
       zIndex: 2,
       height: '100%',
     }),
-    label: css({
-      height: '100%',
-      cursor: 'pointer',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      textAlign: 'center',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      userSelect: 'none',
-      padding: '0 27px',
-    }),
+    label: css([
+      {
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        padding: '0 27px',
+      },
+      globalStyles.button,
+    ]),
   },
 };
 

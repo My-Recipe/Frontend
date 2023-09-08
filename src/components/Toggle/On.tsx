@@ -1,4 +1,5 @@
 import DesignSystem from '@/utils/designSystem';
+import globalStyles from '@/utils/styles';
 import { Group, Typography } from '@base';
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
@@ -6,17 +7,18 @@ import { ReactNode, useState } from 'react';
 
 const onStyle = {
   wrapper: {
-    off: css({
-      width: 60,
-      // height: 32,
-      backgroundColor: DesignSystem.Color.background.disabled,
-      display: 'flex',
-      justifyContent: 'flex-start',
-      borderRadius: 50,
-      padding: 2,
-      border: `1.4px solid ${DesignSystem.Color.background.black}`,
-      cursor: 'pointer',
-    }),
+    off: css([
+      {
+        width: 60,
+        backgroundColor: DesignSystem.Color.background.disabled,
+        display: 'flex',
+        justifyContent: 'flex-start',
+        borderRadius: 50,
+        padding: 2,
+        border: `1.4px solid ${DesignSystem.Color.background.black}`,
+      },
+      globalStyles.button,
+    ]),
     on: css({
       justifyContent: 'flex-end',
       backgroundColor: DesignSystem.Color.primary.yellow,
