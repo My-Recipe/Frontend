@@ -6,9 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const pagenumberStyle = {
   animation: {
-    move: css({
-      transition: `all 150ms ease`,
-    }),
+    move: globalStyles.animation.all(150),
   },
   wrapper: css({
     display: 'inline-flex',

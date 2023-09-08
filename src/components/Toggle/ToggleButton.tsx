@@ -8,12 +8,8 @@ import { useEffect, useRef, useState } from 'react';
 const ANIMATE_DURATION = 250;
 const toggleStyle = {
   animation: {
-    textFade: css({
-      transition: `all ${ANIMATE_DURATION / 2}ms ease`,
-    }),
-    overlay: css({
-      transition: `transform ${ANIMATE_DURATION}ms ease,width ${ANIMATE_DURATION}ms ease`,
-    }),
+    textFade: globalStyles.animation.all(ANIMATE_DURATION / 2),
+    overlay: globalStyles.animation.transform(ANIMATE_DURATION / 2),
   },
   wrapper: css({
     position: 'relative',
