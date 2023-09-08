@@ -1,5 +1,6 @@
 import DesignSystem from '@/utils/designSystem';
 import { useElementSize } from '@/utils/hooks';
+import globalStyles from '@/utils/styles';
 import { Typography } from '@base';
 import { css } from '@emotion/react';
 import { useEffect, useRef, useState } from 'react';
@@ -7,12 +8,8 @@ import { useEffect, useRef, useState } from 'react';
 const ANIMATE_DURATION = 250;
 const toggleStyle = {
   animation: {
-    textFade: css({
-      transition: `all ${ANIMATE_DURATION / 2}ms ease`,
-    }),
-    overlay: css({
-      transition: `transform ${ANIMATE_DURATION}ms ease,width ${ANIMATE_DURATION}ms ease`,
-    }),
+    textFade: globalStyles.animation.all(ANIMATE_DURATION / 2),
+    overlay: globalStyles.animation.transform(ANIMATE_DURATION / 2),
   },
   wrapper: css({
     position: 'relative',
@@ -43,19 +40,18 @@ const toggleStyle = {
       zIndex: 2,
       height: '100%',
     }),
-    label: css({
-      height: '100%',
-      cursor: 'pointer',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      textAlign: 'center',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      userSelect: 'none',
-      padding: '0 27px',
-    }),
+    label: css(
+      {
+        height: '100%',
+        textAlign: 'center',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        padding: '0 27px',
+      },
+      globalStyles.button,
+      globalStyles.center,
+    ),
   },
 };
 

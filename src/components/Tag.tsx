@@ -1,20 +1,23 @@
 import { ReactComponent as IconCacel } from '@/assets/icon-cancel.svg';
 import DesignSystem from '@/utils/designSystem';
+import globalStyles from '@/utils/styles';
 import { Group } from '@base';
 import { css } from '@emotion/react';
 import { HTMLAttributes, MouseEvent, ReactNode, useState } from 'react';
 
-const defaultStyle = css({
-  width: 'auto',
-  height: 42,
-  padding: '9px 15px',
-  borderRadius: 4,
-  background: DesignSystem.Color.primary.yellow,
-  cursor: 'pointer',
-  userSelect: 'none',
-  whiteSpace: 'nowrap',
-  flexWrap: 'nowrap',
-});
+const defaultStyle = css([
+  {
+    width: 'auto',
+    height: 42,
+    padding: '9px 15px',
+    borderRadius: DesignSystem.Round.solid,
+    background: DesignSystem.Color.primary.yellow,
+
+    whiteSpace: 'nowrap',
+    flexWrap: 'nowrap',
+  },
+  globalStyles.button,
+]);
 const hoverStyle = css({
   ':hover': {
     background: DesignSystem.Color.primary['yellow-hover'],

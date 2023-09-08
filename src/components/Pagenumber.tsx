@@ -1,12 +1,12 @@
+import DesignSystem from '@/utils/designSystem';
+import globalStyles from '@/utils/styles';
 import { Typography } from '@base';
 import { css } from '@emotion/react';
 import { useEffect, useRef, useState } from 'react';
 
 const pagenumberStyle = {
   animation: {
-    move: css({
-      transition: `all 150ms ease`,
-    }),
+    move: globalStyles.animation.all(150),
   },
   wrapper: css({
     display: 'inline-flex',
@@ -14,18 +14,17 @@ const pagenumberStyle = {
     justifyContent: 'center',
     alignItems: 'flex-start',
     gap: 20,
-    borderRadius: 4,
+    borderRadius: DesignSystem.Round.solid,
     position: 'relative',
   }),
-  inner: css({
-    display: 'flex',
-    width: '35px',
-    height: '35px',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    userSelect: 'none',
-  }),
+  inner: css(
+    {
+      width: '35px',
+      height: '35px',
+    },
+    globalStyles.button,
+    globalStyles.center,
+  ),
   label: css({
     position: 'absolute',
     width: 30,

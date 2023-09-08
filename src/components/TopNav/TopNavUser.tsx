@@ -1,17 +1,19 @@
 import DefaultProfile from '@/assets/default-profile.svg';
 import IconDropdown from '@/assets/icon-dropdown.svg';
 import IconSettings from '@/assets/icon-settings.svg';
+import DesignSystem from '@/utils/designSystem';
+import globalStyles from '@/utils/styles';
 import { Group, Popover, Stack, Typography } from '@base';
 import { css } from '@emotion/react';
 import { UserType } from './TopNav';
 
 const topNavUserStyle = {
-  trigger: css({ cursor: 'pointer' }),
+  trigger: globalStyles.button,
   content: {
     root: css({
       backgroundColor: 'white',
       width: 354,
-      borderRadius: 4,
+      borderRadius: DesignSystem.Round.solid,
       padding: '28px 0 14px 0',
     }),
     user: css({ padding: '0 25px', paddingBottom: 33 }),

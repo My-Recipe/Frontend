@@ -1,15 +1,17 @@
+import globalStyles from '@/utils/styles';
 import { Typography } from '@base';
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 
 const checkBoxStyle = {
-  wrapper: css({
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: 3,
-    userSelect: 'none',
-    cursor: 'pointer',
-  }),
+  wrapper: css(
+    {
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 3,
+    },
+    globalStyles.button,
+  ),
   check: {
     unChecked: css({
       width: 15,

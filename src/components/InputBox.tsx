@@ -1,6 +1,7 @@
 import { ReactComponent as IconSearchXs } from '@/assets/icon-search-xs.svg';
 import { ReactComponent as IconSearch } from '@/assets/icon-search.svg';
 import DesignSystem from '@/utils/designSystem';
+import globalStyles from '@/utils/styles';
 import { Group, Popover, Stack, Typography } from '@base';
 import { css } from '@emotion/react';
 import hangul from 'hangul-js';
@@ -29,7 +30,7 @@ const triggerStyle = {
   wrapper: css({
     padding: '16px 26px',
     backgroundColor: DesignSystem.Color.background.white,
-    borderRadius: 4,
+    borderRadius: DesignSystem.Round.solid,
     border: `1px solid ${DesignSystem.Color.text.gray}`,
   }),
   group: css({
@@ -50,13 +51,10 @@ const contentStyle = {
   }),
   stack: css({
     padding: '24px 32px',
-    borderRadius: 4,
+    borderRadius: DesignSystem.Round.solid,
     background: DesignSystem.Color.background.white,
   }),
-  item: css({
-    userSelect: 'none',
-    cursor: 'pointer',
-  }),
+  item: css(globalStyles.button),
   text: css({
     padding: 10,
   }),

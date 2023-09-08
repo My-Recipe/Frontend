@@ -1,6 +1,6 @@
 import { ReactComponent as IconNavigateXs } from '@/assets/icon-navigate-xs.svg';
 import DesignSystem from '@/utils/designSystem';
-
+import globalStyles from '@/utils/styles';
 import { Group, Typography } from '@base';
 import { css } from '@emotion/react';
 import { HTMLAttributes } from 'react';
@@ -11,26 +11,26 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   variant?: ButtonType;
 }
 
-const layout = css({
-  display: 'flex',
-  padding: 14.5,
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: 30,
-});
+const layout = css(
+  {
+    padding: 14.5,
+    gap: 30,
+  },
+  globalStyles.center,
+);
 const style = css({
   paddingRight: 29,
   paddingLeft: 29,
-  borderRadius: 12,
+  borderRadius: DesignSystem.Round.button,
   background: DesignSystem.Color.background.black,
 });
-const outline = css({
-  justifyContent: 'center',
-  alignItems: 'center',
-  borderRadius: 12,
-  border: '2.4px solid #000',
-  // padding: '0 14.5px',
-});
+const outline = css(
+  {
+    borderRadius: DesignSystem.Round.button,
+    border: '2.4px solid #000',
+  },
+  globalStyles.center,
+);
 function Button({ children, variant = 'none', ...props }: ButtonProps) {
   if (variant === 'icon')
     return (

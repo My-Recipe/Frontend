@@ -1,5 +1,6 @@
 import EmptyMenuIcon from '@/assets/menu-empty.svg';
 import FilledMenuIcon from '@/assets/menu-fill.svg';
+import globalStyles from '@/utils/styles';
 import { Group, Tabs, Typography } from '@base';
 import { TabValueType } from '@base/Tabs/TabsMain';
 import { css } from '@emotion/react';
@@ -9,11 +10,13 @@ const topNavTabsStyle = {
   wrapper: {
     gap: 65,
   },
-  item: css({
-    background: 'transparent',
-    border: 'none',
-    cursor: 'pointer',
-  }),
+  item: css([
+    {
+      background: 'transparent',
+      border: 'none',
+    },
+    globalStyles.button,
+  ]),
   itemText: css({ marginTop: 3 }),
 };
 
