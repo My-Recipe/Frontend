@@ -1,5 +1,5 @@
 import { getComponentFromType } from '@/utils/components';
-import { Group, GroupProps } from '@base';
+import { Group, GroupProps } from '@copmonents/@base';
 import {
   CSSProperties,
   Children,

@@ -1,6 +1,5 @@
 import { Tabs } from '@base';
 import { TabValueType } from '@base/Tabs/TabsMain';
-import { css } from '@emotion/react';
 import { useState } from 'react';
 
 export interface BannerProps {}
@@ -8,10 +7,10 @@ export interface BannerProps {}
 function Banner({ ...props }: BannerProps) {
   const [value, setValue] = useState<TabValueType>(1);
   const styleProps = {
-    buttonGroupCss: css({}),
-    buttonCss: css({}),
-    bodyWrapperCss: css({}),
-    bodyCss: css({ height: 680, width: '100%' }),
+    buttonGroupCss: {},
+    buttonCss: {},
+    bodyWrapperCss: {},
+    bodyCss: { height: 680, width: '100%' },
     css: {
       padding: '0 20px',
     },

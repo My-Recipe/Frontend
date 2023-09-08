@@ -1,6 +1,6 @@
 import DesignSystem from '@/utils/designSystem';
 import { StoryObjWithCSSProp } from '@/utils/types';
-import { Stack } from '@base';
+import { Stack } from '@copmonents/@base';
 import type { Meta } from '@storybook/react';
 import { userEvent, within } from '@storybook/testing-library';
 import Popover from '.';

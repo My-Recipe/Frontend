@@ -60,11 +60,12 @@ function Pagenumber({ pageCount, onPageChange, ...props }: PagenumberProps) {
         css={[pagenumberStyle.label, pagenumberStyle.animation.move]}
         style={{ left: labelPosition + 2.5 }}
       />
-      {pages.map((pageNumber) => (
+      {pages.map((pageNumber, index) => (
         <div
           ref={pageNumber === currentPage ? ref : undefined}
           onClick={() => setCurrentPage(pageNumber)}
           css={pagenumberStyle.inner}
+          key={`page-number-item-${pageNumber}-${index}`}
         >
           <Typography variant="subtitle" color="text.black">
             {pageNumber}

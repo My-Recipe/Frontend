@@ -25,10 +25,10 @@
     "jsxImportSource": "@emotion/react",
     "paths": {
       "@base": [
-        "./src/components/base"
+        "./src/components/@base"
       ],
       "@base/*": [
-        "./src/components/base/*"
+        "./src/components/@base/*"
       ],
       "@copmonents/*": [
         "./src/components/*",

@@ -18,7 +18,9 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@base': fileURLToPath(new URL('./src/components/base', import.meta.url)),
+      '@base': fileURLToPath(
+        new URL('./src/components/@base', import.meta.url),
+      ),
       '@copmonents': fileURLToPath(
         new URL('./src/components', import.meta.url),
       ),
