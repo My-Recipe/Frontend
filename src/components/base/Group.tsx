@@ -1,43 +1,48 @@
 import { css } from '@emotion/react';
 import { CSSProperties, HTMLAttributes } from 'react';
 
-const commonStyle = css({
-  boxSizing: 'border-box',
-  display: 'flex',
-  alignItems: 'center',
-});
-
 const groupStyle = {
-  left: css({
-    flexFlow: 'wrap',
-    justifyContent: 'flex-start',
+  default: css({
+    boxSizing: 'border-box',
+    display: 'flex',
+    alignItems: 'center',
   }),
-  right: css({
-    flexFlow: 'wrap',
-    justifyContent: 'flex-end',
+  position: {
+    left: css({
+      flexFlow: 'wrap',
+      justifyContent: 'flex-start',
+    }),
+    right: css({
+      flexFlow: 'wrap',
+      justifyContent: 'flex-end',
+    }),
+    center: css({
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+    }),
+    apart: css({
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+    }),
+  },
+  grow: css({
+    '& > *': {
+      flexGrow: 1,
+    },
   }),
-  center: css({
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  }),
-  apart: css({
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+  nowrap: css({
+    whiteSpace: 'nowrap',
+    flexWrap: 'nowrap',
   }),
 };
-
-const growStyle = css({
-  '& > *': {
-    flexGrow: 1,
-  },
-});
 
 export interface GroupProps extends HTMLAttributes<HTMLDivElement> {
   position?: 'left' | 'right' | 'center' | 'apart';
   grow?: boolean;
   gap?: CSSProperties['gap'];
+  nowrap?: boolean;
 }
 
 function Group({
@@ -45,11 +50,18 @@ function Group({
   position = 'left',
   grow,
   gap,
+  nowrap,
   ...props
 }: GroupProps) {
   return (
     <div
-      css={[grow && growStyle, commonStyle, groupStyle[position], { gap }]}
+      css={[
+        groupStyle.default,
+        groupStyle.position[position],
+        grow && groupStyle.grow,
+        nowrap && groupStyle.nowrap,
+      ]}
+      style={{ gap }}
       {...props}
     >
       {children}

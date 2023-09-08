@@ -71,6 +71,7 @@ function TabsMain({
       <div {...props}>
         {tabsButton && (
           <Group
+            nowrap
             css={[{ ...buttonGroupCss }, { '& > *': { ...buttonCss } }]}
             {...buttonGroupProps}
           >
