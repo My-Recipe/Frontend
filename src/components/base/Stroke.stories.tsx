@@ -1,4 +1,4 @@
-import { Color } from '@/utils/designSystem';
+import DesignSystem from '@/utils/designSystem';
 import { StoryObjWithCSSProp } from '@/utils/types';
 import type { Meta } from '@storybook/react';
 import Stroke from './Stroke';
@@ -38,7 +38,7 @@ export const StrokeDefault: Story = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: Color.text.gray,
+        backgroundColor: DesignSystem.Color.text.gray,
       }}
     >
       <Stroke {...args} />

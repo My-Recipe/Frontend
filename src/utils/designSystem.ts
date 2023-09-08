@@ -1,10 +1,29 @@
 import { css } from '@emotion/react';
 import { CSSProperties } from 'react';
-
-export type ColorVariantType = 'background' | 'text' | 'primary' | 'sub';
+export type ColorVariantType =
+  | 'background'
+  | 'text'
+  | 'warning'
+  | 'secondary'
+  | 'primary'
+  | 'sub';
+type ColorDetailType =
+  | 'white'
+  | 'gray'
+  | 'black'
+  | 'disabled'
+  | 'gray'
+  | 'black'
+  | 'red'
+  | 'yellow'
+  | 'yellow-hover'
+  | 'green'
+  | 'brown'
+  | 'pink'
+  | 'blue';
 export type ShortColorType = `${ColorVariantType}.${string}`;
-export const Color: {
-  [key in ColorVariantType]: { [color: string]: string };
+const Color: {
+  [key in ColorVariantType]: { [color in ColorDetailType]?: string };
 } = {
   background: {
     white: '#FFFFFF',
@@ -15,11 +34,15 @@ export const Color: {
   text: {
     gray: '#9EA6B1',
     black: '#292929',
+  },
+  warning: {
     red: '#FB4747',
   },
   primary: {
     yellow: '#FFE24C',
-    yellow_hover: '#FCC252',
+    'yellow-hover': '#FCC252',
+  },
+  secondary: {
     green: '#4BC25E',
   },
   sub: {
@@ -28,19 +51,24 @@ export const Color: {
     blue: '#B6D5E6',
   },
 };
-export const colorGenerator = (value: string) => {
-  const prefix: string | ColorVariantType = value.split('.')[0] || '';
-  const colorValue = value.split('.')[1] || '';
-  return prefix in Color
-    ? Color[prefix as ColorVariantType][colorValue]
-    : value;
+
+const colorGenerator = (value: string) => {
+  const splitValue = value.split('.');
+  if (splitValue[0] in Color && splitValue[0] && splitValue[1]) {
+    const prefix: ColorVariantType = splitValue[0] as ColorVariantType;
+    const postfix = splitValue[1];
+    if (postfix in Color[prefix])
+      return Color[prefix][postfix as ColorDetailType];
+    return value;
+  }
+  return value;
 };
 
-export const Shadow: CSSProperties['boxShadow'] =
+const Shadow: CSSProperties['boxShadow'] =
   '0px 4px 16px 0px rgba(140, 140, 140, 0.13)';
 
 const color = Color.text.black;
-export const TextStyle = {
+const Text = {
   display: css({
     color,
     fontFamily: 'ChosunSm',
@@ -85,4 +113,14 @@ export const TextStyle = {
     fontWeight: 400,
   }),
 };
-export type TextType = keyof typeof TextStyle;
+export type TextType = keyof typeof Text;
+
+const DesignSystem = {
+  Color: Object.assign(Color, {
+    colorGenerator,
+  }),
+  Shadow,
+  Text,
+};
+
+export default DesignSystem;

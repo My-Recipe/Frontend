@@ -1,4 +1,4 @@
-import { Color } from './designSystem';
+import DesignSystem from './designSystem';
 
 export const DEFAULT_PROPS_PREFIX = '_type';
 
@@ -12,4 +12,4 @@ function getObjectKeys(obj: any, parentKey = ''): string[] {
   });
 }
 
-export const COLOR_VARIANT_TEXT = getObjectKeys(Color);
+export const COLOR_VARIANT_TEXT = getObjectKeys(DesignSystem.Color);

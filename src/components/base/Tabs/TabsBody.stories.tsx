@@ -1,4 +1,4 @@
-import { Color } from '@/utils/designSystem';
+import DesignSystem from '@/utils/designSystem';
 import { StoryObjWithCSSProp } from '@/utils/types';
 import type { Meta } from '@storybook/react';
 import TabsBody from './TabsBody';
@@ -14,7 +14,7 @@ type Story = StoryObjWithCSSProp<typeof TabsBody>;
 export const DefaultTabsBody: Story = {
   args: {
     value: 'tab-value',
-    bgColor: Color.primary['yellow_hover'],
+    bgColor: DesignSystem.Color.primary['yellow-hover'],
     children: 'mybody',
   },
   render: (args) => <TabsBody {...args} />,
