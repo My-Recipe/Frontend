@@ -4,14 +4,14 @@ import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 
 const checkBoxStyle = {
-  wrapper: css([
+  wrapper: css(
     {
       display: 'inline-flex',
       alignItems: 'center',
       gap: 3,
     },
     globalStyles.button,
-  ]),
+  ),
   check: {
     unChecked: css({
       width: 15,

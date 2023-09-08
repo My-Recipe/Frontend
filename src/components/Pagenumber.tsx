@@ -17,16 +17,14 @@ const pagenumberStyle = {
     borderRadius: DesignSystem.Round.solid,
     position: 'relative',
   }),
-  inner: css([
+  inner: css(
     {
-      display: 'flex',
       width: '35px',
       height: '35px',
-      justifyContent: 'center',
-      alignItems: 'center',
     },
     globalStyles.button,
-  ]),
+    globalStyles.center,
+  ),
   label: css({
     position: 'absolute',
     width: 30,

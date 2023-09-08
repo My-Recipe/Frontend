@@ -40,12 +40,9 @@ const toggleStyle = {
       zIndex: 2,
       height: '100%',
     }),
-    label: css([
+    label: css(
       {
         height: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
         textAlign: 'center',
         whiteSpace: 'nowrap',
         overflow: 'hidden',
@@ -53,7 +50,8 @@ const toggleStyle = {
         padding: '0 27px',
       },
       globalStyles.button,
-    ]),
+      globalStyles.center,
+    ),
   },
 };
 

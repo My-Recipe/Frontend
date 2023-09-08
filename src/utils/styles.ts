@@ -12,6 +12,11 @@ const globalStyles = {
         transition: `transform ${duraion}ms ease,width ${duraion}ms ease`,
       }),
   },
+  center: css({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }),
 };
 
 export default globalStyles;
