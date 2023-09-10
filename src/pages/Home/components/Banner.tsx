@@ -2,6 +2,7 @@ import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group, Stack, Typography } from '@base';
 import { css } from '@emotion/react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 
 const mockData = [24, 16, 36, 8, 12, 10];
@@ -24,6 +25,8 @@ const bannerStyles = {
         background: bgColors[index],
         color: DesignSystem.Color.text.black,
         animationFillMode: 'backwards',
+        overflow: 'hidden',
+        position: 'relative',
       }),
     fold: css({
       height: '100%',
@@ -51,29 +54,50 @@ function Banner({ ...props }: BannerProps) {
             style={{ flexGrow: isActive ? 2 : undefined }}
             onClick={() => onClickItem(index)}
           >
-            {isActive ? (
-              <Stack>
-                <Typography variant="headline">추천 레시피 북</Typography>
-                <Typography variant="display">
-                  맛있는 비건요리는 없다구요?
-                </Typography>
-                <Typography variant="body">
-                  세상의 모든 비건 요리를 연구합니다. 당신의 몸과 혀가 둘 다
-                  행복하도록.
-                </Typography>
-              </Stack>
-            ) : (
-              <Stack css={bannerStyles.item.fold} justify="end" align="center">
-                <Typography css={bannerStyles.item.number} variant="display">
-                  {val}
-                </Typography>
-              </Stack>
-            )}
+            <AnimatePresence>
+              {isActive ? <Active /> : <Fold value={val} />}
+            </AnimatePresence>
           </div>
         );
       })}
     </Group>
   );
 }
+
+const Active = () => {
+  return (
+    <motion.div
+      key="modal"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <Stack>
+        <Typography variant="headline">추천 레시피 북</Typography>
+        <Typography variant="display">맛있는 비건요리는 없다구요?</Typography>
+        <Typography variant="body">
+          세상의 모든 비건 요리를 연구합니다. 당신의 몸과 혀가 둘 다 행복하도록.
+        </Typography>
+      </Stack>
+    </motion.div>
+  );
+};
+
+const Fold = ({ value }: { value: number | string }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      css={bannerStyles.item.fold}
+    >
+      <Stack css={bannerStyles.item.fold} justify="end" align="center">
+        <Typography css={bannerStyles.item.number} variant="display">
+          {value}
+        </Typography>
+      </Stack>
+    </motion.div>
+  );
+};
 
 export default Banner;
