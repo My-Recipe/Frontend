@@ -24,6 +24,7 @@ export interface InputBoxProps
   placeholder?: string;
   width?: CSSProperties['width'];
   tags?: TagDataType[];
+  centerdTags?: boolean;
 }
 
 const triggerStyle = {
@@ -68,6 +69,7 @@ function InputBox({
   width,
   style,
   tags,
+  centerdTags,
 }: InputBoxProps) {
   const [inputValue, setInputValue] = useState('');
   const filterdSearchItems = searchItems?.filter(
@@ -153,7 +155,9 @@ function InputBox({
                 {searchInput}
               </Group>
             </div>
-            <Group gap={12}>{restTags && restTags.map(tagGenerator)}</Group>
+            <Group position={centerdTags ? 'center' : 'left'} gap={12}>
+              {restTags && restTags.map(tagGenerator)}
+            </Group>
           </Stack>
         )}
       />
