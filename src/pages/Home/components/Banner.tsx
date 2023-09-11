@@ -1,11 +1,11 @@
+import { ReactComponent as IconPlus } from '@/assets/icon-plus.svg';
 import DesignSystem from '@/utils/designSystem';
+import { useInterval } from '@/utils/hooks';
 import globalStyles from '@/utils/styles';
 import { Group, Stack, Typography } from '@base';
 import { css } from '@emotion/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-
-const mockData = [24, 16, 36, 8, 12, 10];
 
 const bgColors = [
   DesignSystem.Color.sub.brown,
@@ -13,13 +13,14 @@ const bgColors = [
   DesignSystem.Color.sub.pink,
   DesignSystem.Color.sub.blue,
   DesignSystem.Color.background.gray,
+  DesignSystem.Color.background.gray,
 ];
 
 const bannerStyles = {
-  wrapper: css({ height: 500, width: '100%' }),
+  wrapper: css({ width: '100%' }),
   item: {
     root: (index: number) =>
-      css(globalStyles.animation.all(300), {
+      css(globalStyles.button, globalStyles.animation.all(ANIMATION_DURATION), {
         height: '100%',
         width: 100,
         background: bgColors[index],
@@ -27,35 +28,99 @@ const bannerStyles = {
         animationFillMode: 'backwards',
         overflow: 'hidden',
         position: 'relative',
+        outline: `1px solid var(--background-black)`,
       }),
     fold: css({
       height: '100%',
     }),
+    height: css({
+      height: 500,
+      padding: '53px 0',
+    }),
     number: css({
-      marginBottom: 50,
       lineHeight: 1,
     }),
+    body: {
+      root: css({
+        height: '100%',
+        boxSizing: 'border-box',
+        whiteSpace: 'initial',
+        paddingLeft: 77,
+        paddingRight: 77,
+      }),
+      description: css({
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap: 25,
+      }),
+      text: css({
+        minWidth: 320,
+        width: 320,
+      }),
+      icon: css({
+        minWidth: 42,
+        minHeight: 42,
+      }),
+      recipeNumber: css({
+        display: 'flex',
+        alignItems: 'flex-end',
+        gap: 5,
+        position: 'absolute',
+        right: 77,
+        bottom: 53,
+      }),
+    },
   },
 };
 
-export interface BannerProps {}
+const ANIMATION_DURATION = 600;
 
-function Banner({ ...props }: BannerProps) {
+const transition = { duration: ANIMATION_DURATION / 1000, ease: 'easeOut' };
+
+export interface BannerItemType {
+  recipeNumber: number;
+  subject: string;
+  title: string;
+  description: string;
+  author: string;
+}
+
+export interface BannerProps {
+  items: BannerItemType[];
+  onRecipeBookClick: (index: number, item: BannerItemType) => void;
+}
+
+function Banner({ items, onRecipeBookClick, ...props }: BannerProps) {
   const [activeBanner, setActiveBanner] = useState(0);
-  const onClickItem = (index: number) => setActiveBanner(index);
+
+  const pause = useInterval(() => {
+    setActiveBanner((activeBanner + 1) % items.length);
+  }, 4000);
+  const onClickItem = (index: number, item: BannerItemType) => {
+    if (index !== activeBanner) {
+      pause();
+      setActiveBanner(index);
+    } else onRecipeBookClick(index, item);
+  };
+
   return (
     <Group nowrap css={bannerStyles.wrapper}>
-      {mockData.map((val, index) => {
+      {items.map((item, index) => {
         const isActive = activeBanner === index;
         return (
           <div
-            key={`banner-fold-${val}-${index}`}
+            key={`banner-fold-${item.author}-${item.recipeNumber}-${index}`}
             css={bannerStyles.item.root(index)}
             style={{ flexGrow: isActive ? 2 : undefined }}
-            onClick={() => onClickItem(index)}
+            onClick={() => onClickItem(index, item)}
           >
             <AnimatePresence>
-              {isActive ? <Active /> : <Fold value={val} />}
+              {isActive ? (
+                <Active {...item} />
+              ) : (
+                <Fold value={item.recipeNumber} />
+              )}
             </AnimatePresence>
           </div>
         );
@@ -64,32 +129,67 @@ function Banner({ ...props }: BannerProps) {
   );
 }
 
-const Active = () => {
+const Active = ({
+  author,
+  description,
+  recipeNumber,
+  subject,
+  title,
+}: BannerItemType) => {
   return (
-    <motion.div
-      key="modal"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
-      <Stack>
-        <Typography variant="headline">추천 레시피 북</Typography>
-        <Typography variant="display">맛있는 비건요리는 없다구요?</Typography>
-        <Typography variant="body">
-          세상의 모든 비건 요리를 연구합니다. 당신의 몸과 혀가 둘 다 행복하도록.
+    <>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ ...transition, ease: 'easeIn' }}
+        css={bannerStyles.item.height}
+      >
+        <Stack css={bannerStyles.item.body.root} justify="space-between">
+          <Group nowrap position="apart">
+            <Typography css={bannerStyles.item.body.text} variant="headline">
+              {subject}
+            </Typography>
+            <IconPlus css={bannerStyles.item.body.icon} />
+          </Group>
+          <div
+            css={[
+              bannerStyles.item.body.description,
+              bannerStyles.item.body.text,
+            ]}
+          >
+            <Typography variant="display">{title}</Typography>
+            <Typography variant="body">{description}</Typography>
+          </div>
+          <Typography css={bannerStyles.item.body.text} variant="subtitle">
+            {author}
+          </Typography>
+        </Stack>
+      </motion.div>
+      <motion.div
+        initial={{ x: 140 }}
+        animate={{ x: 0 }}
+        exit={{ x: -140 }}
+        css={bannerStyles.item.body.recipeNumber}
+        transition={transition}
+      >
+        <Typography css={bannerStyles.item.number} variant="display">
+          {recipeNumber}
         </Typography>
-      </Stack>
-    </motion.div>
+        <Typography variant="subtitle">개의 레시피</Typography>
+      </motion.div>
+    </>
   );
 };
 
 const Fold = ({ value }: { value: number | string }) => {
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={{ opacity: 1, x: '20%' }}
+      animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0 }}
-      css={bannerStyles.item.fold}
+      css={bannerStyles.item.height}
+      transition={transition}
     >
       <Stack css={bannerStyles.item.fold} justify="end" align="center">
         <Typography css={bannerStyles.item.number} variant="display">
