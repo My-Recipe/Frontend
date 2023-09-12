@@ -3,7 +3,13 @@ import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group } from '@base';
 import { css } from '@emotion/react';
-import { HTMLAttributes, MouseEvent, ReactNode, useState } from 'react';
+import {
+  HTMLAttributes,
+  MouseEvent,
+  ReactNode,
+  useEffect,
+  useState,
+} from 'react';
 
 const defaultStyle = css([
   {
@@ -18,11 +24,11 @@ const defaultStyle = css([
   },
   globalStyles.button,
 ]);
-const hoverStyle = css({
-  ':hover': {
-    background: DesignSystem.Color.primary['yellow-hover'],
-  },
+const activeStyle = css({
+  background: DesignSystem.Color.primary['yellow-hover'],
 });
+
+const hoverStyle = css({ ':hover': { ...activeStyle } });
 
 export type TagDataType = { value: string; label: string | ReactNode };
 
@@ -32,7 +38,8 @@ export interface TagProps
   value?: string;
   onClick?: (e: MouseEvent, value: string) => void;
   label?: string;
-  disableClose?: boolean;
+  disableCloseOnHover?: boolean;
+  active?: boolean;
 }
 
 function Tag({
@@ -41,29 +48,40 @@ function Tag({
   value: propsValue,
   onClick,
   label,
-  disableClose,
+  disableCloseOnHover,
+  active: initialActive = false,
   ...props
 }: TagProps) {
-  const [isHover, setIsHover] = useState(false);
+  const [isActive, setIsActive] = useState(initialActive);
   const value =
     propsValue ||
     (typeof children === 'string' && children) ||
     'undefined value';
+  const activeOnHover = !disableCloseOnHover && !initialActive;
+
+  useEffect(() => {
+    setIsActive(initialActive);
+  }, [initialActive]);
 
   return (
     <div css={{ display: 'inline-block' }}>
       <Group
         gap={12}
-        onMouseEnter={() => !disableClose && setIsHover(true)}
-        onMouseLeave={() => !disableClose && setIsHover(false)}
-        css={[defaultStyle, hoverStyle, DesignSystem.Text.button]}
+        onMouseEnter={() => activeOnHover && setIsActive(true)}
+        onMouseLeave={() => activeOnHover && setIsActive(false)}
+        css={[
+          defaultStyle,
+          hoverStyle,
+          isActive && activeStyle,
+          DesignSystem.Text.button,
+        ]}
         onClick={(e) =>
           onClick && e.target === e.currentTarget && onClick(e, value)
         }
         {...props}
       >
         {label || children}
-        {isHover && !disableClose && (
+        {isActive && (
           <IconCacel
             data-testid="tag-close-icon"
             width={24}
