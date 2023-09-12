@@ -40,6 +40,7 @@ const groupStyle = {
 
 export interface GroupProps extends HTMLAttributes<HTMLDivElement> {
   position?: 'left' | 'right' | 'center' | 'apart';
+  align?: CSSProperties['alignItems'];
   grow?: boolean;
   gap?: CSSProperties['gap'];
   nowrap?: boolean;
@@ -48,6 +49,7 @@ export interface GroupProps extends HTMLAttributes<HTMLDivElement> {
 function Group({
   children,
   position = 'left',
+  align,
   grow,
   gap,
   nowrap,
@@ -61,7 +63,7 @@ function Group({
         grow && groupStyle.grow,
         nowrap && groupStyle.nowrap,
       ]}
-      style={{ gap }}
+      style={{ gap, alignItems: align }}
       {...props}
     >
       {children}
