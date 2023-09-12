@@ -104,3 +104,11 @@ export const InputBoxWithTags: Story = {
     ],
   },
 };
+
+export const InputBoxWithCenterdTags: Story = {
+  args: {
+    ...InputBoxWithTags.args,
+    centerdTags: true,
+  },
+  play: InputBoxWithTags.play,
+};
