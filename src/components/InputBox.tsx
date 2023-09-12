@@ -116,6 +116,7 @@ function InputBox({
               onClose={onClickTagClose}
               key={`${label}-${value}-${index}`}
               value={value}
+              active
             >
               {label}
             </Tag>
@@ -161,7 +162,7 @@ function InputBox({
                     onClose={onClickTagClose}
                     key={`${label}-${value}-${index}`}
                     value={value}
-                    disableClose
+                    disableCloseOnHover
                   >
                     {label}
                   </Tag>
