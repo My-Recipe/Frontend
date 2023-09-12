@@ -1,3 +1,4 @@
+import { ReactComponent as IconMinus } from '@/assets/icon-minus.svg';
 import { ReactComponent as IconPlus } from '@/assets/icon-plus.svg';
 import DesignSystem from '@/utils/designSystem';
 import { useInterval } from '@/utils/hooks';
@@ -84,14 +85,21 @@ export interface BannerItemType {
   title: string;
   description: string;
   author: string;
+  isAdded: boolean;
 }
 
 export interface BannerProps {
   items: BannerItemType[];
   onRecipeBookClick: (index: number, item: BannerItemType) => void;
+  onRecipeAddClick: (index: number, item: BannerItemType) => void;
 }
 
-function Banner({ items, onRecipeBookClick, ...props }: BannerProps) {
+function Banner({
+  items,
+  onRecipeBookClick,
+  onRecipeAddClick,
+  ...props
+}: BannerProps) {
   const [activeBanner, setActiveBanner] = useState(0);
 
   const pause = useInterval(() => {
@@ -117,7 +125,10 @@ function Banner({ items, onRecipeBookClick, ...props }: BannerProps) {
           >
             <AnimatePresence>
               {isActive ? (
-                <Active {...item} />
+                <Active
+                  {...item}
+                  onRecipeAddClick={() => onRecipeAddClick(index, item)}
+                />
               ) : (
                 <Fold value={item.recipeNumber} />
               )}
@@ -129,13 +140,19 @@ function Banner({ items, onRecipeBookClick, ...props }: BannerProps) {
   );
 }
 
+interface ActiveProps extends BannerItemType {
+  onRecipeAddClick: () => void;
+}
+
 const Active = ({
   author,
   description,
   recipeNumber,
   subject,
   title,
-}: BannerItemType) => {
+  isAdded,
+  onRecipeAddClick,
+}: ActiveProps) => {
   return (
     <>
       <motion.div
@@ -150,7 +167,18 @@ const Active = ({
             <Typography css={bannerStyles.item.body.text} variant="headline">
               {subject}
             </Typography>
-            <IconPlus css={bannerStyles.item.body.icon} />
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onRecipeAddClick();
+              }}
+            >
+              {isAdded ? (
+                <IconPlus css={bannerStyles.item.body.icon} />
+              ) : (
+                <IconMinus css={bannerStyles.item.body.icon} />
+              )}
+            </button>
           </Group>
           <div
             css={[
