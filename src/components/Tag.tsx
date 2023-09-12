@@ -32,6 +32,7 @@ export interface TagProps
   value?: string;
   onClick?: (e: MouseEvent, value: string) => void;
   label?: string;
+  disableClose?: boolean;
 }
 
 function Tag({
@@ -40,6 +41,7 @@ function Tag({
   value: propsValue,
   onClick,
   label,
+  disableClose,
   ...props
 }: TagProps) {
   const [isHover, setIsHover] = useState(false);
@@ -52,8 +54,8 @@ function Tag({
     <div css={{ display: 'inline-block' }}>
       <Group
         gap={12}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
+        onMouseEnter={() => !disableClose && setIsHover(true)}
+        onMouseLeave={() => !disableClose && setIsHover(false)}
         css={[defaultStyle, hoverStyle, DesignSystem.Text.button]}
         onClick={(e) =>
           onClick && e.target === e.currentTarget && onClick(e, value)
@@ -61,7 +63,7 @@ function Tag({
         {...props}
       >
         {label || children}
-        {isHover && (
+        {isHover && !disableClose && (
           <IconCacel
             data-testid="tag-close-icon"
             width={24}

@@ -44,3 +44,9 @@ export const TagWithValue: Story = {
     value: 'tag-value-1',
   },
 };
+export const TagWithDisableClose: Story = {
+  args: {
+    children: '# 재료',
+    disableClose: true,
+  },
+};
