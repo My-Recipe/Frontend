@@ -106,22 +106,21 @@ function InputBox({
       setSelectedTags([...selectedTags, filterTag]);
   };
 
-  const tagGenerator = ({ label, value }: TagDataType, index: number) => (
-    <Tag
-      onClick={onClickTag}
-      onClose={onClickTagClose}
-      key={`${label}-${value}-${index}`}
-      value={value}
-    >
-      {label}
-    </Tag>
-  );
-
   const searchInput = useMemo(() => {
     if (isTagSelected)
       return (
         <Group gap={13} css={{ overflowX: 'scroll', flexWrap: 'nowrap' }}>
-          {selectedTags.map(tagGenerator)}
+          {selectedTags.map(({ label, value }: TagDataType, index: number) => (
+            <Tag
+              onClick={onClickTag}
+              onClose={onClickTagClose}
+              key={`${label}-${value}-${index}`}
+              value={value}
+              active
+            >
+              {label}
+            </Tag>
+          ))}
         </Group>
       );
     else
@@ -156,7 +155,18 @@ function InputBox({
               </Group>
             </div>
             <Group position={centerdTags ? 'center' : 'left'} gap={12}>
-              {restTags && restTags.map(tagGenerator)}
+              {restTags &&
+                restTags.map(({ label, value }: TagDataType, index: number) => (
+                  <Tag
+                    onClick={onClickTag}
+                    onClose={onClickTagClose}
+                    key={`${label}-${value}-${index}`}
+                    value={value}
+                    disableCloseOnHover
+                  >
+                    {label}
+                  </Tag>
+                ))}
             </Group>
           </Stack>
         )}

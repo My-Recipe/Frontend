@@ -20,6 +20,15 @@ const meta: Meta<typeof Tag> = {
       action: 'clicked',
       description: '`event`, `value`를 파라미터로 전달합니다',
     },
+    active: {
+      control: 'boolean',
+    },
+    disableCloseOnHover: {
+      control: 'boolean',
+    },
+  },
+  args: {
+    children: '# 재료 3',
   },
   parameters: {
     design: {
@@ -33,14 +42,18 @@ export default meta;
 
 type Story = StoryObjWithCSSProp<typeof Tag>;
 
-export const TagDefault: Story = {
-  args: {
-    children: '# 재료 3',
-  },
-};
+export const TagDefault: Story = {};
 export const TagWithValue: Story = {
   args: {
     children: '# 재료',
     value: 'tag-value-1',
   },
+};
+export const TagWithDisableClose: Story = {
+  args: {
+    disableCloseOnHover: true,
+  },
+};
+export const TagWithActiveState: Story = {
+  args: { active: true },
 };

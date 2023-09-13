@@ -84,9 +84,9 @@ export const InputBoxWithTags: Story = {
     await userEvent.click(canvas.getByText('# 재료 3'));
     await userEvent.click(canvas.getByText('# 재료 5'));
     await userEvent.hover(canvas.getByText('# 재료 3'));
-    await userEvent.click(canvas.getByTestId('tag-close-icon'));
+    await userEvent.click(canvas.getAllByTestId('tag-close-icon')[0]);
     await userEvent.hover(canvas.getByText('# 재료 5'));
-    await userEvent.click(canvas.getByTestId('tag-close-icon'));
+    await userEvent.click(canvas.getAllByTestId('tag-close-icon')[0]);
     await userEvent.click(canvas.getByRole('textbox'));
     fireEvent.change(canvas.getByRole('textbox'), {
       target: { value: '메밀 소바' },
