@@ -70,6 +70,7 @@ function InputBox({
   style,
   tags,
   centerdTags,
+  ...props
 }: InputBoxProps) {
   const [inputValue, setInputValue] = useState('');
   const filterdSearchItems = searchItems?.filter(
@@ -143,7 +144,7 @@ function InputBox({
       <Popover.Trigger
         preventTrigger={isTagSelected}
         renderTriggerComponent={({ ref, onClick }) => (
-          <Stack spacing={24}>
+          <Stack {...props} spacing={24}>
             <div
               ref={ref as LegacyRef<HTMLDivElement>}
               onClick={onClick}
