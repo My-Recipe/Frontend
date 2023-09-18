@@ -21,7 +21,7 @@ function Recipes({ recipes: propsRecipesData, ...props }: RecipesProps) {
   );
 
   return (
-    <Stack spacing={75}>
+    <Stack spacing={75} align="center">
       <div
         css={{
           display: 'grid',
