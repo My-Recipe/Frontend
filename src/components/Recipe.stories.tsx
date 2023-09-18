@@ -5,7 +5,7 @@ const meta: Meta<typeof Recipe> = {
   parameters: {
     design: {
       type: 'figma',
-      url: 'figma link',
+      url: 'https://www.figma.com/file/6Tcv8DaxZwjY4NYH0NAhmz/Design?type=design&node-id=537-2732&mode=dev',
     },
   },
   component: Recipe,
