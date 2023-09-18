@@ -1,14 +1,47 @@
 import DesignSystem from '@/utils/designSystem';
 import { Group, Stack, Stroke, Typography } from '@base';
+import { css } from '@emotion/react';
 import { useState } from 'react';
 import MinusIcon from '../assets/icon-minus.svg';
 import PlusIcon from '../assets/icon-plus.svg';
+
+const recipeStyles = {
+  root: css({
+    width: 305,
+    backgroundColor: 'transparent',
+  }),
+  title: css({ padding: '0 5px' }),
+  body: {
+    img: css({
+      width: '100%',
+      height: '216px',
+      borderRadius: '3.6px',
+    }),
+    text: css({
+      background: DesignSystem.Color.background.gray,
+      width: '100%',
+      overflow: 'hidden',
+      whiteSpace: 'pre-line',
+      textOverflow: 'ellipsis',
+      WebkitLineClamp: 7,
+      WebkitBoxOrient: 'vertical',
+      display: '-webkit-box',
+    }),
+    textWrapper: css({
+      height: '216px',
+      padding: 18,
+      boxSizing: 'border-box',
+      background: DesignSystem.Color.background.gray,
+    }),
+  },
+};
 export interface RecipeProps {
   name: string;
   author: string;
   img?: string;
   contents: string;
 }
+
 function Recipe({ name, author, img, contents }: RecipeProps) {
   const [hover, setHover] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -18,16 +51,13 @@ function Recipe({ name, author, img, contents }: RecipeProps) {
   };
   return (
     <Stack
-      css={{
-        width: 305,
-        backgroundColor: 'transparent',
-      }}
+      css={recipeStyles.root}
       spacing={15}
       onMouseEnter={handleHover}
       onMouseLeave={handleHover}
     >
       <Stroke variant="bold" />
-      <Group position="apart" css={{ padding: '0 5px' }}>
+      <Group position="apart" css={recipeStyles.title}>
         <Stack>
           <Typography variant="subtitle" color="text.black">
             {name}
@@ -39,32 +69,18 @@ function Recipe({ name, author, img, contents }: RecipeProps) {
         {hover && (
           <img
             src={isSaved ? MinusIcon : PlusIcon}
-            onClick={() => {
-              setIsSaved(!isSaved);
-            }}
+            onClick={() => setIsSaved(!isSaved)}
           />
         )}
       </Group>
       {img ? (
-        <img
-          src={img}
-          css={{
-            width: '100%',
-            height: '216px',
-            borderRadius: '3.6px',
-          }}
-        />
+        <img src={img} css={recipeStyles.body.img} />
       ) : (
-        <Typography
-          variant="info"
-          css={{
-            background: DesignSystem.Color.background.gray,
-            width: '100%',
-            height: '216px',
-          }}
-        >
-          {contents}
-        </Typography>
+        <div css={recipeStyles.body.textWrapper}>
+          <Typography variant="info" css={recipeStyles.body.text}>
+            {contents}
+          </Typography>
+        </div>
       )}
     </Stack>
   );
