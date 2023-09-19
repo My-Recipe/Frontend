@@ -110,7 +110,7 @@ const INGREDIENT = [
 ];
 
 function Search() {
-  const [searchValue, setSearchValue] = useState<string | string[]>('');
+  const [, setSearchValue] = useState<string | string[]>('');
   const onChange = (inputValue: string | TagDataType[]) => {
     if (typeof inputValue === 'string') setSearchValue(inputValue);
     else {
