@@ -36,6 +36,11 @@ const groupStyle = {
     whiteSpace: 'nowrap',
     flexWrap: 'nowrap',
   }),
+  wrapChild: css({
+    '& > *': {
+      whiteSpace: 'break-spaces',
+    },
+  }),
 };
 
 export interface GroupProps extends HTMLAttributes<HTMLDivElement> {
@@ -44,6 +49,7 @@ export interface GroupProps extends HTMLAttributes<HTMLDivElement> {
   grow?: boolean;
   gap?: CSSProperties['gap'];
   nowrap?: boolean;
+  wrapChild?: boolean;
 }
 
 function Group({
@@ -53,6 +59,7 @@ function Group({
   grow,
   gap,
   nowrap,
+  wrapChild,
   ...props
 }: GroupProps) {
   return (
@@ -62,6 +69,7 @@ function Group({
         groupStyle.position[position],
         grow && groupStyle.grow,
         nowrap && groupStyle.nowrap,
+        wrapChild && groupStyle.wrapChild,
       ]}
       style={{ gap, alignItems: align }}
       {...props}

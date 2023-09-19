@@ -45,7 +45,7 @@ function Button({ children, variant = 'none', ...props }: ButtonProps) {
   if (variant === 'outline')
     return (
       <Group>
-        <button css={[layout, style, { flex: 1 }]} {...props}>
+        <button css={[layout, style]} {...props}>
           <Typography color="background.white" variant="button">
             {children}
           </Typography>
