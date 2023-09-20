@@ -1,5 +1,4 @@
-import { ReactComponent as IconMinus } from '@/assets/icon-minus.svg';
-import { ReactComponent as IconPlus } from '@/assets/icon-plus.svg';
+import PlusMinusIcon from '@/assets/PlusMinusIcon';
 import DesignSystem from '@/utils/designSystem';
 import { useInterval } from '@/utils/hooks';
 import globalStyles from '@/utils/styles';
@@ -167,18 +166,13 @@ const Active = ({
             <Typography css={bannerStyles.item.body.text} variant="headline">
               {subject}
             </Typography>
-            <button
+            <PlusMinusIcon
+              plus={!isAdded}
               onClick={(e) => {
                 e.stopPropagation();
                 onRecipeAddClick();
               }}
-            >
-              {isAdded ? (
-                <IconPlus css={bannerStyles.item.body.icon} />
-              ) : (
-                <IconMinus css={bannerStyles.item.body.icon} />
-              )}
-            </button>
+            />
           </Group>
           <div
             css={[
