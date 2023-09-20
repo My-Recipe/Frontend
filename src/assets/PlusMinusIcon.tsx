@@ -1,12 +1,8 @@
-import {
-  ForwardRefComponent,
-  HTMLMotionProps,
-  SVGMotionProps,
-  motion,
-} from 'framer-motion';
+import globalStyles from '@/utils/styles';
+import { css } from '@emotion/react';
+import { HTMLMotionProps, SVGMotionProps, motion } from 'framer-motion';
 
-export interface PlusMinusIconProps
-  extends ForwardRefComponent<HTMLDivElement, HTMLMotionProps<'div'>> {
+export interface PlusMinusIconProps extends HTMLMotionProps<'div'> {
   plus: boolean;
 }
 const Path = (props: SVGMotionProps<SVGPathElement>) => (
@@ -22,10 +18,14 @@ const transition: SVGMotionProps<SVGRectElement>['transition'] = {
   stiffness: 180,
 };
 
+const iconStyles = {
+  root: css(globalStyles.button, { width: 42, height: 42 }),
+};
+
 function PlusMinusIcon({ plus, ...props }: PlusMinusIconProps) {
   return (
     <motion.div
-      css={{ width: 42, height: 42 }}
+      css={iconStyles.root}
       initial={false}
       animate={plus ? 'plus' : 'minus'}
       {...props}
