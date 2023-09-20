@@ -1,20 +1,7 @@
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-export interface IndexProps {}
-
-function Index({ ...props }: IndexProps) {
-  const navigate = useNavigate();
-  return (
-    <>
-      <button
-        onClick={() => {
-          navigate('/home');
-        }}
-      >
-        go to home
-      </button>
-    </>
-  );
+function Root() {
+  return <Navigate to="/home" replace />;
 }
 
-export default Index;
+export default Root;

@@ -1,9 +1,8 @@
+import PlusMinusIcon from '@/assets/PlusMinusIcon';
 import DesignSystem from '@/utils/designSystem';
 import { Group, Stack, Stroke, Typography } from '@base';
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import MinusIcon from '../assets/icon-minus.svg';
-import PlusIcon from '../assets/icon-plus.svg';
 
 const recipeStyles = {
   root: css({
@@ -67,9 +66,11 @@ function Recipe({ name, author, img, contents }: RecipeProps) {
           </Typography>
         </Stack>
         {hover && (
-          <img
-            src={isSaved ? MinusIcon : PlusIcon}
-            onClick={() => setIsSaved(!isSaved)}
+          <PlusMinusIcon
+            plus={!isSaved}
+            onClick={() => {
+              setIsSaved(!isSaved);
+            }}
           />
         )}
       </Group>
