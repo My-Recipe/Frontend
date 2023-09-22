@@ -98,7 +98,7 @@ const homeStyles = {
       flex: 1,
     }),
   },
-  input: css({ paddingTop: 75 }),
+  input: css({ marginTop: 75 }),
 };
 
 export interface HomeProps {}
@@ -132,6 +132,14 @@ function Home({ ...props }: HomeProps) {
         css={homeStyles.input}
         tags={mockTagData}
         onChange={(value) => {}}
+        searchItems={[
+          '여름나기 좋은 메밀 소바',
+          '메밀 소고기 레시피',
+          '최고로 맛있는 메밀소면',
+          '여름나기 좋은 수박',
+          '수박화채 레시피',
+          '최고로 맛있는 소고기',
+        ]}
       />
       <Recipes recipes={mockRecipeData} />
     </Stack>
