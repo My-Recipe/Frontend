@@ -1,15 +1,35 @@
-import { Group, Stack, Stroke } from '@base';
+import globalStyles from '@/utils/styles';
+import { Group, Stack, Stroke, Typography } from '@base';
 import { css } from '@emotion/react';
+import { HTMLAttributes } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TopNavTabs from './TopNavTabs';
 import TopNavUser from './TopNavUser';
 
 const topNavStyle = {
   wrapper: css({ background: 'transparent', width: '100%' }),
   group: css({ height: 90, padding: '0 50px 0 80px' }),
-  logo: {
-    color: '#141414',
-    fontSize: '34px',
-  },
+  logo: css(
+    {
+      color: '#141414',
+      fontSize: '34px',
+    },
+    globalStyles.button,
+  ),
+  loginButton: css(globalStyles.button, {
+    fontWeight: 500,
+    textDecorationLine: 'underline',
+  }),
+  menuButton: css({
+    textAlign: 'left',
+    borderTop: 'solid 1px #F6F7F8',
+    padding: '20px 25px',
+  }),
+};
+
+export type NavBarMenuItemType = {
+  label: string;
+  path: string;
 };
 export interface UserType {
   img?: string;
@@ -17,25 +37,61 @@ export interface UserType {
   email: string;
 }
 interface TopNavProps {
-  user: UserType;
-  onTabChange?: (currentTab: string) => void;
+  user: UserType | null;
+  navBarMenu: NavBarMenuItemType[];
+  onLoginClick?: () => void;
+  onLogoutClick: () => void;
+  className?: string;
 }
 
-function TopNav({ user, onTabChange }: TopNavProps) {
-  const navBarmenu = ['MY RECIPE', 'INVENTORY', 'SEARCH'];
-  const userMenu = ['마이 레시피 보기', '피드백 남기기', '로그아웃'];
+function TopNav({
+  user,
+  className,
+  navBarMenu,
+  onLoginClick,
+  onLogoutClick,
+}: TopNavProps) {
+  const navigate = useNavigate();
 
   return (
-    <Stack css={topNavStyle.wrapper}>
+    <Stack css={topNavStyle.wrapper} className={className}>
       <Group position="apart" nowrap css={topNavStyle.group}>
         <Group nowrap gap={97}>
-          <div css={topNavStyle.logo}>FRiED NOTE</div>
-          <TopNavTabs onTabChange={onTabChange}>{navBarmenu}</TopNavTabs>
+          <div onClick={() => navigate('/')} css={topNavStyle.logo}>
+            FRiED NOTE
+          </div>
+          <TopNavTabs>{navBarMenu}</TopNavTabs>
         </Group>
-        <TopNavUser user={user}>{userMenu}</TopNavUser>
+        {user ? (
+          <TopNavUser user={user}>
+            <MenuButtonItem label="마이 레시피 보기" />
+            <MenuButtonItem label="피드백 남기기" />
+            <MenuButtonItem label="로그아웃" onClick={onLogoutClick} />
+          </TopNavUser>
+        ) : (
+          <Typography
+            onClick={onLoginClick}
+            variant="subtitle"
+            css={topNavStyle.loginButton}
+          >
+            로그인하기
+          </Typography>
+        )}
       </Group>
       <Stroke />
     </Stack>
+  );
+}
+
+interface MenuButtonItemProps extends HTMLAttributes<HTMLButtonElement> {
+  label: string;
+}
+
+function MenuButtonItem({ label, ...props }: MenuButtonItemProps) {
+  return (
+    <button css={topNavStyle.menuButton} {...props}>
+      <Typography variant="button">{label}</Typography>
+    </button>
   );
 }
 
