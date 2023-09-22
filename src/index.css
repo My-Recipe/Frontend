@@ -47,14 +47,7 @@
 }
 
 body {
-  min-width: 360px;
-  position: relative;
-  padding: 0 168px;
-  box-sizing: border-box;
-  margin: 0 auto;
-  overflow-y: auto;
-  height: 100vh;
-  width: 100%;
+  margin: 0;
 }
 
 input {
