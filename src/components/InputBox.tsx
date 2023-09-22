@@ -139,11 +139,16 @@ function InputBox({
   }, [selectedTags, inputValue]);
 
   return (
-    <Popover style={{ width }} preventCloseOnClickTrigger position="full-width">
+    <Popover
+      style={{ width }}
+      preventCloseOnClickTrigger
+      position="full-width"
+      {...props}
+    >
       <Popover.Trigger
         preventTrigger={isTagSelected}
         renderTriggerComponent={({ ref, onClick }) => (
-          <Stack {...props} spacing={24}>
+          <Stack spacing={24}>
             <div
               ref={ref as LegacyRef<HTMLDivElement>}
               onClick={onClick}
