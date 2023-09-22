@@ -5,6 +5,7 @@ import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group, Popover, Stack, Typography } from '@base';
 import { css } from '@emotion/react';
+import { ReactNode } from 'react';
 import { UserType } from './TopNav';
 
 const topNavUserStyle = {
@@ -18,15 +19,10 @@ const topNavUserStyle = {
     }),
     user: css({ padding: '0 25px', paddingBottom: 33 }),
     setting: css({ alignSelf: 'baseline' }),
-    buttons: css({
-      textAlign: 'left',
-      borderTop: 'solid 1px #F6F7F8',
-      padding: '20px 25px',
-    }),
   },
 };
 interface TopNavUserProps {
-  children: string[];
+  children: ReactNode;
   user: UserType;
 }
 
@@ -41,34 +37,24 @@ function TopNavUser({ user, children }: TopNavUserProps) {
           </Group>
         </div>
       </Popover.Trigger>
-      <Popover.Content
-        triggerPopoverMargin={9}
-        css={topNavUserStyle.content.root}
-      >
-        <Stack>
-          <Group position="apart" css={topNavUserStyle.content.user}>
-            <Group gap={12}>
-              <img src={user.img || DefaultProfile} />
-              <Stack justify="left">
-                <Typography variant="subtitle">{user.name}</Typography>
-                <Typography variant="info" color="#848484">
-                  {user.email}
-                </Typography>
-              </Stack>
+      <Popover.Content triggerPopoverMargin={9}>
+        <div css={topNavUserStyle.content.root}>
+          <Stack>
+            <Group position="apart" css={topNavUserStyle.content.user}>
+              <Group gap={12}>
+                <img src={user.img || DefaultProfile} />
+                <Stack justify="left">
+                  <Typography variant="subtitle">{user.name}</Typography>
+                  <Typography variant="info" color="#848484">
+                    {user.email}
+                  </Typography>
+                </Stack>
+              </Group>
+              <img src={IconSettings} css={topNavUserStyle.content.setting} />
             </Group>
-            <img src={IconSettings} css={topNavUserStyle.content.setting} />
-          </Group>
-          {children.map((menuName, idx) => {
-            return (
-              <button
-                key={`${idx}-${menuName}`}
-                css={topNavUserStyle.content.buttons}
-              >
-                <Typography variant="button">{menuName}</Typography>
-              </button>
-            );
-          })}
-        </Stack>
+            {children}
+          </Stack>
+        </div>
       </Popover.Content>
     </Popover>
   );

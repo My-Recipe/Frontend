@@ -4,7 +4,8 @@ import globalStyles from '@/utils/styles';
 import { Group, Tabs, Typography } from '@base';
 import { TabValueType } from '@base/Tabs/TabsMain';
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { NavBarMenuItemType } from './TopNav';
 
 const topNavTabsStyle = {
   wrapper: {
@@ -21,39 +22,45 @@ const topNavTabsStyle = {
 };
 
 interface TopNavBarProps {
-  children: string[];
-  onTabChange?: (currentTab: string) => void;
+  children: NavBarMenuItemType[];
 }
-function TopNavTabs({ children, onTabChange }: TopNavBarProps) {
-  const [tabValue, setTabValue] = useState(children[0]);
+function TopNavTabs({ children }: TopNavBarProps) {
+  // const [tabValue, setTabValue] = useState(children[0]);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  const tabValue = pathname;
+
   const tabChange = (value: TabValueType) => {
-    typeof value === 'string' && value && setTabValue(value);
+    // typeof value === 'string' && value && setTabValue(value);\
+    typeof value === 'string' && value && navigate(value);
   };
-  useEffect(() => {
-    onTabChange && onTabChange(tabValue);
-  }, [tabValue]);
+
+  // useEffect(() => {
+  //   onTabChange && onTabChange(tabValue);
+  // }, [tabValue]);
 
   return (
     <Tabs
       buttonGroupCss={topNavTabsStyle.wrapper}
-      value={tabValue}
+      value={''}
       onTabChange={tabChange}
     >
-      {children.map((menuItem, idx) => {
+      {children.map(({ label, path }, idx) => {
         return (
           <Tabs.Button
-            value={`${menuItem}`}
-            key={`${idx}-${menuItem}`}
+            value={`${path}`}
+            key={`${idx}-${path}`}
             css={topNavTabsStyle.item}
           >
             <Group nowrap gap={6}>
-              {tabValue === menuItem ? (
+              {tabValue === path ? (
                 <img src={FilledMenuIcon} />
               ) : (
                 <img src={EmptyMenuIcon} />
               )}
               <Typography variant="subtitle" css={topNavTabsStyle.itemText}>
-                {menuItem}
+                {label}
               </Typography>
             </Group>
           </Tabs.Button>

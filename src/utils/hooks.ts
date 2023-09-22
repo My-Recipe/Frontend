@@ -86,3 +86,23 @@ export function useInterval(callback: IntervalFunction, delay: number) {
   }, [delay, clearTrigger]);
   return () => setClearTrigger(!clearTrigger);
 }
+
+export function useUserData<T extends object = { mail: string }>() {
+  const localUserData = localStorage.getItem('user-data');
+
+  const [userDataState, setUserDataState] = useState<T | null>(
+    localUserData && localUserData !== 'undefined' && JSON.parse(localUserData),
+  );
+
+  const setUserData = (userData: T | null) => {
+    setUserDataState(userData);
+  };
+
+  useEffect(() => {
+    if (userDataState)
+      localStorage.setItem('user-data', JSON.stringify(userDataState));
+    else localStorage.removeItem('user-data');
+  }, [userDataState]);
+
+  return [userDataState, setUserData] as const;
+}
