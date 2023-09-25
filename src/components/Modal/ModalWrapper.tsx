@@ -1,6 +1,8 @@
 import DesignSystem from '@/utils/designSystem';
+import { useClickOutside } from '@/utils/hooks';
 import globalStyles from '@/utils/styles';
 import { css } from '@emotion/react';
+import { ReactNode } from 'react';
 
 // ref : https://codesandbox.io/s/react-custom-modal-u91ey?file=/src/custom-modal/index.styled.js
 
@@ -28,14 +30,32 @@ const wrapplerStyles = {
     borderRadius: 2.4,
     position: 'relative',
   }),
+  content: css({
+    padding: '85px 60px 38px',
+  }),
 };
 
-export interface ModalWrapperProps {}
+export interface ModalWrapperProps {
+  handleModalClose: () => void;
+  children?: ReactNode;
+  opened: boolean;
+}
 
-function ModalWrapper({ ...props }: ModalWrapperProps) {
+function ModalWrapper({
+  handleModalClose,
+  opened,
+  children,
+  ...props
+}: ModalWrapperProps) {
+  const ref = useClickOutside<HTMLDivElement>(handleModalClose);
   return (
-    <div css={wrapplerStyles.background} style={{ visibility: 'visible' }}>
-      Enter
+    <div
+      css={wrapplerStyles.background}
+      style={{ visibility: opened ? 'visible' : 'hidden' }}
+    >
+      <div ref={ref} css={wrapplerStyles.inner}>
+        <div css={wrapplerStyles.content}>{children}</div>
+      </div>
     </div>
   );
 }

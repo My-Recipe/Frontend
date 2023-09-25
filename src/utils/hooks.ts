@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 
 type ObserverRect = Omit<DOMRectReadOnly, 'toJSON'>;
 
@@ -85,4 +85,46 @@ export function useInterval(callback: IntervalFunction, delay: number) {
     return () => clearInterval(id);
   }, [delay, clearTrigger]);
   return () => setClearTrigger(!clearTrigger);
+}
+
+/**
+ * 대상 ref를 제외한 바깥쪽 클릭이벤트를 감지해주는 hooks 입니다.
+ * @param handler - outside click시 실행되는 callback 함수
+ * @param preventClickRefs - click 이벤트에서 제외할 ref / refs
+ * @returns 기준이 되는 ref
+ */
+export function useClickOutside<T extends HTMLElement>(
+  handler: () => void,
+  preventClickRefs?: RefObject<HTMLElement>[] | RefObject<HTMLElement>,
+) {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const listener = (e: MouseEvent) => {
+      const element = e.target;
+
+      if (element instanceof Node && preventClickRefs) {
+        if (Array.isArray(preventClickRefs)) {
+          for (const ref of preventClickRefs) {
+            if (ref.current && ref.current.contains(element)) return;
+          }
+        } else if (preventClickRefs.current?.contains(element)) {
+          return;
+        }
+      }
+
+      if (
+        element instanceof Node &&
+        ref.current &&
+        !ref.current.contains(element)
+      ) {
+        handler();
+      }
+    };
+
+    document.addEventListener('click', listener);
+    return () => document.removeEventListener('click', listener);
+  }, [ref, handler, preventClickRefs]);
+
+  return ref;
 }
