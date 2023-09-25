@@ -121,7 +121,8 @@ export function useClickOutside<T extends HTMLElement>(
   }, [ref, handler, preventClickRefs]);
 
   return ref;
-=======
+}
+
 export function useUserData<T extends object = { mail: string }>() {
   const localUserData = localStorage.getItem('user-data');
 
