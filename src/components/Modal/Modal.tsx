@@ -1,7 +1,7 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { HTMLAttributes, ReactNode, useEffect, useState } from 'react';
 import ModalWrapper from './ModalWrapper';
 
-export interface ModalProps {
+export interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   opened?: boolean;
   handleModalClose?: () => void;
   children: ReactNode;
@@ -21,7 +21,7 @@ export function Modal({
       : () => setLocalModalOpened(false);
 
   const closeModalByEsc: (this: Window, ev: KeyboardEvent) => void = (e) => {
-    if (e.code === 'escape') handleModalClose();
+    if (e.code === 'Escape') handleModalClose();
   };
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export function Modal({
 
   return (
     <ModalWrapper handleModalClose={handleModalClose} opened={opened}>
-      {children}
+      <div {...props}>{children}</div>
     </ModalWrapper>
   );
 }
