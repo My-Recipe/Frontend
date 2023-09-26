@@ -1,8 +1,9 @@
 import { mergeRef } from '@/utils/components';
 import { HTMLAttributes, ReactNode, useContext, useLayoutEffect } from 'react';
 
+import { useClickOutside } from '@/utils/hooks';
 import { PopoverContext } from '../context';
-import { useClickOutside, useRect } from '../hooks';
+import { useRect } from '../hooks';
 
 export interface PopoverContentProps extends HTMLAttributes<HTMLDialogElement> {
   children: ReactNode;
