@@ -61,7 +61,6 @@ const tagsColors = [
   DesignSystem.Color.sub.brown,
   DesignSystem.Color.sub.pink,
   DesignSystem.Color.secondary.green,
-  DesignSystem.Color.sub.blue,
 ];
 
 function Ingredient({ index, onChange, ...props }: IngredientProps) {
@@ -122,7 +121,7 @@ function Ingredient({ index, onChange, ...props }: IngredientProps) {
         <Group gap={6}>
           {ingrTags.map(({ label, value }) => (
             <Tag
-              color={tagsColors[index % 4]}
+              color={tagsColors[(index - 1) % tagsColors.length]}
               key={value}
               label={label}
               value={value}
