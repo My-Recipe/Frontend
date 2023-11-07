@@ -142,3 +142,12 @@ export function useUserData<T extends object = { mail: string }>() {
 
   return [userDataState, setUserData] as const;
 }
+
+export function useComposing() {
+  const [isComposing, setIsComposing] = useState(false);
+
+  const onCompositionStart = () => setIsComposing(true);
+  const onCompositionEnd = () => setIsComposing(false);
+
+  return [isComposing, { onCompositionStart, onCompositionEnd }] as const;
+}

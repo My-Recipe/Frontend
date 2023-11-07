@@ -1,4 +1,5 @@
 import DesignSystem from '@/utils/designSystem';
+import { useComposing } from '@/utils/hooks';
 import { Group, Stack } from '@base';
 import Button from '@copmonents/Button';
 import Tag from '@copmonents/Tag';
@@ -66,8 +67,9 @@ const tagsColors = [
 function Ingredient({ index, onChange, ...props }: IngredientProps) {
   const [ingrTags, setIngrTags] = useState<IngredientTagsType[]>([]);
   const [ingrGroup, setIngrGroup] = useState('');
-  const [isComposing, setIsComposing] = useState(false); // 컴포징을 확인하는 state 만들기
   const [newIngrLabel, setNewIngrLabel] = useState('');
+
+  const [isComposing, composeProps] = useComposing();
 
   useEffect(() => {
     onChange && onChange({ groupTitle: ingrGroup, tags: ingrTags });
@@ -91,6 +93,7 @@ function Ingredient({ index, onChange, ...props }: IngredientProps) {
       onAddButtonClick();
     }
   };
+
   return (
     <Stack css={ingredientStyles.root} spacing={60}>
       <input
@@ -106,8 +109,7 @@ function Ingredient({ index, onChange, ...props }: IngredientProps) {
             value={newIngrLabel}
             onChange={(e) => setNewIngrLabel(e.target.value)}
             onKeyDown={onKeyDown}
-            onCompositionStart={() => setIsComposing(true)}
-            onCompositionEnd={() => setIsComposing(false)}
+            {...composeProps}
           />
           {newIngrLabel && (
             <Button
