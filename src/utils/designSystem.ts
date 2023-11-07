@@ -112,6 +112,13 @@ const Text = {
     fontStyle: 'normal',
     fontWeight: 400,
   }),
+  textbody: css({
+    color,
+    fontFamily: 'Pretendard',
+    fontSize: 22,
+    fontStyle: 'normal',
+    fontWeight: 500,
+  }),
 };
 export type TextType = keyof typeof Text;
 
