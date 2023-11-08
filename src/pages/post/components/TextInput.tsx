@@ -4,7 +4,8 @@ import DesignSystem from '@/utils/designSystem';
 import { useComposing } from '@/utils/hooks';
 import { Group } from '@base';
 import { css } from '@emotion/react';
-import { KeyboardEvent, forwardRef, useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, forwardRef, useEffect, useRef } from 'react';
+import getCaretCoordinates from 'textarea-caret';
 
 const textInputStyles = {
   root: css({
@@ -27,6 +28,7 @@ const textInputStyles = {
       outline: 'none',
       boxShadow: 'none',
       paddingTop: 6,
+      lineHeight: 1.2,
     },
     DesignSystem.Text.textbody,
   ),
@@ -43,10 +45,11 @@ export type TextInputValueItemType = {
 };
 
 export interface TextInputProps {
-  propsValue?: TextInputValueItemType;
-  onValueChange?: (item: TextInputValueItemType) => void;
-  onSubmit?: (item: TextInputValueItemType) => void;
+  propsValue: TextInputValueItemType;
+  onValueChange: (item: Partial<TextInputValueItemType>) => void;
+  onSubmit?: (remainValue: string) => void;
   onDelete?: (remainValue: string) => void;
+  onArrowUpDown?: (direction: 'up' | 'down') => void;
   placeholder?: string;
 }
 
@@ -57,13 +60,15 @@ const TextInput = forwardRef<HTMLTextAreaElement, TextInputProps>(
       onValueChange,
       onSubmit,
       onDelete,
+      onArrowUpDown,
       placeholder,
       ...props
     }: TextInputProps,
     ref,
   ) {
-    const [index, setIndex] = useState(propsValue?.index);
-    const [inputValue, setInputValue] = useState(propsValue?.value || '');
+    // const [index, setIndex] = useState(propsValue?.index);
+    const { value: inputValue, index } = propsValue;
+    // const [inputValue, setInputValue] = useState(propsValue?.value || '');
 
     const [isComposing, composeProps] = useComposing();
 
@@ -83,38 +88,16 @@ const TextInput = forwardRef<HTMLTextAreaElement, TextInputProps>(
       )
         return;
       if (index) return;
-      setIndex(prefixNumber);
-      setInputValue(inputValue.replace(`${prefixNumber} `, ''));
+      onValueChange({
+        index: prefixNumber,
+        value: inputValue.replace(`${prefixNumber} `, ''),
+      });
     }, [inputValue]);
 
     useEffect(() => {
-      onValueChange && onValueChange({ index, value: inputValue });
+      if (propsValue?.index !== index || propsValue?.value !== inputValue)
+        onValueChange && onValueChange({ index, value: inputValue });
     }, [index, inputValue]);
-
-    useEffect(() => {
-      setInputValue(propsValue?.value || '');
-    }, [propsValue?.value]);
-
-    const handelKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-      if (isComposing) return;
-
-      if (
-        e.code === 'Backspace' &&
-        (inputValue === '' || e.currentTarget.selectionStart === 0)
-      ) {
-        if (index) setIndex(undefined);
-        else {
-          e.preventDefault();
-          onDelete && onDelete(inputValue);
-        }
-      } else if (index && e.code === 'Enter' && inputValue === '') {
-        e.preventDefault();
-        setIndex(undefined);
-      } else if (e.code === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        onSubmit && onSubmit({ value: inputValue, index });
-      }
-    };
 
     const resizeTextArea = () => {
       if (textareaRef.current) {
@@ -126,13 +109,54 @@ const TextInput = forwardRef<HTMLTextAreaElement, TextInputProps>(
 
     useEffect(resizeTextArea, [inputValue]);
 
+    const handelKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+      if (isComposing) return;
+      if (textareaRef.current === null) return;
+
+      if (e.code === 'ArrowUp' || e.code === 'ArrowDown') {
+        const caret = getCaretCoordinates(
+          textareaRef.current,
+          textareaRef.current?.selectionStart || 0,
+        );
+        const top = 6;
+        const bottom = e.currentTarget.offsetHeight - top - caret.height;
+
+        if (top >= caret.top && e.code === 'ArrowUp') {
+          e.preventDefault();
+          onArrowUpDown && onArrowUpDown('up');
+        } else if (bottom <= caret.top && e.code === 'ArrowDown') {
+          e.preventDefault();
+          onArrowUpDown && onArrowUpDown('down');
+        }
+      }
+
+      if (
+        e.code === 'Backspace' &&
+        (inputValue === '' || e.currentTarget.selectionStart === 0)
+      ) {
+        if (index) onValueChange({ index: undefined });
+        else {
+          e.preventDefault();
+          onDelete && onDelete(inputValue);
+        }
+      } else if (index && e.code === 'Enter' && inputValue === '') {
+        e.preventDefault();
+        onValueChange({ index: undefined });
+      } else if (e.code === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        const caretIndex = e.currentTarget.selectionStart;
+        onValueChange({ index: undefined });
+        onSubmit && onSubmit(inputValue.slice(caretIndex));
+      }
+    };
+
     return (
       <Group css={textInputStyles.root}>
         {index && <Numbers css={textInputStyles.index}>{index}</Numbers>}
         <textarea
           {...composeProps}
           onKeyDown={handelKeyDown}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => onValueChange({ value: e.target.value })}
           css={textInputStyles.input}
           value={inputValue}
           ref={mergedRef}

@@ -30,9 +30,11 @@ const editorStyles = {
 
 export interface EditorProps {}
 
+type TextType = TextInputValueItemType & { key: number; id: string };
+
 export interface PostDataType {
   ingredients: (IngredientType & { key: number })[];
-  text: (TextInputValueItemType & { key: number })[];
+  text: TextType[];
 }
 
 let ingrCount = 0;
@@ -49,7 +51,7 @@ function Editor({ ...props }: EditorProps) {
     setData({
       ...data,
       ingredients: [{ groupTitle: '', tags: [], key: ingrCount++ }],
-      text: [{ value: '', index: 1, key: textCount++ }],
+      text: [{ value: '', index: 1, key: textCount++, id: 'index-text' }],
     });
   }, []);
 
@@ -73,28 +75,33 @@ function Editor({ ...props }: EditorProps) {
   };
 
   const handleTextChange = (
-    item: TextInputValueItemType,
+    item: Partial<TextInputValueItemType>,
     targetIndex: number,
   ) => {
     setData({
       ...data,
       text: data.text.map((data, index) =>
-        index === targetIndex ? { ...item, key: data.key } : data,
+        index === targetIndex ? { ...data, ...item } : data,
       ),
     });
   };
 
-  const handleTextSubmit = (index: number) => {
+  const handleTextSubmit = (value: string, index: number) => {
     const prevItem = data.text[index];
 
     setData({
       ...data,
       text: [
-        ...data.text.slice(0, index + 1),
+        ...data.text.slice(0, index),
         {
-          value: '',
+          ...prevItem,
+          value: prevItem.value.slice(0, prevItem.value.length - value.length),
+        },
+        {
+          value,
           index: prevItem?.index && prevItem.index + 1,
           key: textCount++,
+          id: 'index-text',
         },
         ...data.text.slice(index + 1),
       ],
@@ -103,7 +110,6 @@ function Editor({ ...props }: EditorProps) {
 
   const handleTextDelete = (value: string, targetIndex: number) => {
     const prevRef = textRefs.current[targetIndex - 1];
-    const carrotPos = data.text[targetIndex - 1].value.length;
 
     setData({
       ...data,
@@ -118,8 +124,27 @@ function Editor({ ...props }: EditorProps) {
 
     prevRef?.focus();
     setTimeout(() => {
-      prevRef?.setSelectionRange(carrotPos, carrotPos);
+      prevRef?.setSelectionRange(-1, -1);
     }, 1);
+  };
+
+  const handleArrowUpDown = (direction: 'up' | 'down', index: number) => {
+    const isDirectinoUp = direction === 'up';
+    const ref = textRefs.current[isDirectinoUp ? index - 1 : index + 1];
+    const indexCheck = isDirectinoUp
+      ? index === 0
+      : index === data.text.length - 1;
+    const indexPosition = isDirectinoUp ? 0 : -1;
+    const position = isDirectinoUp ? -1 : 0;
+
+    if (indexCheck || !ref) {
+      textRefs.current[index]?.setSelectionRange(indexPosition, indexPosition);
+    } else {
+      setTimeout(() => {
+        ref.focus();
+        ref.setSelectionRange(position, position);
+      });
+    }
   };
 
   return (
@@ -139,17 +164,22 @@ function Editor({ ...props }: EditorProps) {
             index={key}
           />
         ))}
-        {data.text.map((item, index) => (
-          <TextInput
-            key={`data-text-${item.key}`}
-            ref={(el) => (textRefs.current[index] = el)}
-            propsValue={item}
-            onValueChange={(data) => handleTextChange(data, index)}
-            onSubmit={() => handleTextSubmit(index)}
-            onDelete={(value) => handleTextDelete(value, index)}
-            placeholder="이미지와 함께 조리과정을 적어보세요."
-          />
-        ))}
+        {data.text.map((item, index) =>
+          item.id === 'index-text' ? (
+            <TextInput
+              key={`data-text-${item.key}`}
+              ref={(el) => (textRefs.current[index] = el)}
+              propsValue={item}
+              onValueChange={(data) => handleTextChange(data, index)}
+              onSubmit={(value) => handleTextSubmit(value, index)}
+              onDelete={(value) => handleTextDelete(value, index)}
+              onArrowUpDown={(direction) => handleArrowUpDown(direction, index)}
+              placeholder="이미지와 함께 조리과정을 적어보세요."
+            />
+          ) : (
+            <>tes</>
+          ),
+        )}
       </Stack>
     </Stack>
   );
