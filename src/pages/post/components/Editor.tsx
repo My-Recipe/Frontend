@@ -1,7 +1,7 @@
 import DesignSystem from '@/utils/designSystem';
 import { Stack, Stroke } from '@base';
 import { css } from '@emotion/react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Ingredient, { IngredientType } from './Ingredient';
 import TextInput, { TextInputValueItemType } from './TextInput';
 
@@ -37,41 +37,39 @@ export interface PostDataType {
   text: TextType[];
 }
 
-let ingrCount = 0;
-let textCount = 0;
-
 function Editor({ ...props }: EditorProps) {
+  const [ingrCount, setIngrCount] = useState(1);
+  const [textCount, setTextCount] = useState(1);
   const [data, setData] = useState<PostDataType>({
-    ingredients: [],
-    text: [],
+    ingredients: [{ groupTitle: '', tags: [], key: ingrCount }],
+    text: [{ value: '', index: 1, key: textCount, id: 'index-text' }],
   });
   const textRefs = useRef<Array<HTMLTextAreaElement | null>>([]);
 
-  useEffect(() => {
-    setData({
-      ...data,
-      ingredients: [{ groupTitle: '', tags: [], key: ingrCount++ }],
-      text: [{ value: '', index: 1, key: textCount++, id: 'index-text' }],
-    });
-  }, []);
-
-  const handleIngrChange = (item: IngredientType, targetIndex: number) => {
+  const handleIngrChange = (
+    item: IngredientType,
+    targetIndex: number,
+    key: number,
+  ) => {
     if (targetIndex === 0) {
-      if (!item.groupTitle) return;
+      if (item.groupTitle === '') return;
       setData({
         ...data,
         ingredients: [
-          { groupTitle: '', tags: [], key: ingrCount++ },
+          { groupTitle: '', tags: [], key: ingrCount + 1 },
           ...data.ingredients,
         ],
       });
-    }
-    setData({
-      ...data,
-      ingredients: data.ingredients.map((data, index) =>
-        index === targetIndex ? { ...item, key: data.key } : data,
-      ),
-    });
+      setIngrCount(ingrCount + 1);
+    } else
+      setData({
+        ...data,
+        ingredients: data.ingredients.map((data, index) =>
+          index === targetIndex && key === data.key
+            ? { ...data, ...item }
+            : data,
+        ),
+      });
   };
 
   const handleTextChange = (
@@ -100,12 +98,13 @@ function Editor({ ...props }: EditorProps) {
         {
           value,
           index: prevItem?.index && prevItem.index + 1,
-          key: textCount++,
+          key: textCount + 1,
           id: 'index-text',
         },
         ...data.text.slice(index + 1),
       ],
     });
+    setTextCount(textCount + 1);
   };
 
   const handleTextDelete = (value: string, targetIndex: number) => {
@@ -168,8 +167,8 @@ function Editor({ ...props }: EditorProps) {
       <Stack spacing={12}>
         {data.ingredients.map(({ key }, listIndex) => (
           <Ingredient
-            key={key}
-            onChange={(item) => handleIngrChange(item, listIndex)}
+            key={`data-ingr-${key}`}
+            onChange={(item) => handleIngrChange(item, listIndex, key)}
             index={key}
           />
         ))}
