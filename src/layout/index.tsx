@@ -28,10 +28,8 @@ function Layout({ children, ...props }: LayoutProps) {
       <div
         css={{
           minWidth: 360,
-          position: 'relative',
           boxSizing: 'border-box',
           margin: '0 auto',
-          overflowY: 'auto',
           width: '100%',
         }}
       >
