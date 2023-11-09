@@ -49,7 +49,7 @@ export interface TextInputProps {
   onValueChange: (item: Partial<TextInputValueItemType>) => void;
   onSubmit?: (remainValue: string) => void;
   onDelete?: (remainValue: string) => void;
-  onArrowUpDown?: (direction: 'up' | 'down') => void;
+  onClickArrowKey?: (direction: 'up' | 'down', caretPosition?: number) => void;
   placeholder?: string;
 }
 
@@ -60,20 +60,17 @@ const TextInput = forwardRef<HTMLTextAreaElement, TextInputProps>(
       onValueChange,
       onSubmit,
       onDelete,
-      onArrowUpDown,
+      onClickArrowKey,
       placeholder,
       ...props
     }: TextInputProps,
     ref,
   ) {
-    // const [index, setIndex] = useState(propsValue?.index);
     const { value: inputValue, index } = propsValue;
-    // const [inputValue, setInputValue] = useState(propsValue?.value || '');
 
     const [isComposing, composeProps] = useComposing();
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-
     const mergedRef = ref ? mergeRef(textareaRef, ref) : textareaRef;
 
     useEffect(() => {
@@ -114,6 +111,7 @@ const TextInput = forwardRef<HTMLTextAreaElement, TextInputProps>(
       if (textareaRef.current === null) return;
 
       if (e.code === 'ArrowUp' || e.code === 'ArrowDown') {
+        // ArrowUp, ArrowDown 키를 눌렀을 때
         const caret = getCaretCoordinates(
           textareaRef.current,
           textareaRef.current?.selectionStart || 0,
@@ -123,10 +121,18 @@ const TextInput = forwardRef<HTMLTextAreaElement, TextInputProps>(
 
         if (top >= caret.top && e.code === 'ArrowUp') {
           e.preventDefault();
-          onArrowUpDown && onArrowUpDown('up');
+          onClickArrowKey && onClickArrowKey('up');
         } else if (bottom <= caret.top && e.code === 'ArrowDown') {
           e.preventDefault();
-          onArrowUpDown && onArrowUpDown('down');
+          onClickArrowKey && onClickArrowKey('down');
+        }
+      } else if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+        // ArrowLeft, ArrowRight 키를 눌렀을 때
+        const caret = e.currentTarget.selectionStart;
+        if (caret === 0 && e.code === 'ArrowLeft') {
+          onClickArrowKey && onClickArrowKey('up', -1);
+        } else if (caret === inputValue.length && e.code === 'ArrowRight') {
+          onClickArrowKey && onClickArrowKey('down', 0);
         }
       }
 
@@ -134,15 +140,19 @@ const TextInput = forwardRef<HTMLTextAreaElement, TextInputProps>(
         e.code === 'Backspace' &&
         (inputValue === '' || e.currentTarget.selectionStart === 0)
       ) {
+        // Backspace와 함께 inputValue가 비어있거나, 커서가 맨 앞에 있을 때
+        // 즉, 사용자가 number 아이콘을 지우려는 동작
         if (index) onValueChange({ index: undefined });
         else {
           e.preventDefault();
           onDelete && onDelete(inputValue);
         }
       } else if (index && e.code === 'Enter' && inputValue === '') {
+        // Enter 키를 눌렀고, inputValue가 비어있을 때
         e.preventDefault();
         onValueChange({ index: undefined });
       } else if (e.code === 'Enter' && !e.shiftKey) {
+        //shift + Enter 가 아닌 동작
         e.preventDefault();
         const caretIndex = e.currentTarget.selectionStart;
         onValueChange({ index: undefined });

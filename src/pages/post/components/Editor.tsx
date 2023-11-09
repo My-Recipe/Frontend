@@ -110,7 +110,7 @@ function Editor({ ...props }: EditorProps) {
 
   const handleTextDelete = (value: string, targetIndex: number) => {
     const prevRef = textRefs.current[targetIndex - 1];
-
+    if (data.text.length === 1) return;
     setData({
       ...data,
       text: data.text
@@ -128,22 +128,31 @@ function Editor({ ...props }: EditorProps) {
     }, 1);
   };
 
-  const handleArrowUpDown = (direction: 'up' | 'down', index: number) => {
+  const handleInputArrowKey = (
+    direction: 'up' | 'down',
+    caretPosition: number | undefined,
+    index: number,
+  ) => {
     const isDirectinoUp = direction === 'up';
     const ref = textRefs.current[isDirectinoUp ? index - 1 : index + 1];
     const indexCheck = isDirectinoUp
       ? index === 0
       : index === data.text.length - 1;
-    const indexPosition = isDirectinoUp ? 0 : -1;
-    const position = isDirectinoUp ? -1 : 0;
+    const position = isDirectinoUp ? 0 : -1;
 
     if (indexCheck || !ref) {
-      textRefs.current[index]?.setSelectionRange(indexPosition, indexPosition);
-    } else {
+      // direction에 따라, 다음이나 이전 index가 없다면, 마지막이나 첫번째 index라면
+      textRefs.current[index]?.setSelectionRange(position, position);
+    } else if (caretPosition !== undefined) {
+      // direction에 따라, 다음이나 이전 index가 있다면, caretPosition이 있다면
+      // TextInput에서 마지막이나 첫번째 caret에서 좌/우 방향키가 눌린 상황
       setTimeout(() => {
         ref.focus();
-        ref.setSelectionRange(position, position);
+        ref.setSelectionRange(caretPosition, caretPosition);
       });
+    } else {
+      // 일반적인 위/아래 방향키가 눌린 상황
+      ref.focus();
     }
   };
 
@@ -173,7 +182,9 @@ function Editor({ ...props }: EditorProps) {
               onValueChange={(data) => handleTextChange(data, index)}
               onSubmit={(value) => handleTextSubmit(value, index)}
               onDelete={(value) => handleTextDelete(value, index)}
-              onArrowUpDown={(direction) => handleArrowUpDown(direction, index)}
+              onClickArrowKey={(direction, caretPosition) =>
+                handleInputArrowKey(direction, caretPosition, index)
+              }
               placeholder="이미지와 함께 조리과정을 적어보세요."
             />
           ) : (
