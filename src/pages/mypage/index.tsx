@@ -1,5 +1,6 @@
 import EmptyCheckbox from '@/assets/checkbox-empty.svg';
 import FillCheckbox from '@/assets/checkbox-fill.svg';
+import DefaultProfile from '@/assets/default-profile.svg';
 import EditIcon from '@/assets/icon-edit-box.svg';
 import BackgroundImg from '@/assets/newmypage-background.png';
 import DesignSystem from '@/utils/designSystem';
@@ -12,20 +13,13 @@ import { css } from '@emotion/react';
 import { useState } from 'react';
 import Recipes from '../home/components/Recipes';
 import BookSetting from './components/BookSetting';
-
 export interface RecipeBookType {
-  title: string;
-  intro: string;
-  forPublic: boolean;
-  setTitle: React.Dispatch<React.SetStateAction<string>>;
-  setIntro: React.Dispatch<React.SetStateAction<string>>;
-  setForPublic: React.Dispatch<React.SetStateAction<boolean>>;
+  data: { title: string; intro: string; forPublic: boolean };
 }
 const newMyPageStyles = {
-  root: css(globalStyles.center, { overflow: 'hidden' }),
+  root: css(globalStyles.center, { height: '100dvh' }),
   background: css({
     zIndex: 0,
-
     background: `no-repeat url(${BackgroundImg})`,
     backgroundSize: 'cover',
     width: '100%',
@@ -42,7 +36,7 @@ const newMyPageStyles = {
     left: 0,
     backgroundColor: 'rgba(0,0,0,0.4)',
     width: '100%',
-    height: 879,
+    height: '100%',
   }),
   wrapper: css(
     {
@@ -62,26 +56,33 @@ const myPageStyles = {
   banner: {
     wrapper: css({
       width: '100%',
-      height: 513,
       borderBottom: '1px solid black',
     }),
     background: css({
-      backgroundImage: `url(${BackgroundImg})`,
+      background: `no-repeat url(${BackgroundImg})`,
+      backgroundSize: 'cover',
       width: '74%',
-      paddingLeft: 168,
+      padding: '139px 0 96px 168px',
       borderRight: '1px solid black',
       height: '100%',
       boxSizing: 'border-box',
-      overflow: 'hidden',
+      minWidth: 900,
     }),
     checkbox: css(globalStyles.button),
     edit: css({
-      paddingLeft: 70,
-
+      padding: '0 0 96px 70px',
       width: '26%',
       height: '100%',
       boxSizing: 'border-box',
+      justifyContent: 'center',
     }),
+    editBtn: css(
+      {
+        width: 48,
+        marginTop: 106,
+      },
+      globalStyles.button,
+    ),
     copyLink: {
       wrapper: css(globalStyles.center, { flexDirection: 'column' }),
       linkBox: css({
@@ -110,17 +111,24 @@ function MyPage({ ...props }) {
   const [forPublic, setForPublic] = useState(true);
   const [linkOpened, setLinkOpened] = useState(false);
   const [editOpened, setEditOpened] = useState(false);
+  const [url, setUrl] = useState('Link');
+  const handleCopy = () => {
+    navigator.clipboard.writeText(url);
+  };
+  const onSubmitClick = ({
+    data: { title, intro, forPublic },
+  }: RecipeBookType) => {
+    setTitle(title);
+    setIntro(intro);
+    setForPublic(forPublic);
+    editOpened && setEditOpened(false);
+  };
   return title && intro ? (
     <Stack spacing={150} css={myPageStyles.wrapper}>
       <Modal opened={editOpened}>
         <BookSetting
-          title={title}
-          intro={intro}
-          forPublic={forPublic}
-          setTitle={setTitle}
-          setIntro={setIntro}
-          setForPublic={setForPublic}
-          submitFunc={setEditOpened}
+          data={{ title, intro, forPublic }}
+          onSubmit={onSubmitClick}
           submitText="레시피북 수정 완료하기"
         />
       </Modal>
@@ -134,11 +142,12 @@ function MyPage({ ...props }) {
               variant="button"
               css={myPageStyles.banner.copyLink.linkBox}
             >
-              link
+              {url}
             </Typography>
             <Typography
               variant="button"
               css={myPageStyles.banner.copyLink.copyBtn}
+              onClick={handleCopy}
             >
               COPY
             </Typography>
@@ -172,13 +181,13 @@ function MyPage({ ...props }) {
               variant="icon"
               onClick={() => {
                 setLinkOpened(true);
+                navigator.clipboard.writeText(url);
               }}
             >
               링크 공유하기
             </Button>
           </Group>
         </Stack>
-
         <Stack spacing={17} css={myPageStyles.banner.edit}>
           <Typography variant="headline">16개의 레시피</Typography>
           <Group
@@ -207,16 +216,19 @@ function MyPage({ ...props }) {
           </Group>
           <img
             src={EditIcon}
-            css={{ width: 48, marginTop: 106 }}
+            css={myPageStyles.banner.editBtn}
             onClick={() => {
               setEditOpened(true);
             }}
           />
         </Stack>
       </Group>
-      <Stack spacing={73}>
-        <Group gap={866}>
-          <div>해피밀</div>
+      <Stack spacing={73} css={{ overflow: 'hidden' }}>
+        <Group gap={'69%'}>
+          <Group gap={16}>
+            <img src={DefaultProfile} css={{ width: 36 }} />
+            <Typography variant="headline">해피밀</Typography>
+          </Group>
           <ToggleButton tabs={['모든 레시피', '내 레시피만']} />
         </Group>
         <Recipes
@@ -236,6 +248,11 @@ function MyPage({ ...props }) {
               author: '고죠 사토루',
               contents: '우동에 김치를 사악',
             },
+            {
+              name: '김치우동',
+              author: '고죠 사토루',
+              contents: '우동에 김치를 사악',
+            },
           ]}
         />
       </Stack>
@@ -246,12 +263,8 @@ function MyPage({ ...props }) {
       <div css={newMyPageStyles.blur} />
       <div css={newMyPageStyles.wrapper}>
         <BookSetting
-          title={title}
-          intro={intro}
-          forPublic={forPublic}
-          setTitle={setTitle}
-          setIntro={setIntro}
-          setForPublic={setForPublic}
+          data={{ title, intro, forPublic }}
+          onSubmit={onSubmitClick}
           submitText="이대로 레시피북 생성하기"
         />
       </div>

@@ -6,30 +6,22 @@ import { Group, Stack, Stroke, Typography } from '@base';
 import Button from '@copmonents/Button';
 import { css } from '@emotion/react';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { RecipeBookType } from '..';
 
 interface BookSettingProps {
-  title: string;
-  intro: string;
-  forPublic: boolean;
-  setTitle: React.Dispatch<React.SetStateAction<string>>;
-  setIntro: React.Dispatch<React.SetStateAction<string>>;
-  setForPublic: React.Dispatch<React.SetStateAction<boolean>>;
-  submitFunc?: React.Dispatch<React.SetStateAction<boolean>>;
+  data: { title: string; intro: string; forPublic: boolean };
+  onSubmit: ({ data: { title, intro, forPublic } }: RecipeBookType) => void;
   submitText: string;
 }
 
 function BookSetting({
-  title,
-  intro,
-  forPublic,
-  setTitle,
-  setIntro,
-  setForPublic,
-  submitFunc,
+  data: { title, intro, forPublic },
+  onSubmit,
   submitText,
 }: BookSettingProps) {
   const [inputTitle, setInputTitle] = useState(title);
   const [inputIntro, setInputIntro] = useState(intro);
+  const [inputForPublic, setInputForPublic] = useState(forPublic);
   const bookSettingStyle = {
     innerContent: {
       wrapper: css({ width: '100%' }),
@@ -54,6 +46,7 @@ function BookSetting({
       }),
     },
   };
+
   return (
     <Stack css={bookSettingStyle.innerContent.wrapper}>
       <Typography variant="subtitle">레시피북 설정 편집</Typography>
@@ -73,21 +66,21 @@ function BookSetting({
           <Group
             gap={2}
             onClick={() => {
-              setForPublic(true);
+              setInputForPublic(true);
             }}
             css={bookSettingStyle.innerContent.checkbox}
           >
-            <img src={forPublic ? FillCheckbox : EmptyCheckbox} />
+            <img src={inputForPublic ? FillCheckbox : EmptyCheckbox} />
             <Typography variant="button">모든 대상에게 공개</Typography>
           </Group>
           <Group
             gap={2}
             onClick={() => {
-              setForPublic(false);
+              setInputForPublic(false);
             }}
             css={bookSettingStyle.innerContent.checkbox}
           >
-            <img src={forPublic ? EmptyCheckbox : FillCheckbox} />
+            <img src={inputForPublic ? EmptyCheckbox : FillCheckbox} />
             <Typography variant="button">
               링크를 가진 대상에게만 공개
             </Typography>
@@ -103,15 +96,15 @@ function BookSetting({
       <Button
         variant="icon"
         css={bookSettingStyle.innerContent.button}
-        onClick={
-          inputIntro && inputTitle
-            ? () => {
-                submitFunc && submitFunc(false);
-                setTitle(inputTitle);
-                setIntro(inputIntro);
-              }
-            : undefined
-        }
+        onClick={() => {
+          onSubmit({
+            data: {
+              title: inputTitle,
+              intro: inputIntro,
+              forPublic: inputForPublic,
+            },
+          });
+        }}
       >
         {submitText}
       </Button>
