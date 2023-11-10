@@ -1,6 +1,7 @@
 import DesignSystem from '@/utils/designSystem';
 import { Stack, Stroke } from '@base';
 import { css } from '@emotion/react';
+import { produce } from 'immer';
 import { useRef, useState } from 'react';
 import Ingredient, { IngredientType } from './Ingredient';
 import TextInput, { TextInputValueItemType } from './TextInput';
@@ -62,26 +63,22 @@ function Editor({ ...props }: EditorProps) {
       });
       setIngrCount(ingrCount + 1);
     } else
-      setData({
-        ...data,
-        ingredients: data.ingredients.map((data, index) =>
-          index === targetIndex && key === data.key
-            ? { ...data, ...item }
-            : data,
-        ),
-      });
+      setData(
+        produce((draft) => {
+          draft.ingredients[targetIndex] = { ...item, key };
+        }),
+      );
   };
 
   const handleTextChange = (
     item: Partial<TextInputValueItemType>,
     targetIndex: number,
   ) => {
-    setData({
-      ...data,
-      text: data.text.map((data, index) =>
-        index === targetIndex ? { ...data, ...item } : data,
-      ),
-    });
+    setData(
+      produce((draft) => {
+        draft.text[targetIndex] = { ...draft.text[targetIndex], ...item };
+      }),
+    );
   };
 
   const handleTextSubmit = (value: string, index: number) => {
