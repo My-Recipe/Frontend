@@ -3,7 +3,7 @@ import Editor from './components/Editor';
 
 const pageStyles = {
   root: css({
-    padding: '97px 168px',
+    padding: '97px 0',
   }),
 };
 

@@ -27,13 +27,20 @@ function Layout({ children, ...props }: LayoutProps) {
       />
       <div
         css={{
-          minWidth: 360,
           boxSizing: 'border-box',
           margin: '0 auto',
           width: '100%',
+          height: '100vh',
         }}
       >
-        {children}
+        <div
+          css={{
+            minWidth: 1264,
+            padding: '0 164px',
+          }}
+        >
+          {children}
+        </div>
       </div>
     </>
   );

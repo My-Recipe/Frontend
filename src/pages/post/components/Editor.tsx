@@ -5,13 +5,13 @@ import { produce } from 'immer';
 import { useRef, useState } from 'react';
 import Ingredient, { IngredientType } from './Ingredient';
 import TextInput, { TextInputValueItemType } from './TextInput';
+import Tip from './Tip';
 import Toolbar from './Toolbar';
 
 const editorStyles = {
   root: css({
     padding: '154px 82px',
     border: '1px solid var(--background-disabled)',
-    minWidth: 960,
     background: DesignSystem.Color.background.white,
   }),
   input: css(
@@ -45,9 +45,14 @@ function Editor({ ...props }: EditorProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [data, setData] = useState<PostDataType>({
     ingredients: [{ groupTitle: '', tags: [], key: ingrCount }],
-    text: [{ value: '', index: 1, key: textCount, id: 'index-text' }],
+    text: [
+      { value: '', index: 1, key: textCount, id: 'index-text' },
+      { id: 'tip', value: '', key: textCount - 1 },
+    ],
   });
-  const textRefs = useRef<Array<HTMLTextAreaElement | null>>([]);
+  const textRefs = useRef<Array<HTMLTextAreaElement | HTMLInputElement | null>>(
+    [],
+  );
 
   const handleIngrChange = (
     item: IngredientType,
@@ -190,8 +195,15 @@ function Editor({ ...props }: EditorProps) {
               placeholder="이미지와 함께 조리과정을 적어보세요."
               onFocusBlur={handleFocusBlur}
             />
+          ) : item.id === 'tip' ? (
+            <Tip
+              ref={(el) => (textRefs.current[index] = el)}
+              onCursorChange={(direction, caretPos) =>
+                handleInputArrowKey(direction, caretPos, index)
+              }
+            />
           ) : (
-            <>tes</>
+            <>hi</>
           ),
         )}
       </Stack>
