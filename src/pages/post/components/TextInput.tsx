@@ -50,6 +50,7 @@ export interface TextInputProps {
   onSubmit?: (remainValue: string) => void;
   onDelete?: (remainValue: string) => void;
   onClickArrowKey?: (direction: 'up' | 'down', caretPosition?: number) => void;
+  onFocusBlur?: (isFocus: boolean) => void;
   placeholder?: string;
 }
 
@@ -62,6 +63,7 @@ const TextInput = forwardRef<HTMLTextAreaElement, TextInputProps>(
       onDelete,
       onClickArrowKey,
       placeholder,
+      onFocusBlur,
       ...props
     }: TextInputProps,
     ref,
@@ -173,6 +175,8 @@ const TextInput = forwardRef<HTMLTextAreaElement, TextInputProps>(
           rows={1}
           spellCheck={false}
           placeholder={placeholder}
+          onFocus={() => onFocusBlur && onFocusBlur(true)}
+          onBlur={() => onFocusBlur && onFocusBlur(false)}
           autoFocus
         />
       </Group>

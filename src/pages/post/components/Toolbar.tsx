@@ -2,6 +2,7 @@ import { ReactComponent as IconClock } from '@/assets/icon-clock.svg';
 import { ReactComponent as IconImage } from '@/assets/icon-image.svg';
 import { ReactComponent as IconTip } from '@/assets/icon-tip.svg';
 import DesignSystem from '@/utils/designSystem';
+import globalStyles from '@/utils/styles';
 import { Stack } from '@base';
 import { css } from '@emotion/react';
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
@@ -15,8 +16,6 @@ const styles = {
     boxShadow: '0px 4px 16px rgba(140, 140, 140, 0.13)',
     position: 'absolute',
     right: 40,
-    // bottom: 400,
-    // top: 800,
   }),
   icon: {
     disabled: {
@@ -27,6 +26,7 @@ const styles = {
       svg: DesignSystem.Color.secondary.green,
       style: css({ cursor: 'pointer' }),
     },
+    animation: css(globalStyles.animation.all(200)),
   },
 };
 
@@ -56,6 +56,7 @@ function Toolbar({ active, onItemClicked, ...props }: ToolbarProps) {
           css={[
             { stroke: styles.icon[active ? 'active' : 'disabled'].svg },
             styles.icon[active ? 'active' : 'disabled'].style,
+            styles.icon.animation,
           ]}
           onClick={() => active && onItemClicked?.('timer')}
         />
@@ -63,6 +64,7 @@ function Toolbar({ active, onItemClicked, ...props }: ToolbarProps) {
           css={[
             { stroke: styles.icon[active ? 'active' : 'disabled'].svg },
             styles.icon[active ? 'active' : 'disabled'].style,
+            styles.icon.animation,
           ]}
           onClick={() => active && onItemClicked?.('image')}
         />
@@ -70,6 +72,7 @@ function Toolbar({ active, onItemClicked, ...props }: ToolbarProps) {
           css={[
             { fill: styles.icon[active ? 'active' : 'disabled'].svg },
             styles.icon[active ? 'active' : 'disabled'].style,
+            styles.icon.animation,
           ]}
           onClick={() => active && onItemClicked?.('tip')}
         />

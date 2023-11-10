@@ -5,6 +5,7 @@ import { produce } from 'immer';
 import { useRef, useState } from 'react';
 import Ingredient, { IngredientType } from './Ingredient';
 import TextInput, { TextInputValueItemType } from './TextInput';
+import Toolbar from './Toolbar';
 
 const editorStyles = {
   root: css({
@@ -41,6 +42,7 @@ export interface PostDataType {
 function Editor({ ...props }: EditorProps) {
   const [ingrCount, setIngrCount] = useState(1);
   const [textCount, setTextCount] = useState(1);
+  const [isFocused, setIsFocused] = useState(false);
   const [data, setData] = useState<PostDataType>({
     ingredients: [{ groupTitle: '', tags: [], key: ingrCount }],
     text: [{ value: '', index: 1, key: textCount, id: 'index-text' }],
@@ -152,6 +154,10 @@ function Editor({ ...props }: EditorProps) {
     }
   };
 
+  const handleFocusBlur = (isFocus: boolean) => {
+    setIsFocused(isFocus);
+  };
+
   return (
     <Stack spacing={85} css={editorStyles.root}>
       <div>
@@ -182,12 +188,14 @@ function Editor({ ...props }: EditorProps) {
                 handleInputArrowKey(direction, caretPosition, index)
               }
               placeholder="이미지와 함께 조리과정을 적어보세요."
+              onFocusBlur={handleFocusBlur}
             />
           ) : (
             <>tes</>
           ),
         )}
       </Stack>
+      <Toolbar active={isFocused} onItemClicked={(type) => type} />
     </Stack>
   );
 }
