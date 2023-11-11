@@ -33,9 +33,10 @@ const styles = {
 export interface ToolbarProps {
   active?: boolean;
   onItemClicked?: (clickedItem: 'timer' | 'image' | 'tip') => void;
+  onMouseUp?: () => void;
 }
 
-function Toolbar({ active, onItemClicked, ...props }: ToolbarProps) {
+function Toolbar({ active, onItemClicked, onMouseUp, ...props }: ToolbarProps) {
   const { scrollY } = useScroll();
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const spring = useSpring(scrollY, {
@@ -58,7 +59,8 @@ function Toolbar({ active, onItemClicked, ...props }: ToolbarProps) {
             styles.icon[active ? 'active' : 'disabled'].style,
             styles.icon.animation,
           ]}
-          onClick={() => active && onItemClicked?.('timer')}
+          onMouseDown={() => active && onItemClicked?.('timer')}
+          onMouseUp={() => onMouseUp?.()}
         />
         <IconImage
           css={[
@@ -66,7 +68,8 @@ function Toolbar({ active, onItemClicked, ...props }: ToolbarProps) {
             styles.icon[active ? 'active' : 'disabled'].style,
             styles.icon.animation,
           ]}
-          onClick={() => active && onItemClicked?.('image')}
+          onMouseDown={() => active && onItemClicked?.('image')}
+          onMouseUp={() => onMouseUp?.()}
         />
         <IconTip
           css={[
@@ -74,7 +77,8 @@ function Toolbar({ active, onItemClicked, ...props }: ToolbarProps) {
             styles.icon[active ? 'active' : 'disabled'].style,
             styles.icon.animation,
           ]}
-          onClick={() => active && onItemClicked?.('tip')}
+          onMouseDown={() => active && onItemClicked?.('tip')}
+          onMouseUp={() => onMouseUp?.()}
         />
       </Stack>
     </motion.div>

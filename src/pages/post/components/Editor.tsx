@@ -42,13 +42,11 @@ export interface PostDataType {
 function Editor({ ...props }: EditorProps) {
   const [ingrCount, setIngrCount] = useState(1);
   const [textCount, setTextCount] = useState(1);
+  const [lastFocusedIndex, setLastFocusedIndex] = useState<number>();
   const [isFocused, setIsFocused] = useState(false);
   const [data, setData] = useState<PostDataType>({
     ingredients: [{ groupTitle: '', tags: [], key: ingrCount }],
-    text: [
-      { value: '', index: 1, key: textCount, id: 'index-text' },
-      { id: 'tip', value: '', key: textCount - 1 },
-    ],
+    text: [{ value: '', index: 1, key: textCount, id: 'index-text' }],
   });
   const textRefs = useRef<Array<HTMLTextAreaElement | HTMLInputElement | null>>(
     [],
@@ -111,9 +109,15 @@ function Editor({ ...props }: EditorProps) {
     setTextCount(textCount + 1);
   };
 
-  const handleTextDelete = (value: string, targetIndex: number) => {
+  const handleTextDelete = (
+    value: string,
+    targetIndex: number,
+    type: string,
+  ) => {
     const prevRef = textRefs.current[targetIndex - 1];
-    if (data.text.length === 1) return;
+    // const countText = // find key is 'index-text' from data.text
+    const remainText = data.text.filter((item) => item.id === 'index-text');
+    if (remainText.length <= 1 && type === 'index-text') return;
     setData({
       ...data,
       text: data.text
@@ -159,8 +163,31 @@ function Editor({ ...props }: EditorProps) {
     }
   };
 
-  const handleFocusBlur = (isFocus: boolean) => {
+  const handleFocusBlur = (isFocus: boolean, index: number) => {
+    if (isFocus) setLastFocusedIndex(index);
     setIsFocused(isFocus);
+  };
+
+  const handleToolBarClick = (type: 'tip' | 'image' | 'timer') => {
+    if (lastFocusedIndex !== undefined)
+      switch (type) {
+        case 'tip':
+          setData(
+            produce(data, (draft) => {
+              draft.text.splice(lastFocusedIndex + 1, 0, {
+                id: 'tip',
+                value: '',
+                key: textCount + 1,
+              });
+            }),
+          );
+          setTextCount(textCount + 1);
+          break;
+        case 'image':
+          break;
+        case 'timer':
+          break;
+      }
   };
 
   return (
@@ -188,26 +215,37 @@ function Editor({ ...props }: EditorProps) {
               propsValue={item}
               onValueChange={(data) => handleTextChange(data, index)}
               onSubmit={(value) => handleTextSubmit(value, index)}
-              onDelete={(value) => handleTextDelete(value, index)}
+              onDelete={(value) => handleTextDelete(value, index, item.id)}
               onClickArrowKey={(direction, caretPosition) =>
                 handleInputArrowKey(direction, caretPosition, index)
               }
               placeholder="이미지와 함께 조리과정을 적어보세요."
-              onFocusBlur={handleFocusBlur}
+              onFocusBlur={(isFocus) => handleFocusBlur(isFocus, index)}
             />
           ) : item.id === 'tip' ? (
             <Tip
+              key={`data-tip-${item.key}`}
               ref={(el) => (textRefs.current[index] = el)}
-              onCursorChange={(direction, caretPos) =>
+              onClickArrowKey={(direction, caretPos) =>
                 handleInputArrowKey(direction, caretPos, index)
               }
+              onSubmit={(value) => handleTextSubmit(value, index)}
+              onDelete={(value) => handleTextDelete(value, index, item.id)}
+              onFocusBlur={(isFocus) => handleFocusBlur(isFocus, index)}
             />
           ) : (
             <>hi</>
           ),
         )}
       </Stack>
-      <Toolbar active={isFocused} onItemClicked={(type) => type} />
+      <Toolbar
+        active={isFocused}
+        onItemClicked={handleToolBarClick}
+        onMouseUp={() =>
+          lastFocusedIndex !== undefined &&
+          textRefs.current[lastFocusedIndex]?.focus()
+        }
+      />
     </Stack>
   );
 }

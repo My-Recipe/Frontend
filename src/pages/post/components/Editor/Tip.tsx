@@ -1,7 +1,8 @@
+import { mergeRef } from '@/utils/components';
 import DesignSystem from '@/utils/designSystem';
 import { Group, Typography } from '@base';
 import { css } from '@emotion/react';
-import { KeyboardEvent, forwardRef } from 'react';
+import { KeyboardEvent, forwardRef, useEffect, useRef, useState } from 'react';
 
 const style = {
   root: css({
@@ -17,35 +18,71 @@ const style = {
 
 export interface TipProps {
   onChange?: (value: string) => void;
-  onCursorChange?: (diraction: 'up' | 'down', caretPos?: number) => void;
+  onClickArrowKey?: (diraction: 'up' | 'down', caretPos?: number) => void;
+  onSubmit?: (value: string) => void;
+  onDelete?: (value: string) => void;
+  onFocusBlur?: (isFocus: boolean) => void;
 }
 const Tip = forwardRef<HTMLInputElement, TipProps>(function Tip(
-  { onChange, onCursorChange, ...props },
+  { onChange, onClickArrowKey, onDelete, onSubmit, onFocusBlur, ...props },
   ref,
 ) {
+  const [inputValue, setInputValue] = useState('');
+  const tipRef = useRef<HTMLInputElement>(null);
+
+  const mergedRef = ref ? mergeRef(ref, tipRef) : tipRef;
+
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-      onCursorChange?.(e.key === 'ArrowUp' ? 'up' : 'down');
+      onClickArrowKey?.(e.key === 'ArrowUp' ? 'up' : 'down');
     } else if (e.currentTarget.selectionStart === 0 && e.key === 'ArrowLeft') {
-      onCursorChange?.('up', -1);
+      onClickArrowKey?.('up', -1);
     } else if (
       e.currentTarget.selectionStart === e.currentTarget.value.length &&
       e.key === 'ArrowRight'
     ) {
-      onCursorChange?.('down', 0);
+      onClickArrowKey?.('down', 0);
+    }
+
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const caretPos = e.currentTarget.selectionStart;
+      if (caretPos === null) return;
+      const [tipValue, etcValue] = [
+        inputValue.substring(0, caretPos),
+        inputValue.substring(caretPos),
+      ];
+      setInputValue(tipValue);
+      onSubmit?.(etcValue);
+    } else if (
+      e.key === 'Backspace' &&
+      (inputValue === '' || e.currentTarget.selectionStart === 0)
+    ) {
+      e.preventDefault();
+      onDelete?.(inputValue);
+      setInputValue('');
     }
   };
+
+  useEffect(() => {
+    onChange?.(inputValue);
+  }, [inputValue]);
+
   return (
     <Group gap={20} css={style.root}>
       <Typography variant="body" color={DesignSystem.Color.secondary.green}>
         TIP
       </Typography>
       <input
-        ref={ref}
+        ref={mergedRef}
+        value={inputValue}
         maxLength={65}
-        onInput={(e) => onChange?.(e.currentTarget.value)}
+        onInput={(e) => setInputValue(e.currentTarget.value)}
         onKeyDown={handleKeyDown}
         css={style.input}
+        onFocus={() => onFocusBlur?.(true)}
+        onBlur={() => onFocusBlur?.(false)}
+        autoFocus
       />
     </Group>
   );
