@@ -3,10 +3,10 @@ import { Stack, Stroke } from '@base';
 import { css } from '@emotion/react';
 import { produce } from 'immer';
 import { useRef, useState } from 'react';
-import Ingredient, { IngredientType } from './Ingredient';
-import TextInput, { TextInputValueItemType } from './TextInput';
-import Tip from './Tip';
-import Toolbar from './Toolbar';
+import Ingredient, { IngredientType } from './Editor/Ingredient';
+import TextInput, { TextInputValueItemType } from './Editor/TextInput';
+import Tip from './Editor/Tip';
+import Toolbar from './Editor/Toolbar';
 
 const editorStyles = {
   root: css({
