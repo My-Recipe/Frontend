@@ -57,13 +57,13 @@ function Editor({ ...props }: EditorProps) {
     targetIndex: number,
     key: number,
   ) => {
-    if (targetIndex === 0) {
+    if (targetIndex === data.ingredients.length - 1) {
       if (item.groupTitle === '') return;
       setData({
         ...data,
         ingredients: [
-          { groupTitle: '', tags: [], key: ingrCount + 1 },
           ...data.ingredients,
+          { groupTitle: '', tags: [], key: ingrCount + 1 },
         ],
       });
       setIngrCount(ingrCount + 1);
