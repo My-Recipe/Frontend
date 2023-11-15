@@ -2,7 +2,8 @@ import { mergeRef } from '@/utils/components';
 import DesignSystem from '@/utils/designSystem';
 import { Group, Typography } from '@base';
 import { css } from '@emotion/react';
-import { KeyboardEvent, forwardRef, useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
+import { keyDownEventHandler } from './utils';
 
 const style = {
   root: css({
@@ -33,37 +34,13 @@ const Tip = forwardRef<HTMLInputElement, TipProps>(function Tip(
 
   const mergedRef = ref ? mergeRef(ref, tipRef) : tipRef;
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-      onClickArrowKey?.(e.key === 'ArrowUp' ? 'up' : 'down');
-    } else if (e.currentTarget.selectionStart === 0 && e.key === 'ArrowLeft') {
-      onClickArrowKey?.('up', -1);
-    } else if (
-      e.currentTarget.selectionStart === e.currentTarget.value.length &&
-      e.key === 'ArrowRight'
-    ) {
-      onClickArrowKey?.('down', 0);
-    }
-
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      const caretPos = e.currentTarget.selectionStart;
-      if (caretPos === null) return;
-      const [tipValue, etcValue] = [
-        inputValue.substring(0, caretPos),
-        inputValue.substring(caretPos),
-      ];
-      setInputValue(tipValue);
-      onSubmit?.(etcValue);
-    } else if (
-      e.key === 'Backspace' &&
-      (inputValue === '' || e.currentTarget.selectionStart === 0)
-    ) {
-      e.preventDefault();
-      onDelete?.(inputValue);
-      setInputValue('');
-    }
-  };
+  const handleKeyDown = keyDownEventHandler({
+    onClickArrowKey,
+    onDelete,
+    onSubmit,
+    setValue: setInputValue,
+    value: inputValue,
+  });
 
   useEffect(() => {
     onChange?.(inputValue);

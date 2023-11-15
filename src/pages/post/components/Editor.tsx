@@ -5,6 +5,7 @@ import { produce } from 'immer';
 import { useRef, useState } from 'react';
 import Ingredient, { IngredientType } from './Editor/Ingredient';
 import TextInput, { TextInputValueItemType } from './Editor/TextInput';
+import Timer from './Editor/Timer';
 import Tip from './Editor/Tip';
 import Toolbar from './Editor/Toolbar';
 
@@ -204,8 +205,19 @@ function Editor({ ...props }: EditorProps) {
               });
             }),
           );
+          setDataCount(dataCount + 1);
           break;
         case 'timer':
+          setData(
+            produce(data, (draft) => {
+              draft.text.splice(lastFocusedIndex + 1, 0, {
+                id: 'timer',
+                value: '',
+                key: dataCount + 1,
+              });
+            }),
+          );
+          setDataCount(dataCount + 1);
           break;
       }
   };
@@ -256,6 +268,18 @@ function Editor({ ...props }: EditorProps) {
               loading="lazy"
               src={item.value}
               key={`data-image-${item.key}`}
+            />
+          ) : item.id === 'timer' ? (
+            <Timer
+              key={`data-timer-${item.key}`}
+              ref={(el) => (textRefs.current[index] = el)}
+              onChange={(data) => handleTextChange(data, index)}
+              onClickArrowKey={(direction, caretPos) =>
+                handleInputArrowKey(direction, caretPos, index)
+              }
+              onSubmit={(value) => handleTextSubmit(value, index)}
+              onDelete={(value) => handleTextDelete(value, index, item.id)}
+              onFocusBlur={(isFocus) => handleFocusBlur(isFocus, index)}
             />
           ) : (
             <>hi</>
