@@ -9,8 +9,8 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { RecipeBookType } from '..';
 
 interface BookSettingProps {
-  data: { title: string; intro: string; forPublic: boolean };
-  onSubmit: ({ data: { title, intro, forPublic } }: RecipeBookType) => void;
+  data: RecipeBookType;
+  onSubmit: (data: RecipeBookType) => void;
   submitText: string;
 }
 
@@ -19,9 +19,16 @@ function BookSetting({
   onSubmit,
   submitText,
 }: BookSettingProps) {
-  const [inputTitle, setInputTitle] = useState(title);
-  const [inputIntro, setInputIntro] = useState(intro);
-  const [inputForPublic, setInputForPublic] = useState(forPublic);
+  const [inputData, setInputData] = useState<RecipeBookType>({
+    title: '',
+    intro: '',
+    forPublic: true,
+  });
+  const {
+    title: inputTitle,
+    intro: inputIntro,
+    forPublic: inputForPublic,
+  } = inputData;
   const bookSettingStyle = {
     innerContent: {
       wrapper: css({ width: '100%' }),
@@ -56,7 +63,13 @@ function BookSetting({
           레시피북 제목
         </Typography>
 
-        <TextInput value={inputTitle} setValue={setInputTitle} maxLength={20} />
+        <TextInput
+          value={inputTitle}
+          setValue={(text) => {
+            setInputData({ ...inputData, title: text });
+          }}
+          maxLength={20}
+        />
       </Stack>
       <Stack spacing={20} css={bookSettingStyle.innerContent.checkboxStack}>
         <Typography variant="info" color={DesignSystem.Color.text.gray}>
@@ -66,7 +79,7 @@ function BookSetting({
           <Group
             gap={2}
             onClick={() => {
-              setInputForPublic(true);
+              setInputData({ ...inputData, forPublic: true });
             }}
             css={bookSettingStyle.innerContent.checkbox}
           >
@@ -76,7 +89,7 @@ function BookSetting({
           <Group
             gap={2}
             onClick={() => {
-              setInputForPublic(false);
+              setInputData({ ...inputData, forPublic: false });
             }}
             css={bookSettingStyle.innerContent.checkbox}
           >
@@ -91,19 +104,19 @@ function BookSetting({
         <Typography variant="info" color={DesignSystem.Color.text.gray}>
           한줄 소개
         </Typography>
-        <TextInput value={inputIntro} setValue={setInputIntro} maxLength={45} />
+        <TextInput
+          value={inputIntro}
+          setValue={(text) => {
+            setInputData({ ...inputData, intro: text });
+          }}
+          maxLength={45}
+        />
       </Stack>
       <Button
         variant="icon"
         css={bookSettingStyle.innerContent.button}
         onClick={() => {
-          onSubmit({
-            data: {
-              title: inputTitle,
-              intro: inputIntro,
-              forPublic: inputForPublic,
-            },
-          });
+          onSubmit(inputData);
         }}
       >
         {submitText}
@@ -113,7 +126,7 @@ function BookSetting({
 }
 interface TextInputProps {
   value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
+  setValue: (text: string) => void;
   maxLength: number;
 }
 function TextInput({ value, setValue, maxLength }: TextInputProps) {

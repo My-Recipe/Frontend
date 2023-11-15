@@ -10,47 +10,16 @@ import Button from '@copmonents/Button';
 import Modal from '@copmonents/Modal';
 import ToggleButton from '@copmonents/Toggle/ToggleButton';
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Recipes from '../home/components/Recipes';
 import BookSetting from './components/BookSetting';
 export interface RecipeBookType {
-  data: { title: string; intro: string; forPublic: boolean };
+  title: string;
+  intro: string;
+  forPublic: boolean;
 }
-const newMyPageStyles = {
-  root: css(globalStyles.center, { height: '100dvh' }),
-  background: css({
-    zIndex: 0,
-    background: `no-repeat url(${BackgroundImg})`,
-    backgroundSize: 'cover',
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    filter: 'blur(6px)',
-    top: 0,
-    left: 0,
-  }),
-  blur: css({
-    zIndex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    width: '100%',
-    height: '100%',
-  }),
-  wrapper: css(
-    {
-      background: DesignSystem.Color.background.white,
-      borderRadius: 32,
-      width: 658,
-      position: 'relative',
-      zIndex: 2,
-      margin: '116px 0 170px 0',
-      padding: '80px 60px 38px 60px',
-    },
-    globalStyles.center,
-  ),
-};
+
 const myPageStyles = {
   wrapper: css(globalStyles.center, {}),
   banner: {
@@ -106,28 +75,31 @@ const myPageStyles = {
   },
 };
 function MyPage({ ...props }) {
-  const [title, setTitle] = useState('');
-  const [intro, setIntro] = useState('');
-  const [forPublic, setForPublic] = useState(true);
+  const [myData, setMyData] = useState<RecipeBookType>({
+    title: '',
+    intro: '',
+    forPublic: true,
+  });
   const [linkOpened, setLinkOpened] = useState(false);
   const [editOpened, setEditOpened] = useState(false);
-  const [url, setUrl] = useState('Link');
+  const URL = 'Link';
+  const { title, intro, forPublic } = myData;
   const handleCopy = () => {
-    navigator.clipboard.writeText(url);
+    navigator.clipboard.writeText(URL);
   };
-  const onSubmitClick = ({
-    data: { title, intro, forPublic },
-  }: RecipeBookType) => {
-    setTitle(title);
-    setIntro(intro);
-    setForPublic(forPublic);
+  const onSubmitClick = (data: RecipeBookType) => {
+    setMyData(data);
     editOpened && setEditOpened(false);
   };
-  return title && intro ? (
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!title && !intro) navigate('/mypage/initial');
+  }, [title, intro]);
+  return (
     <Stack spacing={150} css={myPageStyles.wrapper}>
       <Modal opened={editOpened}>
         <BookSetting
-          data={{ title, intro, forPublic }}
+          data={myData}
           onSubmit={onSubmitClick}
           submitText="레시피북 수정 완료하기"
         />
@@ -142,7 +114,7 @@ function MyPage({ ...props }) {
               variant="button"
               css={myPageStyles.banner.copyLink.linkBox}
             >
-              {url}
+              {URL}
             </Typography>
             <Typography
               variant="button"
@@ -181,7 +153,7 @@ function MyPage({ ...props }) {
               variant="icon"
               onClick={() => {
                 setLinkOpened(true);
-                navigator.clipboard.writeText(url);
+                navigator.clipboard.writeText(URL);
               }}
             >
               링크 공유하기
@@ -193,7 +165,7 @@ function MyPage({ ...props }) {
           <Group
             gap={2}
             onClick={() => {
-              setForPublic(true);
+              setMyData({ ...myData, forPublic: false });
             }}
             css={myPageStyles.banner.checkbox}
             nowrap
@@ -204,7 +176,7 @@ function MyPage({ ...props }) {
           <Group
             gap={2}
             onClick={() => {
-              setForPublic(false);
+              setMyData({ ...myData, forPublic: false });
             }}
             css={myPageStyles.banner.checkbox}
             nowrap
@@ -257,18 +229,6 @@ function MyPage({ ...props }) {
         />
       </Stack>
     </Stack>
-  ) : (
-    <div css={newMyPageStyles.root}>
-      <div css={newMyPageStyles.background} />
-      <div css={newMyPageStyles.blur} />
-      <div css={newMyPageStyles.wrapper}>
-        <BookSetting
-          data={{ title, intro, forPublic }}
-          onSubmit={onSubmitClick}
-          submitText="이대로 레시피북 생성하기"
-        />
-      </div>
-    </div>
   );
 }
 
