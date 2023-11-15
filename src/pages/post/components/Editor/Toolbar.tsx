@@ -28,11 +28,24 @@ const styles = {
     },
     animation: css(globalStyles.animation.all(200)),
   },
+  input: css({
+    position: 'absolute',
+    width: '1px',
+    height: '1px',
+    padding: '0',
+    margin: '-1px',
+    overflow: 'hidden',
+    clip: 'rect(0,0,0,0)',
+    border: '0',
+  }),
 };
 
 export interface ToolbarProps {
   active?: boolean;
-  onItemClicked?: (clickedItem: 'timer' | 'image' | 'tip') => void;
+  onItemClicked?: (
+    clickedItem: 'timer' | 'image' | 'tip',
+    imageSrc?: string,
+  ) => void;
   onMouseUp?: () => void;
 }
 
@@ -62,15 +75,31 @@ function Toolbar({ active, onItemClicked, onMouseUp, ...props }: ToolbarProps) {
           onMouseDown={() => active && onItemClicked?.('timer')}
           onMouseUp={() => onMouseUp?.()}
         />
-        <IconImage
-          css={[
-            { stroke: styles.icon[active ? 'active' : 'disabled'].svg },
-            styles.icon[active ? 'active' : 'disabled'].style,
-            styles.icon.animation,
-          ]}
-          onMouseDown={() => active && onItemClicked?.('image')}
-          onMouseUp={() => onMouseUp?.()}
-        />
+        <div>
+          <label htmlFor="ex_file">
+            <IconImage
+              css={[
+                { stroke: styles.icon[active ? 'active' : 'disabled'].svg },
+                styles.icon[active ? 'active' : 'disabled'].style,
+                styles.icon.animation,
+              ]}
+              // onMouseDown={() => active && onItemClicked?.('image')}
+              onMouseUp={() => onMouseUp?.()}
+            />
+          </label>
+          <input
+            css={styles.input}
+            id="ex_file"
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              onItemClicked?.(
+                'image',
+                'https://recipe1.ezmember.co.kr/cache/recipe/2017/04/25/9dcf6bd106995d4a2c8c580ea0fbe24f1.jpg',
+              );
+            }}
+          />
+        </div>
         <IconTip
           css={[
             { fill: styles.icon[active ? 'active' : 'disabled'].svg },

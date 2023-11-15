@@ -8,9 +8,9 @@ import TextInput, { TextInputValueItemType } from './Editor/TextInput';
 import Tip from './Editor/Tip';
 import Toolbar from './Editor/Toolbar';
 
-const editorStyles = {
+const styles = {
   root: css({
-    padding: '154px 82px',
+    padding: '154px 82px 0 82px',
     border: '1px solid var(--background-disabled)',
     background: DesignSystem.Color.background.white,
   }),
@@ -28,6 +28,11 @@ const editorStyles = {
     backgroundColor: DesignSystem.Color.background.disabled,
     marginTop: 12,
   }),
+  addArea: css({
+    cursor: 'text',
+    height: 154,
+    marginTop: -12,
+  }),
 };
 
 export interface EditorProps {}
@@ -41,12 +46,12 @@ export interface PostDataType {
 
 function Editor({ ...props }: EditorProps) {
   const [ingrCount, setIngrCount] = useState(1);
-  const [textCount, setTextCount] = useState(1);
+  const [dataCount, setDataCount] = useState(1);
   const [lastFocusedIndex, setLastFocusedIndex] = useState<number>();
   const [isFocused, setIsFocused] = useState(false);
   const [data, setData] = useState<PostDataType>({
     ingredients: [{ groupTitle: '', tags: [], key: ingrCount }],
-    text: [{ value: '', index: 1, key: textCount, id: 'index-text' }],
+    text: [{ value: '', index: 1, key: dataCount, id: 'index-text' }],
   });
   const textRefs = useRef<Array<HTMLTextAreaElement | HTMLInputElement | null>>(
     [],
@@ -76,12 +81,14 @@ function Editor({ ...props }: EditorProps) {
   };
 
   const handleTextChange = (
-    item: Partial<TextInputValueItemType>,
+    item: Partial<TextInputValueItemType> | string,
     targetIndex: number,
   ) => {
     setData(
       produce((draft) => {
-        draft.text[targetIndex] = { ...draft.text[targetIndex], ...item };
+        if (typeof item === 'string')
+          draft.text[targetIndex] = { ...draft.text[targetIndex], value: item };
+        else draft.text[targetIndex] = { ...draft.text[targetIndex], ...item };
       }),
     );
   };
@@ -100,13 +107,13 @@ function Editor({ ...props }: EditorProps) {
         {
           value,
           index: prevItem?.index && prevItem.index + 1,
-          key: textCount + 1,
+          key: dataCount + 1,
           id: 'index-text',
         },
         ...data.text.slice(index + 1),
       ],
     });
-    setTextCount(textCount + 1);
+    setDataCount(dataCount + 1);
   };
 
   const handleTextDelete = (
@@ -168,7 +175,10 @@ function Editor({ ...props }: EditorProps) {
     setIsFocused(isFocus);
   };
 
-  const handleToolBarClick = (type: 'tip' | 'image' | 'timer') => {
+  const handleToolBarClick = (
+    type: 'tip' | 'image' | 'timer',
+    imageSrc?: string,
+  ) => {
     if (lastFocusedIndex !== undefined)
       switch (type) {
         case 'tip':
@@ -177,13 +187,23 @@ function Editor({ ...props }: EditorProps) {
               draft.text.splice(lastFocusedIndex + 1, 0, {
                 id: 'tip',
                 value: '',
-                key: textCount + 1,
+                key: dataCount + 1,
               });
             }),
           );
-          setTextCount(textCount + 1);
+          setDataCount(dataCount + 1);
           break;
         case 'image':
+          if (!imageSrc) break;
+          setData(
+            produce(data, (draft) => {
+              draft.text.splice(lastFocusedIndex + 1, 0, {
+                id: 'image',
+                value: imageSrc,
+                key: dataCount + 1,
+              });
+            }),
+          );
           break;
         case 'timer':
           break;
@@ -191,13 +211,10 @@ function Editor({ ...props }: EditorProps) {
   };
 
   return (
-    <Stack spacing={85} css={editorStyles.root}>
+    <Stack spacing={85} css={styles.root}>
       <div>
-        <input
-          css={editorStyles.input}
-          placeholder="레시피의 이름을 알려주세요."
-        />
-        <Stroke css={editorStyles.stroke} />
+        <input css={styles.input} placeholder="레시피의 이름을 알려주세요." />
+        <Stroke css={styles.stroke} />
       </div>
       <Stack spacing={12}>
         {data.ingredients.map(({ key }, listIndex) => (
@@ -226,6 +243,7 @@ function Editor({ ...props }: EditorProps) {
             <Tip
               key={`data-tip-${item.key}`}
               ref={(el) => (textRefs.current[index] = el)}
+              onChange={(data) => handleTextChange(data, index)}
               onClickArrowKey={(direction, caretPos) =>
                 handleInputArrowKey(direction, caretPos, index)
               }
@@ -233,10 +251,25 @@ function Editor({ ...props }: EditorProps) {
               onDelete={(value) => handleTextDelete(value, index, item.id)}
               onFocusBlur={(isFocus) => handleFocusBlur(isFocus, index)}
             />
+          ) : item.id === 'image' ? (
+            <img
+              loading="lazy"
+              src={item.value}
+              key={`data-image-${item.key}`}
+            />
           ) : (
             <>hi</>
           ),
         )}
+        <div
+          css={styles.addArea}
+          onClick={() => {
+            const length = data.text.length;
+            if (data.text[length - 1].value === '')
+              textRefs.current[length - 1]?.focus();
+            else handleTextSubmit('', length - 1);
+          }}
+        />
       </Stack>
       <Toolbar
         active={isFocused}
