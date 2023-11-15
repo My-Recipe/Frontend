@@ -7,6 +7,7 @@ import { KeyboardEvent, forwardRef, useEffect, useRef, useState } from 'react';
 const style = {
   root: css({
     padding: '12px 23px',
+    width: 1054,
     borderRadius: DesignSystem.Round.solid,
     background: DesignSystem.Color.background.gray,
   }),
@@ -76,7 +77,7 @@ const Tip = forwardRef<HTMLInputElement, TipProps>(function Tip(
       <input
         ref={mergedRef}
         value={inputValue}
-        maxLength={65}
+        maxLength={60}
         onInput={(e) => setInputValue(e.currentTarget.value)}
         onKeyDown={handleKeyDown}
         css={style.input}
