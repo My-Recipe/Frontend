@@ -2,7 +2,7 @@ import DesignSystem from '@/utils/designSystem';
 import { Stack, Stroke } from '@base';
 import { css } from '@emotion/react';
 import { produce } from 'immer';
-import { useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import Image from './Editor/Image';
 import Ingredient, { IngredientType } from './Editor/Ingredient';
 import TextInput, { TextInputValueItemType } from './Editor/TextInput';
@@ -37,16 +37,19 @@ const styles = {
   }),
 };
 
-export interface EditorProps {}
+export interface EditorProps {
+  onChange: (data: PostDataType) => void;
+}
 
 export type TextType = TextInputValueItemType & { key: number; id: string };
 
 export interface PostDataType {
   ingredients: (IngredientType & { key: number })[];
   text: TextType[];
+  title: string;
 }
 
-function Editor({ ...props }: EditorProps) {
+function Editor({ onChange, ...props }: EditorProps) {
   const [ingrCount, setIngrCount] = useState(1);
   const [dataCount, setDataCount] = useState(1);
   const [lastFocusedIndex, setLastFocusedIndex] = useState<number>();
@@ -55,6 +58,7 @@ function Editor({ ...props }: EditorProps) {
   const [data, setData] = useState<PostDataType>({
     ingredients: [{ groupTitle: '', tags: [], key: ingrCount }],
     text: [{ value: '', index: 1, key: dataCount, id: 'index-text' }],
+    title: '',
   });
   const textRefs = useRef<Array<HTMLTextAreaElement | HTMLInputElement | null>>(
     [],
@@ -65,6 +69,17 @@ function Editor({ ...props }: EditorProps) {
     const image = data.text.find((item) => item.id === 'image');
     if (image) setTitleImage(image.key);
   }, [titleImage]);
+
+  useEffect(() => {
+    onChange(data);
+  }, [data]);
+
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setData({
+      ...data,
+      title: e.target.value,
+    });
+  };
 
   const handleIngrChange = (
     item: IngredientType,
@@ -249,7 +264,11 @@ function Editor({ ...props }: EditorProps) {
   return (
     <Stack spacing={85} css={styles.root}>
       <div>
-        <input css={styles.input} placeholder="레시피의 이름을 알려주세요." />
+        <input
+          css={styles.input}
+          placeholder="레시피의 이름을 알려주세요."
+          onChange={handleTitleChange}
+        />
         <Stroke css={styles.stroke} />
       </div>
       <Stack spacing={12}>
