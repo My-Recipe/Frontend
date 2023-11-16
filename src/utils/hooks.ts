@@ -87,6 +87,12 @@ export function useInterval(callback: IntervalFunction, delay: number) {
   return () => setClearTrigger(!clearTrigger);
 }
 
+/**
+ * 대상 ref를 제외한 바깥쪽 클릭이벤트를 감지해주는 hooks 입니다.
+ * @param handler - outside click시 실행되는 callback 함수
+ * @param preventClickRefs - click 이벤트에서 제외할 ref / refs
+ * @returns 기준이 되는 ref
+ */
 export function useClickOutside<T extends HTMLElement>(
   handler: () => void,
   preventClickRefs?: RefObject<HTMLElement>[] | RefObject<HTMLElement>,
