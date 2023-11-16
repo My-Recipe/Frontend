@@ -73,13 +73,15 @@ function Editor({ ...props }: EditorProps) {
   ) => {
     if (targetIndex === data.ingredients.length - 1) {
       if (item.groupTitle === '') return;
-      setData({
-        ...data,
-        ingredients: [
-          ...data.ingredients,
-          { groupTitle: '', tags: [], key: ingrCount + 1 },
-        ],
-      });
+      setData(
+        produce((draft) => {
+          draft.ingredients.push({
+            groupTitle: '',
+            tags: [],
+            key: ingrCount + 1,
+          });
+        }),
+      );
       setIngrCount(ingrCount + 1);
     } else
       setData(
@@ -87,6 +89,18 @@ function Editor({ ...props }: EditorProps) {
           draft.ingredients[targetIndex] = { ...item, key };
         }),
       );
+  };
+
+  const handleIngrDelete = (targetIndex: number) => {
+    if (
+      data.ingredients.length === 1 ||
+      targetIndex === data.ingredients.length - 1
+    )
+      return;
+    setData({
+      ...data,
+      ingredients: data.ingredients.filter((_, index) => index !== targetIndex),
+    });
   };
 
   const handleTextChange = (
@@ -239,13 +253,20 @@ function Editor({ ...props }: EditorProps) {
         <Stroke css={styles.stroke} />
       </div>
       <Stack spacing={12}>
-        {data.ingredients.map(({ key }, listIndex) => (
-          <Ingredient
-            key={`data-ingr-${key}`}
-            onChange={(item) => handleIngrChange(item, listIndex, key)}
-            index={key}
-          />
-        ))}
+        {data.ingredients.map(({ key }, listIndex) => {
+          const onRemove =
+            listIndex !== data.ingredients.length - 1
+              ? () => handleIngrDelete(listIndex)
+              : undefined;
+          return (
+            <Ingredient
+              key={`data-ingr-${key}`}
+              onChange={(item) => handleIngrChange(item, listIndex, key)}
+              onRemove={onRemove}
+              index={key}
+            />
+          );
+        })}
         {data.text.map((item, index) =>
           item.id === 'index-text' ? (
             <TextInput

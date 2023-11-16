@@ -1,12 +1,14 @@
+import { ReactComponent as IconCancel } from '@/assets/icon-cancel.svg';
 import DesignSystem from '@/utils/designSystem';
 import { useComposing } from '@/utils/hooks';
+import globalStyles from '@/utils/styles';
 import { Group, Stack } from '@base';
 import Button from '@copmonents/Button';
 import Tag from '@copmonents/Tag';
 import { css } from '@emotion/react';
 import { KeyboardEvent, MouseEvent, useEffect, useState } from 'react';
 
-const ingredientStyles = {
+const styles = {
   root: css({
     borderRadius: DesignSystem.Round.solid,
     border: `1.4px solid ${DesignSystem.Color.background.disabled}`,
@@ -16,6 +18,7 @@ const ingredientStyles = {
     {
       '::placeholder': { color: DesignSystem.Color.text.gray },
       color: DesignSystem.Color.text.black,
+      flex: 1,
     },
     DesignSystem.Text.subtitle,
   ),
@@ -31,6 +34,7 @@ const ingredientStyles = {
         flex: 1,
         height: '100%',
         boxSizing: 'border-box',
+        maxWidth: 658,
       },
       DesignSystem.Text.body,
     ),
@@ -38,6 +42,19 @@ const ingredientStyles = {
       padding: '14.5px 29px',
       height: '100%',
       borderRadius: DesignSystem.Round.solid,
+    }),
+    group: css({ maxWidth: 658 }),
+  },
+  cancel: {
+    wrapper: css(globalStyles.button, globalStyles.center, {
+      width: 36,
+      height: 36,
+    }),
+    root: css({
+      fill: DesignSystem.Color.text.gray,
+    }),
+    hover: css({
+      fill: DesignSystem.Color.text.black,
     }),
   },
 };
@@ -55,6 +72,7 @@ export type IngredientType = {
 export interface IngredientProps {
   index: number;
   onChange?: (item: IngredientType) => void;
+  onRemove?: () => void;
 }
 
 let ingrCounter = 0;
@@ -64,10 +82,11 @@ const tagsColors = [
   DesignSystem.Color.secondary.green,
 ];
 
-function Ingredient({ index, onChange, ...props }: IngredientProps) {
+function Ingredient({ index, onChange, onRemove, ...props }: IngredientProps) {
   const [ingrTags, setIngrTags] = useState<IngredientTagsType[]>([]);
   const [ingrGroup, setIngrGroup] = useState('');
   const [newIngrLabel, setNewIngrLabel] = useState('');
+  const [cancelHover, setCancelHover] = useState(false);
 
   const [isComposing, composeProps] = useComposing();
 
@@ -95,16 +114,30 @@ function Ingredient({ index, onChange, ...props }: IngredientProps) {
   };
 
   return (
-    <Stack css={ingredientStyles.root} spacing={60}>
-      <input
-        css={ingredientStyles.input}
-        placeholder={`재료 그룹 ${index}`}
-        onChange={(e) => setIngrGroup(e.target.value)}
-      />
+    <Stack css={styles.root} spacing={60}>
+      <Group position="apart">
+        <input
+          css={styles.input}
+          placeholder={`재료 그룹 ${index}`}
+          onChange={(e) => setIngrGroup(e.target.value)}
+        />
+        {onRemove && (
+          <div
+            css={styles.cancel.wrapper}
+            onMouseOut={() => setCancelHover(false)}
+            onMouseOver={() => setCancelHover(true)}
+            onClick={onRemove}
+          >
+            <IconCancel
+              css={[styles.cancel.root, cancelHover && styles.cancel.hover]}
+            />
+          </div>
+        )}
+      </Group>
       <Stack spacing={20}>
-        <Group css={ingredientStyles.ingr.root} gap={12}>
+        <Group css={styles.ingr.root} gap={12}>
           <input
-            css={[ingredientStyles.input, ingredientStyles.ingr.input]}
+            css={[styles.input, styles.ingr.input]}
             placeholder="ex) 돼지고기"
             value={newIngrLabel}
             onChange={(e) => setNewIngrLabel(e.target.value)}
@@ -112,15 +145,12 @@ function Ingredient({ index, onChange, ...props }: IngredientProps) {
             {...composeProps}
           />
           {newIngrLabel && (
-            <Button
-              onClick={onAddButtonClick}
-              css={ingredientStyles.ingr.button}
-            >
+            <Button onClick={onAddButtonClick} css={styles.ingr.button}>
               추가하기
             </Button>
           )}
         </Group>
-        <Group gap={6}>
+        <Group css={styles.ingr.group} gap={6}>
           {ingrTags.map(({ label, value }) => (
             <Tag
               color={tagsColors[(index - 1) % tagsColors.length]}
