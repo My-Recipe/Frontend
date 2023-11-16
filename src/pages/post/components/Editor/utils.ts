@@ -30,7 +30,7 @@ export const keyDownEventHandler =
       e.preventDefault();
       const caretPos = e.currentTarget.selectionEnd;
       if (caretPos === null) return;
-      if (value) {
+      if (value !== undefined) {
         const [tipValue, etcValue] = [
           value.substring(0, caretPos),
           value.substring(caretPos),
