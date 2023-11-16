@@ -116,7 +116,7 @@ const TextInput = forwardRef<HTMLTextAreaElement, TextInputProps>(
         // ArrowUp, ArrowDown 키를 눌렀을 때
         const caret = getCaretCoordinates(
           textareaRef.current,
-          textareaRef.current?.selectionStart || 0,
+          textareaRef.current?.selectionEnd || 0,
         );
         const top = 6;
         const bottom = e.currentTarget.offsetHeight - top - caret.height;
@@ -130,7 +130,7 @@ const TextInput = forwardRef<HTMLTextAreaElement, TextInputProps>(
         }
       } else if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
         // ArrowLeft, ArrowRight 키를 눌렀을 때
-        const caret = e.currentTarget.selectionStart;
+        const caret = e.currentTarget.selectionEnd;
         if (caret === 0 && e.code === 'ArrowLeft') {
           onClickArrowKey && onClickArrowKey('up', -1);
         } else if (caret === inputValue.length && e.code === 'ArrowRight') {
@@ -140,7 +140,7 @@ const TextInput = forwardRef<HTMLTextAreaElement, TextInputProps>(
 
       if (
         e.code === 'Backspace' &&
-        (inputValue === '' || e.currentTarget.selectionStart === 0)
+        (inputValue === '' || e.currentTarget.selectionEnd === 0)
       ) {
         // Backspace와 함께 inputValue가 비어있거나, 커서가 맨 앞에 있을 때
         // 즉, 사용자가 number 아이콘을 지우려는 동작
@@ -156,7 +156,7 @@ const TextInput = forwardRef<HTMLTextAreaElement, TextInputProps>(
       } else if (e.code === 'Enter' && !e.shiftKey) {
         //shift + Enter 가 아닌 동작
         e.preventDefault();
-        const caretIndex = e.currentTarget.selectionStart;
+        const caretIndex = e.currentTarget.selectionEnd;
         onValueChange({ index: undefined });
         onSubmit && onSubmit(inputValue.slice(caretIndex));
       }

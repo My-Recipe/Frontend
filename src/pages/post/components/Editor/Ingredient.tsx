@@ -158,6 +158,7 @@ function Ingredient({ index, onChange, onRemove, ...props }: IngredientProps) {
               label={label}
               value={value}
               onClick={onIngrTagsOnClose}
+              onClose={onIngrTagsOnClose}
             />
           ))}
         </Group>
