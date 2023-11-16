@@ -74,6 +74,32 @@ const myPageStyles = {
     },
   },
 };
+
+const mockData = {
+  recipes: [
+    {
+      name: '김치볶음밥',
+      author: '김준수',
+      contents: '김치를 열심히 뽂아뽂아',
+    },
+    {
+      name: '간장계란밥',
+      author: '짱구',
+      contents: '간장과 계란을 밥에 슥슥',
+    },
+    {
+      name: '김치우동',
+      author: '고죠 사토루',
+      contents: '우동에 김치를 사악',
+    },
+    {
+      name: '김치우동',
+      author: '고죠 사토루',
+      contents: '우동에 김치를 사악',
+    },
+  ],
+};
+
 function MyPage({ ...props }) {
   const [myData, setMyData] = useState<RecipeBookType>({
     title: '',
@@ -84,23 +110,93 @@ function MyPage({ ...props }) {
   const [editOpened, setEditOpened] = useState(false);
   const URL = 'Link';
   const { title, intro, forPublic } = myData;
+  const navigate = useNavigate();
+
   const handleCopy = () => {
     navigator.clipboard.writeText(URL);
   };
-  const onSubmitClick = (data: RecipeBookType) => {
+  const handleSubmit = (data: RecipeBookType) => {
     setMyData(data);
     editOpened && setEditOpened(false);
   };
-  const navigate = useNavigate();
+  const handleLink = () => {
+    setLinkOpened(true);
+    handleCopy();
+  };
+  const handlePublic = (forPublic: boolean) => {
+    setMyData({ ...myData, forPublic });
+  };
+  const handleEditClick = () => {
+    setEditOpened(true);
+  };
+
   useEffect(() => {
     if (!title && !intro) navigate('/mypage/initial');
   }, [title, intro]);
+
+  type ToggleSelectType = {
+    children: string;
+    isPublic: boolean;
+  };
+
+  const ToggleSelect = ({ children, isPublic }: ToggleSelectType) => (
+    <Group
+      gap={2}
+      onClick={() => handlePublic(isPublic)}
+      css={myPageStyles.banner.checkbox}
+      nowrap
+    >
+      <img src={isPublic === forPublic ? FillCheckbox : EmptyCheckbox} />
+      <Typography variant="button">{children}</Typography>
+    </Group>
+  );
+
   return (
-    <Stack spacing={150} css={myPageStyles.wrapper}>
+    <>
+      <Stack spacing={150} css={myPageStyles.wrapper}>
+        <Group nowrap align="flex-end" css={myPageStyles.banner.wrapper}>
+          <Stack spacing={134} css={myPageStyles.banner.background}>
+            <Stack spacing={10}>
+              <Typography variant="display">{title}</Typography>
+              <Typography variant="body">{intro}</Typography>
+            </Stack>
+            <Group nowrap gap={8}>
+              <Button variant="icon">새로운 레시피 생성하기</Button>
+              <Button variant="icon" onClick={handleLink}>
+                링크 공유하기
+              </Button>
+            </Group>
+          </Stack>
+          <Stack spacing={17} css={myPageStyles.banner.edit}>
+            <Typography variant="headline">
+              {mockData.recipes.length}개의 레시피
+            </Typography>
+            <ToggleSelect isPublic={true}>모든 대상에게 공개</ToggleSelect>
+            <ToggleSelect isPublic={false}>
+              링크를 가진 대상에게만 공개
+            </ToggleSelect>
+            <img
+              src={EditIcon}
+              css={myPageStyles.banner.editBtn}
+              onClick={handleEditClick}
+            />
+          </Stack>
+        </Group>
+        <Stack spacing={73}>
+          <Group position="apart">
+            <Group gap={16}>
+              <img src={DefaultProfile} css={{ width: 36 }} />
+              <Typography variant="headline">해피밀</Typography>
+            </Group>
+            <ToggleButton tabs={['모든 레시피', '내 레시피만']} />
+          </Group>
+          <Recipes recipes={mockData.recipes} />
+        </Stack>
+      </Stack>
       <Modal opened={editOpened}>
         <BookSetting
           data={myData}
-          onSubmit={onSubmitClick}
+          onSubmit={handleSubmit}
           submitText="레시피북 수정 완료하기"
         />
       </Modal>
@@ -141,94 +237,7 @@ function MyPage({ ...props }) {
           마이 레시피로 돌아가기
         </Button>
       </Modal>
-      <Group nowrap align="flex-end" css={myPageStyles.banner.wrapper}>
-        <Stack spacing={134} css={myPageStyles.banner.background}>
-          <Stack spacing={10}>
-            <Typography variant="display">{title}</Typography>
-            <Typography variant="body">{intro}</Typography>
-          </Stack>
-          <Group nowrap gap={8}>
-            <Button variant="icon">새로운 레시피 생성하기</Button>
-            <Button
-              variant="icon"
-              onClick={() => {
-                setLinkOpened(true);
-                navigator.clipboard.writeText(URL);
-              }}
-            >
-              링크 공유하기
-            </Button>
-          </Group>
-        </Stack>
-        <Stack spacing={17} css={myPageStyles.banner.edit}>
-          <Typography variant="headline">16개의 레시피</Typography>
-          <Group
-            gap={2}
-            onClick={() => {
-              setMyData({ ...myData, forPublic: false });
-            }}
-            css={myPageStyles.banner.checkbox}
-            nowrap
-          >
-            <img src={forPublic ? FillCheckbox : EmptyCheckbox} />
-            <Typography variant="button">모든 대상에게 공개</Typography>
-          </Group>
-          <Group
-            gap={2}
-            onClick={() => {
-              setMyData({ ...myData, forPublic: false });
-            }}
-            css={myPageStyles.banner.checkbox}
-            nowrap
-          >
-            <img src={forPublic ? EmptyCheckbox : FillCheckbox} />
-            <Typography variant="button">
-              링크를 가진 대상에게만 공개
-            </Typography>
-          </Group>
-          <img
-            src={EditIcon}
-            css={myPageStyles.banner.editBtn}
-            onClick={() => {
-              setEditOpened(true);
-            }}
-          />
-        </Stack>
-      </Group>
-      <Stack spacing={73} css={{ overflow: 'hidden' }}>
-        <Group gap={'69%'}>
-          <Group gap={16}>
-            <img src={DefaultProfile} css={{ width: 36 }} />
-            <Typography variant="headline">해피밀</Typography>
-          </Group>
-          <ToggleButton tabs={['모든 레시피', '내 레시피만']} />
-        </Group>
-        <Recipes
-          recipes={[
-            {
-              name: '김치볶음밥',
-              author: '김준수',
-              contents: '김치를 열심히 뽂아뽂아',
-            },
-            {
-              name: '간장계란밥',
-              author: '짱구',
-              contents: '간장과 계란을 밥에 슥슥',
-            },
-            {
-              name: '김치우동',
-              author: '고죠 사토루',
-              contents: '우동에 김치를 사악',
-            },
-            {
-              name: '김치우동',
-              author: '고죠 사토루',
-              contents: '우동에 김치를 사악',
-            },
-          ]}
-        />
-      </Stack>
-    </Stack>
+    </>
   );
 }
 
