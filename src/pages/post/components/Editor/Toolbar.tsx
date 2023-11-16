@@ -11,6 +11,8 @@ import { useState } from 'react';
 const styles = {
   root: css({
     padding: '36px 23px',
+    width: 88,
+    boxSizing: 'border-box',
     borderRadius: 16,
     background: DesignSystem.Color.background.white,
     boxShadow: '0px 4px 16px rgba(140, 140, 140, 0.13)',
@@ -28,6 +30,11 @@ const styles = {
     },
     animation: css(globalStyles.animation.all(200)),
   },
+  btn: css(
+    { width: '100%', height: 42 },
+    globalStyles.button,
+    globalStyles.center,
+  ),
   input: css({
     position: 'absolute',
     width: '1px',
@@ -66,30 +73,30 @@ function Toolbar({ active, onItemClicked, onMouseUp, ...props }: ToolbarProps) {
   return (
     <motion.div style={{ top }} css={styles.root}>
       <Stack align="center" spacing={55}>
-        <IconClock
-          css={[
-            { stroke: styles.icon[active ? 'active' : 'disabled'].svg },
-            styles.icon[active ? 'active' : 'disabled'].style,
-            styles.icon.animation,
-          ]}
+        <div
+          css={[styles.btn, styles.icon[active ? 'active' : 'disabled'].style]}
           onMouseDown={() => active && onItemClicked?.('timer')}
           onMouseUp={() => onMouseUp?.()}
-        />
+        >
+          <IconClock
+            css={[
+              { stroke: styles.icon[active ? 'active' : 'disabled'].svg },
+              styles.icon.animation,
+            ]}
+          />
+        </div>
         <div>
-          <label htmlFor="ex_file">
+          <label htmlFor="ex_file" css={[styles.btn, styles.icon.active.style]}>
             <IconImage
               css={[
                 { stroke: styles.icon[active ? 'active' : 'disabled'].svg },
-                styles.icon[active ? 'active' : 'disabled'].style,
                 styles.icon.animation,
               ]}
-              // onMouseDown={() => active && onItemClicked?.('image')}
-              onMouseUp={() => onMouseUp?.()}
             />
           </label>
           <input
             css={styles.input}
-            id="ex_file"
+            id={'ex_file'}
             type="file"
             accept="image/*"
             onChange={(e) => {
@@ -100,15 +107,18 @@ function Toolbar({ active, onItemClicked, onMouseUp, ...props }: ToolbarProps) {
             }}
           />
         </div>
-        <IconTip
-          css={[
-            { fill: styles.icon[active ? 'active' : 'disabled'].svg },
-            styles.icon[active ? 'active' : 'disabled'].style,
-            styles.icon.animation,
-          ]}
+        <div
+          css={[styles.btn, styles.icon[active ? 'active' : 'disabled'].style]}
           onMouseDown={() => active && onItemClicked?.('tip')}
           onMouseUp={() => onMouseUp?.()}
-        />
+        >
+          <IconTip
+            css={[
+              { fill: styles.icon[active ? 'active' : 'disabled'].svg },
+              styles.icon.animation,
+            ]}
+          />
+        </div>
       </Stack>
     </motion.div>
   );

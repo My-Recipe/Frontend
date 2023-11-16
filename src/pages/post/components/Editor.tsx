@@ -2,7 +2,8 @@ import DesignSystem from '@/utils/designSystem';
 import { Stack, Stroke } from '@base';
 import { css } from '@emotion/react';
 import { produce } from 'immer';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Image from './Editor/Image';
 import Ingredient, { IngredientType } from './Editor/Ingredient';
 import TextInput, { TextInputValueItemType } from './Editor/TextInput';
 import Timer from './Editor/Timer';
@@ -38,7 +39,7 @@ const styles = {
 
 export interface EditorProps {}
 
-type TextType = TextInputValueItemType & { key: number; id: string };
+export type TextType = TextInputValueItemType & { key: number; id: string };
 
 export interface PostDataType {
   ingredients: (IngredientType & { key: number })[];
@@ -50,6 +51,7 @@ function Editor({ ...props }: EditorProps) {
   const [dataCount, setDataCount] = useState(1);
   const [lastFocusedIndex, setLastFocusedIndex] = useState<number>();
   const [isFocused, setIsFocused] = useState(false);
+  const [titleImage, setTitleImage] = useState<number>();
   const [data, setData] = useState<PostDataType>({
     ingredients: [{ groupTitle: '', tags: [], key: ingrCount }],
     text: [{ value: '', index: 1, key: dataCount, id: 'index-text' }],
@@ -57,6 +59,12 @@ function Editor({ ...props }: EditorProps) {
   const textRefs = useRef<Array<HTMLTextAreaElement | HTMLInputElement | null>>(
     [],
   );
+
+  useEffect(() => {
+    if (titleImage !== undefined) return;
+    const image = data.text.find((item) => item.id === 'image');
+    if (image) setTitleImage(image.key);
+  }, [titleImage]);
 
   const handleIngrChange = (
     item: IngredientType,
@@ -123,9 +131,10 @@ function Editor({ ...props }: EditorProps) {
     type: string,
   ) => {
     const prevRef = textRefs.current[targetIndex - 1];
-    // const countText = // find key is 'index-text' from data.text
     const remainText = data.text.filter((item) => item.id === 'index-text');
     if (remainText.length <= 1 && type === 'index-text') return;
+    if (type === 'image' && titleImage === data.text[targetIndex].key)
+      setTitleImage(undefined);
     setData({
       ...data,
       text: data.text
@@ -196,6 +205,7 @@ function Editor({ ...props }: EditorProps) {
           break;
         case 'image':
           if (!imageSrc) break;
+          if (titleImage === undefined) setTitleImage(dataCount + 1);
           setData(
             produce(data, (draft) => {
               draft.text.splice(lastFocusedIndex + 1, 0, {
@@ -264,10 +274,12 @@ function Editor({ ...props }: EditorProps) {
               onFocusBlur={(isFocus) => handleFocusBlur(isFocus, index)}
             />
           ) : item.id === 'image' ? (
-            <img
-              loading="lazy"
-              src={item.value}
+            <Image
+              isTitle={item.key === titleImage}
+              item={item}
+              handleImageClick={() => setTitleImage(item.key)}
               key={`data-image-${item.key}`}
+              handleRemove={() => handleTextDelete('', index, item.id)}
             />
           ) : item.id === 'timer' ? (
             <Timer
