@@ -74,6 +74,7 @@ function Toolbar({ active, onItemClicked, onMouseUp, ...props }: ToolbarProps) {
     <motion.div style={{ top }} css={styles.root}>
       <Stack align="center" spacing={55}>
         <div
+          data-testid="toolbar"
           css={[styles.btn, styles.icon[active ? 'active' : 'disabled'].style]}
           onMouseDown={() => active && onItemClicked?.('timer')}
           onMouseUp={() => onMouseUp?.()}
@@ -86,7 +87,11 @@ function Toolbar({ active, onItemClicked, onMouseUp, ...props }: ToolbarProps) {
           />
         </div>
         <div>
-          <label htmlFor="ex_file" css={[styles.btn, styles.icon.active.style]}>
+          <label
+            data-testid="toolbar"
+            htmlFor="ex_file"
+            css={[styles.btn, styles.icon.active.style]}
+          >
             <IconImage
               css={[
                 { stroke: styles.icon[active ? 'active' : 'disabled'].svg },
@@ -108,6 +113,7 @@ function Toolbar({ active, onItemClicked, onMouseUp, ...props }: ToolbarProps) {
           />
         </div>
         <div
+          data-testid="toolbar"
           css={[styles.btn, styles.icon[active ? 'active' : 'disabled'].style]}
           onMouseDown={() => active && onItemClicked?.('tip')}
           onMouseUp={() => onMouseUp?.()}

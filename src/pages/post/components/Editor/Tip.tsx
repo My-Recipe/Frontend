@@ -52,6 +52,7 @@ const Tip = forwardRef<HTMLInputElement, TipProps>(function Tip(
         TIP
       </Typography>
       <input
+        data-testid="tip-input"
         ref={mergedRef}
         value={inputValue}
         maxLength={60}

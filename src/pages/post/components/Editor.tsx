@@ -298,6 +298,7 @@ function Editor({ ...props }: EditorProps) {
           ),
         )}
         <div
+          data-testid="add-area"
           css={styles.addArea}
           onClick={() => {
             const length = data.text.length;
