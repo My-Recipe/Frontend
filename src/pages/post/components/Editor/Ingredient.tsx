@@ -127,7 +127,7 @@ function Ingredient({ index, onChange, ...props }: IngredientProps) {
               key={value}
               label={label}
               value={value}
-              onClose={onIngrTagsOnClose}
+              onClick={onIngrTagsOnClose}
             />
           ))}
         </Group>
