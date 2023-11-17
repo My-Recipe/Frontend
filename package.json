@@ -17,7 +17,8 @@
   },
   "lint-staged": {
     "**/*.{ts,tsx}": "tsc --noEmit",
-    "**/*": "prettier --write --ignore-unknown"
+    "**/*": "prettier --write --ignore-unknown",
+    "**/*.{ts,tsx,js,jsx,json,md}": "eslint --fix"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
