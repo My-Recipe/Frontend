@@ -20,7 +20,7 @@ export interface RecipeBookType {
   forPublic: boolean;
 }
 
-const myPageStyles = {
+const styles = {
   wrapper: css(globalStyles.center, {}),
   banner: {
     wrapper: css({
@@ -143,7 +143,7 @@ function MyPage({ ...props }) {
     <Group
       gap={2}
       onClick={() => handlePublic(isPublic)}
-      css={myPageStyles.banner.checkbox}
+      css={styles.banner.checkbox}
       nowrap
     >
       <img src={isPublic === forPublic ? FillCheckbox : EmptyCheckbox} />
@@ -153,9 +153,9 @@ function MyPage({ ...props }) {
 
   return (
     <>
-      <Stack spacing={150} css={myPageStyles.wrapper}>
-        <Group nowrap align="flex-end" css={myPageStyles.banner.wrapper}>
-          <Stack spacing={134} css={myPageStyles.banner.background}>
+      <Stack spacing={150} css={styles.wrapper}>
+        <Group nowrap align="flex-end" css={styles.banner.wrapper}>
+          <Stack spacing={134} css={styles.banner.background}>
             <Stack spacing={10}>
               <Typography variant="display">{title}</Typography>
               <Typography variant="body">{intro}</Typography>
@@ -167,7 +167,7 @@ function MyPage({ ...props }) {
               </Button>
             </Group>
           </Stack>
-          <Stack spacing={17} css={myPageStyles.banner.edit}>
+          <Stack spacing={17} css={styles.banner.edit}>
             <Typography variant="headline">
               {mockData.recipes.length}개의 레시피
             </Typography>
@@ -177,7 +177,7 @@ function MyPage({ ...props }) {
             </ToggleSelect>
             <img
               src={EditIcon}
-              css={myPageStyles.banner.editBtn}
+              css={styles.banner.editBtn}
               onClick={handleEditClick}
             />
           </Stack>
@@ -200,21 +200,18 @@ function MyPage({ ...props }) {
           submitText="레시피북 수정 완료하기"
         />
       </Modal>
-      <Modal opened={linkOpened} css={myPageStyles.banner.copyLink.wrapper}>
+      <Modal opened={linkOpened} css={styles.banner.copyLink.wrapper}>
         <Typography variant="headline" css={{ alignSelf: 'flex-start' }}>
           링크가 복사되었어요.
         </Typography>
         <Stack spacing={15} css={{ margin: '43px 0 59px 0' }}>
           <Group>
-            <Typography
-              variant="button"
-              css={myPageStyles.banner.copyLink.linkBox}
-            >
+            <Typography variant="button" css={styles.banner.copyLink.linkBox}>
               {URL}
             </Typography>
             <Typography
               variant="button"
-              css={myPageStyles.banner.copyLink.copyBtn}
+              css={styles.banner.copyLink.copyBtn}
               onClick={handleCopy}
             >
               COPY
@@ -228,12 +225,7 @@ function MyPage({ ...props }) {
             동료들에게 링크를 공유해 마이 레시피를 소개해보세요.
           </Typography>
         </Stack>
-        <Button
-          variant="icon"
-          onClick={() => {
-            setLinkOpened(false);
-          }}
-        >
+        <Button variant="icon" onClick={() => setLinkOpened(false)}>
           마이 레시피로 돌아가기
         </Button>
       </Modal>

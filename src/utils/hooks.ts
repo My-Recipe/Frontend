@@ -106,7 +106,7 @@ export function useClickOutside<T extends HTMLElement>(
       if (element instanceof Node && preventClickRefs) {
         if (Array.isArray(preventClickRefs)) {
           for (const ref of preventClickRefs) {
-            if (ref.current && ref.current.contains(element)) return;
+            if (ref.current?.contains(element)) return;
           }
         } else if (preventClickRefs.current?.contains(element)) {
           return;

@@ -22,7 +22,7 @@ function TabsButton({
       css={{ backgroundColor, color: 'inherit' }}
       onClick={(e) => {
         onTabChange(value);
-        onClick && onClick(e);
+        onClick?.(e);
       }}
       {...props}
     >

@@ -18,12 +18,8 @@ function Layout({ children, ...props }: LayoutProps) {
           { label: 'INVENTORY', path: '/inventory' },
           { label: 'SEARCH', path: '/search' },
         ]}
-        onLoginClick={() => {
-          setUser({ email: 'test@t.com', name: 'testUser' });
-        }}
-        onLogoutClick={() => {
-          setUser(null);
-        }}
+        onLoginClick={() => setUser({ email: 'test@t.com', name: 'testUser' })}
+        onLogoutClick={() => setUser(null)}
       />
       <div
         css={{

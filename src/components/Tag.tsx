@@ -11,24 +11,27 @@ import {
   useState,
 } from 'react';
 
-const defaultStyle = css([
-  {
-    width: 'auto',
-    height: 42,
-    padding: '9px 15px',
-    borderRadius: DesignSystem.Round.solid,
-    background: DesignSystem.Color.primary.yellow,
+const styles = {
+  default: css([
+    {
+      width: 'auto',
+      height: 42,
+      padding: '9px 15px',
+      borderRadius: DesignSystem.Round.solid,
+      background: DesignSystem.Color.primary.yellow,
 
-    whiteSpace: 'nowrap',
-    flexWrap: 'nowrap',
-  },
-  globalStyles.button,
-]);
-const activeStyle = css({
-  background: DesignSystem.Color.primary['yellow-hover'],
-});
-
-const hoverStyle = css({ ':hover': { ...activeStyle } });
+      whiteSpace: 'nowrap',
+      flexWrap: 'nowrap',
+    },
+    globalStyles.button,
+  ]),
+  active: css({
+    background: DesignSystem.Color.primary['yellow-hover'],
+  }),
+  hover: css({
+    ':hover': { background: DesignSystem.Color.primary['yellow-hover'] },
+  }),
+};
 
 export type TagDataType = { value: string; label: string | ReactNode };
 
@@ -70,14 +73,12 @@ function Tag({
         onMouseEnter={() => activeOnHover && setIsActive(true)}
         onMouseLeave={() => activeOnHover && setIsActive(false)}
         css={[
-          defaultStyle,
-          hoverStyle,
-          isActive && activeStyle,
+          styles.default,
+          styles.hover,
+          isActive && styles.active,
           DesignSystem.Text.button,
         ]}
-        onClick={(e) =>
-          onClick && e.target === e.currentTarget && onClick(e, value)
-        }
+        onClick={(e) => e.target === e.currentTarget && onClick?.(e, value)}
         {...props}
       >
         {label || children}
@@ -85,7 +86,7 @@ function Tag({
           <IconCacel
             data-testid="tag-close-icon"
             width={24}
-            onClick={(e) => onClose && onClose(e, value)}
+            onClick={(e) => onClose?.(e, value)}
           />
         )}
       </Group>
