@@ -79,11 +79,9 @@ function InputBox({
   );
 
   const [selectedTags, setSelectedTags] = useState<TagDataType[]>([]);
-  const restTags =
-    tags &&
-    tags.filter(
-      (tag) => !selectedTags.some((targetTag) => targetTag.value === tag.value),
-    );
+  const restTags = tags?.filter(
+    (tag) => !selectedTags.some((targetTag) => targetTag.value === tag.value),
+  );
 
   const isTagSelected = !!selectedTags.length;
 
@@ -162,18 +160,17 @@ function InputBox({
               </Group>
             </div>
             <Group position={centerdTags ? 'center' : 'left'} gap={12}>
-              {restTags &&
-                restTags.map(({ label, value }: TagDataType, index: number) => (
-                  <Tag
-                    onClick={handleTagClick}
-                    onClose={handleTagClose}
-                    key={`${label}-${value}-${index}`}
-                    value={value}
-                    disableCloseOnHover
-                  >
-                    {label}
-                  </Tag>
-                ))}
+              {restTags?.map(({ label, value }: TagDataType, index: number) => (
+                <Tag
+                  onClick={handleTagClick}
+                  onClose={handleTagClose}
+                  key={`${label}-${value}-${index}`}
+                  value={value}
+                  disableCloseOnHover
+                >
+                  {label}
+                </Tag>
+              ))}
             </Group>
           </Stack>
         )}
@@ -187,7 +184,7 @@ function InputBox({
                 key={`search-item-${itemValue}-${index}`}
                 onClick={() => {
                   setInputValue(itemValue);
-                  onItemClick && onItemClick(itemValue, index);
+                  onItemClick?.(itemValue, index);
                 }}
               >
                 <IconSearchXs />
