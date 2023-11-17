@@ -15,12 +15,9 @@
     "build-storybook": "storybook build",
     "chromatic": "chromatic --exit-zero-on-changes"
   },
-  "husky": {
-    "pre-commit": "lint-staged"
-  },
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown",
-    "**/*.{ts,tsx}": "tsc --noEmit"
+    "**/*.{ts,tsx}": "tsc --noEmit",
+    "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
