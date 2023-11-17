@@ -80,7 +80,7 @@ const mockRecipeData: RecipeProps[] = Array(14).fill({
   name: '치킨 샐러드',
 });
 
-const homeStyles = {
+const styles = {
   root: css({
     paddingBottom: 136,
   }),
@@ -105,14 +105,14 @@ export interface HomeProps {}
 
 function Home({ ...props }: HomeProps) {
   return (
-    <Stack css={homeStyles.root} spacing={110}>
-      <Group css={homeStyles.description.root} wrapChild nowrap>
-        <div css={homeStyles.description.pic}>
+    <Stack css={styles.root} spacing={110}>
+      <Group css={styles.description.root} wrapChild nowrap>
+        <div css={styles.description.pic}>
           <Typography variant="display">
             세상에 똑같은 레시피는 없다. 똑같은 요리만 있을 뿐
           </Typography>
         </div>
-        <div css={homeStyles.description.text}>
+        <div css={styles.description.text}>
           <Typography variant="body">
             세상에 똑같은 요리는 있어도 똑같은 레시피는 없습니다. 같은 계란
             후라이라도 사람이 100명이면 100개의 레시피가 있습니다. 나만의 요리
@@ -129,7 +129,7 @@ function Home({ ...props }: HomeProps) {
         items={mockBannerData}
       />
       <InputBox
-        css={homeStyles.input}
+        css={styles.input}
         tags={mockTagData}
         onChange={(value) => {}}
         searchItems={[

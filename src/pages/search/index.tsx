@@ -111,7 +111,7 @@ const INGREDIENT = [
 
 function Search() {
   const [, setSearchValue] = useState<string | string[]>('');
-  const onChange = (inputValue: string | TagDataType[]) => {
+  const handleChange = (inputValue: string | TagDataType[]) => {
     if (typeof inputValue === 'string') setSearchValue(inputValue);
     else {
       setSearchValue(inputValue.map((item) => item.value));
@@ -124,7 +124,7 @@ function Search() {
         <Typography variant="headline" css={{ alignSelf: 'center' }}>
           레시피 서치하기
         </Typography>
-        <InputBox tags={INGREDIENT} onChange={onChange} centerdTags />
+        <InputBox tags={INGREDIENT} onChange={handleChange} centerdTags />
       </Stack>
       <div
         css={{

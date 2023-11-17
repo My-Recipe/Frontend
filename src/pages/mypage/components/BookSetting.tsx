@@ -8,57 +8,50 @@ import { css } from '@emotion/react';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { RecipeBookType } from '..';
 
+const styles = {
+  innerContent: {
+    wrapper: css({ width: '100%' }),
+    stroke: css({
+      background: DesignSystem.Color.background.disabled,
+      marginTop: 16,
+    }),
+    input: {
+      stack: css({ marginTop: 41 }),
+    },
+    checkboxStack: css({ marginTop: 32 }),
+    checkbox: css(globalStyles.button),
+    button: css({
+      width: 265,
+      alignSelf: 'center',
+      marginTop: 44,
+      cursor: 'default',
+      background: DesignSystem.Color.background.disabled,
+    }),
+    buttonActive: css({
+      background: DesignSystem.Color.background.black,
+      cursor: 'pointer',
+    }),
+  },
+};
 interface BookSettingProps {
   data: RecipeBookType;
   onSubmit: (data: RecipeBookType) => void;
   submitText: string;
 }
 
-function BookSetting({
-  data: { title, intro, forPublic },
-  onSubmit,
-  submitText,
-}: BookSettingProps) {
-  const [inputData, setInputData] = useState<RecipeBookType>({
-    title: '',
-    intro: '',
-    forPublic: true,
-  });
+function BookSetting({ data, onSubmit, submitText }: BookSettingProps) {
+  const [inputData, setInputData] = useState<RecipeBookType>(data);
   const {
     title: inputTitle,
     intro: inputIntro,
     forPublic: inputForPublic,
   } = inputData;
-  const bookSettingStyle = {
-    innerContent: {
-      wrapper: css({ width: '100%' }),
-      stroke: css({
-        background: DesignSystem.Color.background.disabled,
-        marginTop: 16,
-      }),
-      input: {
-        stack: css({ marginTop: 41 }),
-      },
-      checkboxStack: css({ marginTop: 32 }),
-      checkbox: css(globalStyles.button),
-      button: css({
-        width: 265,
-        alignSelf: 'center',
-        marginTop: 44,
-        backgroundColor:
-          inputTitle && inputIntro
-            ? DesignSystem.Color.background.black
-            : DesignSystem.Color.background.disabled,
-        cursor: inputTitle && inputIntro ? 'pointer' : 'default',
-      }),
-    },
-  };
 
   return (
-    <Stack css={bookSettingStyle.innerContent.wrapper}>
+    <Stack css={styles.innerContent.wrapper}>
       <Typography variant="subtitle">레시피북 설정 편집</Typography>
-      <Stroke css={bookSettingStyle.innerContent.stroke} />
-      <Stack spacing={15} css={bookSettingStyle.innerContent.input.stack}>
+      <Stroke css={styles.innerContent.stroke} />
+      <Stack spacing={15} css={styles.innerContent.input.stack}>
         <Typography variant="info" color={DesignSystem.Color.text.gray}>
           레시피북 제목
         </Typography>
@@ -71,7 +64,7 @@ function BookSetting({
           maxLength={20}
         />
       </Stack>
-      <Stack spacing={20} css={bookSettingStyle.innerContent.checkboxStack}>
+      <Stack spacing={20} css={styles.innerContent.checkboxStack}>
         <Typography variant="info" color={DesignSystem.Color.text.gray}>
           공개범위 설정
         </Typography>
@@ -81,7 +74,7 @@ function BookSetting({
             onClick={() => {
               setInputData({ ...inputData, forPublic: true });
             }}
-            css={bookSettingStyle.innerContent.checkbox}
+            css={styles.innerContent.checkbox}
           >
             <img src={inputForPublic ? FillCheckbox : EmptyCheckbox} />
             <Typography variant="button">모든 대상에게 공개</Typography>
@@ -91,7 +84,7 @@ function BookSetting({
             onClick={() => {
               setInputData({ ...inputData, forPublic: false });
             }}
-            css={bookSettingStyle.innerContent.checkbox}
+            css={styles.innerContent.checkbox}
           >
             <img src={inputForPublic ? EmptyCheckbox : FillCheckbox} />
             <Typography variant="button">
@@ -100,7 +93,7 @@ function BookSetting({
           </Group>
         </Group>
       </Stack>
-      <Stack spacing={15} css={bookSettingStyle.innerContent.input.stack}>
+      <Stack spacing={15} css={styles.innerContent.input.stack}>
         <Typography variant="info" color={DesignSystem.Color.text.gray}>
           한줄 소개
         </Typography>
@@ -114,49 +107,53 @@ function BookSetting({
       </Stack>
       <Button
         variant="icon"
-        css={bookSettingStyle.innerContent.button}
-        onClick={() => {
-          onSubmit(inputData);
-        }}
+        css={[
+          styles.innerContent.button,
+          inputTitle && inputIntro && styles.innerContent.buttonActive,
+        ]}
+        onClick={() => onSubmit(inputData)}
       >
         {submitText}
       </Button>
     </Stack>
   );
 }
+
+const textInputStyles = {
+  box: css(
+    {
+      background: DesignSystem.Color.background.gray,
+      color: DesignSystem.Color.text.black,
+      height: 42,
+      borderRadius: DesignSystem.Round.solid,
+      textIndent: 15,
+      padding: '0 70px 0 0',
+      width: 658,
+      boxSizing: 'border-box',
+      '&:focus': {
+        border: '1px solid',
+        borderColor: DesignSystem.Color.primary['yellow-hover'],
+      },
+    },
+    DesignSystem.Text.button,
+  ),
+  counter: css({
+    color: DesignSystem.Color.text.gray,
+    position: 'relative',
+    top: -35,
+    left: 590,
+    marginBottom: -24,
+  }),
+};
+
 interface TextInputProps {
   value: string;
   setValue: (text: string) => void;
   maxLength: number;
 }
+
 function TextInput({ value, setValue, maxLength }: TextInputProps) {
   const [inputCount, setInputCount] = useState(0);
-  const inputStyle = {
-    box: css(
-      {
-        background: DesignSystem.Color.background.gray,
-        color: DesignSystem.Color.text.black,
-        height: 42,
-        borderRadius: DesignSystem.Round.solid,
-        textIndent: 15,
-        padding: '0 70px 0 0',
-        width: 658,
-        boxSizing: 'border-box',
-        '&:focus': {
-          border: '1px solid',
-          borderColor: DesignSystem.Color.primary['yellow-hover'],
-        },
-      },
-      DesignSystem.Text.button,
-    ),
-    counter: css({
-      color: DesignSystem.Color.text.gray,
-      position: 'relative',
-      top: -35,
-      left: 590,
-      marginBottom: -24,
-    }),
-  };
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > maxLength) {
       e.target.value = e.target.value.slice(0, maxLength);
@@ -173,9 +170,9 @@ function TextInput({ value, setValue, maxLength }: TextInputProps) {
         value={value}
         onChange={handleInput}
         maxLength={maxLength}
-        css={inputStyle.box}
+        css={textInputStyles.box}
       />
-      <Typography variant="info" css={inputStyle.counter}>
+      <Typography variant="info" css={textInputStyles.counter}>
         ({inputCount}/{maxLength})
       </Typography>
     </div>

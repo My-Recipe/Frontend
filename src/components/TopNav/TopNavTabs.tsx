@@ -7,7 +7,7 @@ import { css } from '@emotion/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NavBarMenuItemType } from './TopNav';
 
-const topNavTabsStyle = {
+const styles = {
   wrapper: {
     gap: 65,
   },
@@ -25,33 +25,27 @@ interface TopNavBarProps {
   children: NavBarMenuItemType[];
 }
 function TopNavTabs({ children }: TopNavBarProps) {
-  // const [tabValue, setTabValue] = useState(children[0]);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const tabValue = pathname;
 
-  const tabChange = (value: TabValueType) => {
-    // typeof value === 'string' && value && setTabValue(value);\
+  const handleTabChange = (value: TabValueType) => {
     typeof value === 'string' && value && navigate(value);
   };
 
-  // useEffect(() => {
-  //   onTabChange && onTabChange(tabValue);
-  // }, [tabValue]);
-
   return (
     <Tabs
-      buttonGroupCss={topNavTabsStyle.wrapper}
+      buttonGroupCss={styles.wrapper}
       value={''}
-      onTabChange={tabChange}
+      onTabChange={handleTabChange}
     >
       {children.map(({ label, path }, idx) => {
         return (
           <Tabs.Button
             value={`${path}`}
             key={`${idx}-${path}`}
-            css={topNavTabsStyle.item}
+            css={styles.item}
           >
             <Group nowrap gap={6}>
               {tabValue === path ? (
@@ -59,7 +53,7 @@ function TopNavTabs({ children }: TopNavBarProps) {
               ) : (
                 <img src={EmptyMenuIcon} />
               )}
-              <Typography variant="subtitle" css={topNavTabsStyle.itemText}>
+              <Typography variant="subtitle" css={styles.itemText}>
                 {label}
               </Typography>
             </Group>

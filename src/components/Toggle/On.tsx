@@ -5,7 +5,7 @@ import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
 import { ReactNode, useState } from 'react';
 
-const onStyle = {
+const styles = {
   wrapper: {
     off: css([
       {
@@ -51,19 +51,19 @@ function On({
   const [localChecked, setChecked] = useState(false);
   const checked = isUseLocal ? localChecked : propsChecked;
 
-  const onClickToggle = () => {
+  const handleClickToggle = () => {
     if (isUseLocal) setChecked(!checked);
-    onChange && onChange(!checked);
+    onChange?.(!checked);
   };
 
   return (
     <Group gap={12}>
       <div
-        onClick={onClickToggle}
-        css={[onStyle.wrapper.off, checked && onStyle.wrapper.on]}
+        onClick={handleClickToggle}
+        css={[styles.wrapper.off, checked && styles.wrapper.on]}
       >
         <motion.div
-          css={onStyle.handle}
+          css={styles.handle}
           layout
           transition={{
             type: 'spring',

@@ -18,14 +18,14 @@ const transition: SVGMotionProps<SVGRectElement>['transition'] = {
   stiffness: 180,
 };
 
-const iconStyles = {
+const stlyes = {
   root: css(globalStyles.button, { width: 42, height: 42 }),
 };
 
 function PlusMinusIcon({ plus, ...props }: PlusMinusIconProps) {
   return (
     <motion.div
-      css={iconStyles.root}
+      css={stlyes.root}
       initial={false}
       animate={plus ? 'plus' : 'minus'}
       {...props}
