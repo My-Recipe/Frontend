@@ -1,3 +1,4 @@
+import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group, Stack, Stroke, Typography } from '@base';
 import { css } from '@emotion/react';
@@ -7,7 +8,10 @@ import TopNavTabs from './TopNavTabs';
 import TopNavUser from './TopNavUser';
 
 const styles = {
-  wrapper: css({ background: 'transparent', width: '100%' }),
+  wrapper: css({
+    background: DesignSystem.Color.background.gray,
+    width: '100%',
+  }),
   group: css({ height: 90, padding: '0 50px 0 80px' }),
   logo: css(
     {
