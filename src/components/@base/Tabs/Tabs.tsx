@@ -1,4 +1,3 @@
-import { getComponentFromType } from '@/utils/components';
 import { Group, GroupProps } from '@copmonents/@base';
 import {
   CSSProperties,
@@ -9,8 +8,9 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { tabsBodyType } from './TabsBody';
-import { tabsButtonType } from './TabsButton';
+import { tabsBodyType } from './components/Body';
+import { tabsButtonType } from './components/Button';
+import { getComponentFromType } from './utils';
 
 export type TabValueType = string | number | undefined;
 
@@ -44,8 +44,6 @@ function TabsMain({
   const [localTabValue, setLocalTabState] =
     useState<TabValueType>(defaultValue);
   const tabValue = propsTabValue === undefined ? localTabValue : propsTabValue;
-  const onTabChange =
-    propsOnTabChange === undefined ? setLocalTabState : propsOnTabChange;
 
   const tabsButton = getComponentFromType(children, tabsButtonType);
   const tabsBody = getComponentFromType(children, tabsBodyType);
@@ -66,8 +64,12 @@ function TabsMain({
     }
   }, []);
 
+  useEffect(() => {
+    propsOnTabChange?.(localTabValue);
+  }, [localTabValue]);
+
   return (
-    <TabsContext.Provider value={[tabValue, onTabChange]}>
+    <TabsContext.Provider value={[tabValue, setLocalTabState]}>
       <div {...props}>
         {tabsButton && (
           <Group

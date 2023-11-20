@@ -111,7 +111,6 @@ export const TabsWithDefaultValue: Story = {
   args: {
     ...TabsWithStyle.args,
     value: undefined,
-    onTabChange: undefined,
     defaultValue: 'tab2',
   },
 };

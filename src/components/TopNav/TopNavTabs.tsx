@@ -2,7 +2,7 @@ import EmptyMenuIcon from '@/assets/menu-empty.svg';
 import FilledMenuIcon from '@/assets/menu-fill.svg';
 import globalStyles from '@/utils/styles';
 import { Group, Tabs, Typography } from '@base';
-import { TabValueType } from '@base/Tabs/TabsMain';
+import { TabValueType } from '@base/Tabs/Tabs';
 import { css } from '@emotion/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NavBarMenuItemType } from './TopNav';
