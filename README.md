@@ -35,6 +35,8 @@ vite-plugin-pages를 통해 file-base routing을 사용합니다.
     - `handleSubmit` X ⇒ `handleFormSubmit` O ⇒ `handleCommentFormSubmit` O
 - 상수는 **UPPER_CASE** 로 작성합니다.
 - type, interface, class 등은 **PascalCase**로 작성합니다.
+- Fucntional Component 안에서는 `function ()` 대신 `const = () =>` 를 사용합니다
+- Inline의 익명 Arrow function에서는 `{}` 를 지양합니다. event handler를 통해 `prop={() => handler()}` 와 같이 단일 호출을 지향합니다.
 
 ### Formatting
 

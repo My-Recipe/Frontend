@@ -16,7 +16,7 @@ const bgColors = [
   DesignSystem.Color.background.gray,
 ];
 
-const bannerStyles = {
+const styles = {
   wrapper: css({ width: '100%' }),
   item: {
     root: (index: number) =>
@@ -104,7 +104,7 @@ function Banner({
   const pause = useInterval(() => {
     setActiveBanner((activeBanner + 1) % items.length);
   }, 4000);
-  const onClickItem = (index: number, item: BannerItemType) => {
+  const handleClickItem = (index: number, item: BannerItemType) => {
     if (index !== activeBanner) {
       pause();
       setActiveBanner(index);
@@ -112,15 +112,15 @@ function Banner({
   };
 
   return (
-    <Group nowrap css={bannerStyles.wrapper}>
+    <Group nowrap css={styles.wrapper}>
       {items.map((item, index) => {
         const isActive = activeBanner === index;
         return (
           <div
             key={`banner-fold-${item.author}-${item.recipeNumber}-${index}`}
-            css={bannerStyles.item.root(index)}
+            css={styles.item.root(index)}
             style={{ flexGrow: isActive ? 2 : undefined }}
-            onClick={() => onClickItem(index, item)}
+            onClick={() => handleClickItem(index, item)}
           >
             <AnimatePresence>
               {isActive ? (
@@ -159,11 +159,11 @@ const Active = ({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ ...transition, ease: 'easeIn' }}
-        css={bannerStyles.item.height}
+        css={styles.item.height}
       >
-        <Stack css={bannerStyles.item.body.root} justify="space-between">
+        <Stack css={styles.item.body.root} justify="space-between">
           <Group nowrap position="apart">
-            <Typography css={bannerStyles.item.body.text} variant="headline">
+            <Typography css={styles.item.body.text} variant="headline">
               {subject}
             </Typography>
             <PlusMinusIcon
@@ -174,16 +174,11 @@ const Active = ({
               }}
             />
           </Group>
-          <div
-            css={[
-              bannerStyles.item.body.description,
-              bannerStyles.item.body.text,
-            ]}
-          >
+          <div css={[styles.item.body.description, styles.item.body.text]}>
             <Typography variant="display">{title}</Typography>
             <Typography variant="body">{description}</Typography>
           </div>
-          <Typography css={bannerStyles.item.body.text} variant="subtitle">
+          <Typography css={styles.item.body.text} variant="subtitle">
             {author}
           </Typography>
         </Stack>
@@ -192,10 +187,10 @@ const Active = ({
         initial={{ x: 140 }}
         animate={{ x: 0 }}
         exit={{ x: -140 }}
-        css={bannerStyles.item.body.recipeNumber}
+        css={styles.item.body.recipeNumber}
         transition={transition}
       >
-        <Typography css={bannerStyles.item.number} variant="display">
+        <Typography css={styles.item.number} variant="display">
           {recipeNumber}
         </Typography>
         <Typography variant="subtitle">개의 레시피</Typography>
@@ -210,11 +205,11 @@ const Fold = ({ value }: { value: number | string }) => {
       initial={{ opacity: 1, x: '20%' }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0 }}
-      css={bannerStyles.item.height}
+      css={styles.item.height}
       transition={transition}
     >
-      <Stack css={bannerStyles.item.fold} justify="end" align="center">
-        <Typography css={bannerStyles.item.number} variant="display">
+      <Stack css={styles.item.fold} justify="end" align="center">
+        <Typography css={styles.item.number} variant="display">
           {value}
         </Typography>
       </Stack>

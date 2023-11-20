@@ -4,7 +4,7 @@ import { Group, Stack, Stroke, Typography } from '@base';
 import { css } from '@emotion/react';
 import { useState } from 'react';
 
-const recipeStyles = {
+const stlyes = {
   root: css({
     width: 305,
     backgroundColor: 'transparent',
@@ -50,13 +50,13 @@ function Recipe({ name, author, img, contents }: RecipeProps) {
   };
   return (
     <Stack
-      css={recipeStyles.root}
+      css={stlyes.root}
       spacing={15}
       onMouseEnter={handleHover}
       onMouseLeave={handleHover}
     >
       <Stroke variant="bold" />
-      <Group position="apart" css={recipeStyles.title}>
+      <Group position="apart" css={stlyes.title}>
         <Stack>
           <Typography variant="subtitle" color="text.black">
             {name}
@@ -66,19 +66,14 @@ function Recipe({ name, author, img, contents }: RecipeProps) {
           </Typography>
         </Stack>
         {hover && (
-          <PlusMinusIcon
-            plus={!isSaved}
-            onClick={() => {
-              setIsSaved(!isSaved);
-            }}
-          />
+          <PlusMinusIcon plus={!isSaved} onClick={() => setIsSaved(!isSaved)} />
         )}
       </Group>
       {img ? (
-        <img src={img} css={recipeStyles.body.img} />
+        <img src={img} css={stlyes.body.img} />
       ) : (
-        <div css={recipeStyles.body.textWrapper}>
-          <Typography variant="info" css={recipeStyles.body.text}>
+        <div css={stlyes.body.textWrapper}>
+          <Typography variant="info" css={stlyes.body.text}>
             {contents}
           </Typography>
         </div>

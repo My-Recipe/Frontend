@@ -1,3 +1,4 @@
+import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group, Stack, Stroke, Typography } from '@base';
 import { css } from '@emotion/react';
@@ -6,8 +7,11 @@ import { useNavigate } from 'react-router-dom';
 import TopNavTabs from './TopNavTabs';
 import TopNavUser from './TopNavUser';
 
-const topNavStyle = {
-  wrapper: css({ background: 'transparent', width: '100%' }),
+const styles = {
+  wrapper: css({
+    background: DesignSystem.Color.background.gray,
+    width: '100%',
+  }),
   group: css({ height: 90, padding: '0 50px 0 80px' }),
   logo: css(
     {
@@ -54,10 +58,10 @@ function TopNav({
   const navigate = useNavigate();
 
   return (
-    <Stack css={topNavStyle.wrapper} className={className}>
-      <Group position="apart" nowrap css={topNavStyle.group}>
+    <Stack css={styles.wrapper} className={className}>
+      <Group position="apart" nowrap css={styles.group}>
         <Group nowrap gap={97}>
-          <div onClick={() => navigate('/')} css={topNavStyle.logo}>
+          <div onClick={() => navigate('/')} css={styles.logo}>
             FRiED NOTE
           </div>
           <TopNavTabs>{navBarMenu}</TopNavTabs>
@@ -72,7 +76,7 @@ function TopNav({
           <Typography
             onClick={onLoginClick}
             variant="subtitle"
-            css={topNavStyle.loginButton}
+            css={styles.loginButton}
           >
             로그인하기
           </Typography>
@@ -89,7 +93,7 @@ interface MenuButtonItemProps extends HTMLAttributes<HTMLButtonElement> {
 
 function MenuButtonItem({ label, ...props }: MenuButtonItemProps) {
   return (
-    <button css={topNavStyle.menuButton} {...props}>
+    <button css={styles.menuButton} {...props}>
       <Typography variant="button">{label}</Typography>
     </button>
   );

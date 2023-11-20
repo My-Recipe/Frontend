@@ -3,7 +3,7 @@ import { Typography } from '@base';
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 
-const checkBoxStyle = {
+const styles = {
   wrapper: css(
     {
       display: 'inline-flex',
@@ -43,17 +43,12 @@ function CheckBox({
   const [checked, setChecked] = useState(initialValue);
 
   useEffect(() => {
-    onCheckChanged && onCheckChanged(checked);
+    onCheckChanged?.(checked);
   }, [checked]);
 
   return (
-    <div css={checkBoxStyle.wrapper} onClick={() => setChecked(!checked)}>
-      <div
-        css={[
-          checkBoxStyle.check.unChecked,
-          checked && checkBoxStyle.check.checked,
-        ]}
-      />
+    <div css={styles.wrapper} onClick={() => setChecked(!checked)}>
+      <div css={[styles.check.unChecked, checked && styles.check.checked]} />
       <Typography variant="button" color="text.black">
         {label}
       </Typography>

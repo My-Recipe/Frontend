@@ -4,7 +4,7 @@ import { Typography } from '@base';
 import { css } from '@emotion/react';
 import { useEffect, useRef, useState } from 'react';
 
-const pagenumberStyle = {
+const styles = {
   animation: {
     move: globalStyles.animation.all(150),
   },
@@ -54,16 +54,16 @@ function Pagenumber({ pageCount, onPageChange, ...props }: PagenumberProps) {
   }, [currentPage]);
 
   return (
-    <div css={[pagenumberStyle.wrapper]}>
+    <div css={[styles.wrapper]}>
       <div
-        css={[pagenumberStyle.label, pagenumberStyle.animation.move]}
+        css={[styles.label, styles.animation.move]}
         style={{ left: labelPosition + 2.5 }}
       />
       {pages.map((pageNumber, index) => (
         <div
           ref={pageNumber === currentPage ? ref : undefined}
           onClick={() => setCurrentPage(pageNumber)}
-          css={pagenumberStyle.inner}
+          css={styles.inner}
           key={`page-number-item-${pageNumber}-${index}`}
         >
           <Typography variant="subtitle" color="text.black">

@@ -26,38 +26,39 @@ export interface InputBoxProps
   centerdTags?: boolean;
 }
 
-const triggerStyle = {
-  wrapper: css({
-    padding: '16px 26px',
-    backgroundColor: DesignSystem.Color.background.white,
-    borderRadius: DesignSystem.Round.solid,
-    border: `1px solid ${DesignSystem.Color.text.gray}`,
-  }),
-  group: css({
-    height: 33,
-    flexWrap: 'nowrap',
-  }),
-  input: css({
-    color: DesignSystem.Color.text.black,
-    flex: 1,
-    height: '100%',
-    padding: 0,
-  }),
-};
-
-const contentStyle = {
-  wrapper: css({
-    boxShadow: DesignSystem.Shadow,
-  }),
-  stack: css({
-    padding: '24px 32px',
-    borderRadius: DesignSystem.Round.solid,
-    background: DesignSystem.Color.background.white,
-  }),
-  item: css(globalStyles.button),
-  text: css({
-    padding: 10,
-  }),
+const styles = {
+  trigger: {
+    wrapper: css({
+      padding: '16px 26px',
+      backgroundColor: DesignSystem.Color.background.white,
+      borderRadius: DesignSystem.Round.solid,
+      border: `1px solid ${DesignSystem.Color.text.gray}`,
+    }),
+    group: css({
+      height: 33,
+      flexWrap: 'nowrap',
+    }),
+    input: css({
+      color: DesignSystem.Color.text.black,
+      flex: 1,
+      height: '100%',
+      padding: 0,
+    }),
+  },
+  content: {
+    wrapper: css({
+      boxShadow: DesignSystem.Shadow,
+    }),
+    stack: css({
+      padding: '24px 32px',
+      borderRadius: DesignSystem.Round.solid,
+      background: DesignSystem.Color.background.white,
+    }),
+    item: css(globalStyles.button),
+    text: css({
+      padding: 10,
+    }),
+  },
 };
 
 function InputBox({
@@ -77,11 +78,9 @@ function InputBox({
   );
 
   const [selectedTags, setSelectedTags] = useState<TagDataType[]>([]);
-  const restTags =
-    tags &&
-    tags.filter(
-      (tag) => !selectedTags.some((targetTag) => targetTag.value === tag.value),
-    );
+  const restTags = tags?.filter(
+    (tag) => !selectedTags.some((targetTag) => targetTag.value === tag.value),
+  );
 
   const isTagSelected = !!selectedTags.length;
 
@@ -95,11 +94,11 @@ function InputBox({
     }
   }, [selectedTags]);
 
-  const onClickTagClose = (e: MouseEvent, value: string) => {
+  const handleTagClose = (e: MouseEvent, value: string) => {
     setSelectedTags(selectedTags.filter((item) => item.value !== value));
   };
 
-  const onClickTag = (e: MouseEvent, value: string) => {
+  const handleTagClick = (e: MouseEvent, value: string) => {
     const filterTag = tags?.find((item) => item.value === value);
     const duplicatedTag = selectedTags.find((item) => item.value === value);
     if (filterTag && !duplicatedTag)
@@ -112,8 +111,8 @@ function InputBox({
         <Group gap={13} css={{ overflowX: 'scroll', flexWrap: 'nowrap' }}>
           {selectedTags.map(({ label, value }: TagDataType, index: number) => (
             <Tag
-              onClick={onClickTag}
-              onClose={onClickTagClose}
+              onClick={handleTagClick}
+              onClose={handleTagClose}
               key={`${label}-${value}-${index}`}
               value={value}
               active
@@ -131,7 +130,7 @@ function InputBox({
             setInputValue(e.target.value);
           }}
           value={inputValue}
-          css={[triggerStyle.input, DesignSystem.Text.body]}
+          css={[styles.trigger.input, DesignSystem.Text.body]}
           type="text"
         />
       );
@@ -146,8 +145,8 @@ function InputBox({
     >
       <Stack spacing={24}>
         <Popover.Trigger preventTrigger={isTagSelected}>
-          <div css={triggerStyle.wrapper} style={{ ...style }}>
-            <Group css={triggerStyle.group} gap={13}>
+          <div css={styles.trigger.wrapper} style={{ ...style }}>
+            <Group css={styles.trigger.group} gap={13}>
               <IconSearch />
               {searchInput}
             </Group>
@@ -157,8 +156,8 @@ function InputBox({
           {restTags &&
             restTags.map(({ label, value }: TagDataType, index: number) => (
               <Tag
-                onClick={onClickTag}
-                onClose={onClickTagClose}
+                onClick={handleTagClick}
+                onClose={handleTagClose}
                 key={`${label}-${value}-${index}`}
                 value={value}
                 disableCloseOnHover
@@ -168,20 +167,20 @@ function InputBox({
             ))}
         </Group>
       </Stack>
-      <Popover.Content triggerPopoverMargin={0} css={contentStyle.wrapper}>
+      <Popover.Content triggerPopoverMargin={0} css={styles.content.wrapper}>
         {filterdSearchItems && (
-          <Stack css={contentStyle.stack} spacing={5}>
+          <Stack css={styles.content.stack} spacing={5}>
             {filterdSearchItems.map((itemValue, index) => (
               <Group
-                css={contentStyle.item}
+                css={styles.content.item}
                 key={`search-item-${itemValue}-${index}`}
                 onClick={() => {
                   setInputValue(itemValue);
-                  onItemClick && onItemClick(itemValue, index);
+                  onItemClick?.(itemValue, index);
                 }}
               >
                 <IconSearchXs />
-                <Typography css={contentStyle.text} variant="body">
+                <Typography css={styles.content.text} variant="body">
                   {itemValue}
                 </Typography>
               </Group>

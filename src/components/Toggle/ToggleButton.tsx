@@ -6,7 +6,7 @@ import { css } from '@emotion/react';
 import { useEffect, useRef, useState } from 'react';
 
 const ANIMATE_DURATION = 250;
-const toggleStyle = {
+const styles = {
   animation: {
     textFade: globalStyles.animation.all(ANIMATE_DURATION / 2),
     overlay: globalStyles.animation.transform(ANIMATE_DURATION / 2),
@@ -100,20 +100,18 @@ function ToggleButton({
     }
   }, [tabValue, ref, itemWidth, tabsRef]);
 
-  const onTabValueChanged = (value: string, index: number) => {
-    if (!propsTabValue) setTabValue(value);
-    onChange && onChange(value, index);
-  };
-
-  const onClickTabItem = (value: string, index: number) => {
-    if (value !== tabValue) onTabValueChanged(value, index);
+  const handleClickTabItem = (value: string, index: number) => {
+    if (value !== tabValue) {
+      if (!propsTabValue) setTabValue(value);
+      onChange?.(value, index);
+    }
   };
 
   return (
-    <div css={toggleStyle.wrapper} ref={ref}>
+    <div css={styles.wrapper} ref={ref}>
       {activePosition.width && (
         <span
-          css={[toggleStyle.overlay, toggleStyle.animation.overlay]}
+          css={[styles.overlay, styles.animation.overlay]}
           style={{
             width: activePosition.width,
             height: activePosition.height,
@@ -124,10 +122,10 @@ function ToggleButton({
       {tabs.map((value, index) => {
         const isActiveTab = value === tabValue;
         return (
-          <div css={toggleStyle.item.wrapper} key={`toggle-${index}-${value}`}>
+          <div css={styles.item.wrapper} key={`toggle-${index}-${value}`}>
             <label
-              css={toggleStyle.item.label}
-              onClick={() => onClickTabItem(value, index)}
+              css={styles.item.label}
+              onClick={() => handleClickTabItem(value, index)}
               ref={(el) => (tabsRef.current[index] = el)}
             >
               <Typography
@@ -136,7 +134,7 @@ function ToggleButton({
                     ? DesignSystem.Color.text.black
                     : DesignSystem.Color.background.disabled,
                 }}
-                css={toggleStyle.animation.textFade}
+                css={styles.animation.textFade}
                 variant="button"
               >
                 {value}

@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { CSSProperties, HTMLAttributes } from 'react';
 
-const groupStyle = {
+const styles = {
   default: css({
     boxSizing: 'border-box',
     display: 'flex',
@@ -66,11 +66,11 @@ function Group({
   return (
     <div
       css={[
-        groupStyle.default,
-        groupStyle.position[position],
-        grow && groupStyle.grow,
-        nowrap && groupStyle.nowrap,
-        wrapChild && groupStyle.wrapChild,
+        styles.default,
+        styles.position[position],
+        grow && styles.grow,
+        nowrap && styles.nowrap,
+        wrapChild && styles.wrapChild,
       ]}
       style={{ gap, alignItems: align, ...style }}
       {...props}

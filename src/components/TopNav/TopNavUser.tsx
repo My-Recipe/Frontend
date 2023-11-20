@@ -8,7 +8,7 @@ import { css } from '@emotion/react';
 import { ReactNode } from 'react';
 import { UserType } from './TopNav';
 
-const topNavUserStyle = {
+const styles = {
   trigger: globalStyles.button,
   content: {
     root: css({
@@ -31,16 +31,16 @@ function TopNavUser({ user, children }: TopNavUserProps) {
     <Popover position="bottom-right">
       <Popover.Trigger>
         <div>
-          <Group nowrap gap={14} css={topNavUserStyle.trigger}>
+          <Group nowrap gap={14} css={styles.trigger}>
             <img src={user.img || DefaultProfile} />
             <img src={IconDropdown} />
           </Group>
         </div>
       </Popover.Trigger>
       <Popover.Content triggerPopoverMargin={9}>
-        <div css={topNavUserStyle.content.root}>
+        <div css={styles.content.root}>
           <Stack>
-            <Group position="apart" css={topNavUserStyle.content.user}>
+            <Group position="apart" css={styles.content.user}>
               <Group gap={12}>
                 <img src={user.img || DefaultProfile} />
                 <Stack justify="left">
@@ -50,7 +50,7 @@ function TopNavUser({ user, children }: TopNavUserProps) {
                   </Typography>
                 </Stack>
               </Group>
-              <img src={IconSettings} css={topNavUserStyle.content.setting} />
+              <img src={IconSettings} css={styles.content.setting} />
             </Group>
             {children}
           </Stack>

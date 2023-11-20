@@ -7,7 +7,7 @@ import { CSSProperties, ReactNode } from 'react';
 
 // ref : https://codesandbox.io/s/react-custom-modal-u91ey?file=/src/custom-modal/index.styled.js
 
-const wrapplerStyles = {
+const styles = {
   background: css(
     {
       backgroundColor: 'rgba(0,0,0,0.4)',
@@ -54,13 +54,13 @@ function ModalWrapper({
       {opened && (
         <motion.div
           key="modal"
-          css={wrapplerStyles.background}
+          css={styles.background}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div ref={ref} css={wrapplerStyles.inner}>
-            <div css={wrapplerStyles.content} style={{ padding }}>
+          <div ref={ref} css={styles.inner}>
+            <div css={styles.content} style={{ padding }}>
               {children}
             </div>
           </div>
