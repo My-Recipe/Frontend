@@ -37,7 +37,7 @@ function TopNavTabs({ children }: TopNavBarProps) {
   return (
     <Tabs
       buttonGroupCss={styles.wrapper}
-      value={''}
+      value={tabValue}
       onTabChange={handleTabChange}
     >
       {children.map(({ label, path }, idx) => {

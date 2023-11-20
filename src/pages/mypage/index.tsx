@@ -108,6 +108,7 @@ function MyPage({ ...props }) {
   });
   const [linkOpened, setLinkOpened] = useState(false);
   const [editOpened, setEditOpened] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const URL = 'Link';
   const { title, intro, forPublic } = myData;
   const navigate = useNavigate();
@@ -131,7 +132,9 @@ function MyPage({ ...props }) {
   };
 
   useEffect(() => {
-    if (!title && !intro) navigate('/mypage/initial');
+    if (!title && !intro) {
+      navigate('/mypage/initial', { replace: true });
+    } else setIsLoading(true);
   }, [title, intro]);
 
   type ToggleSelectType = {
@@ -150,6 +153,8 @@ function MyPage({ ...props }) {
       <Typography variant="button">{children}</Typography>
     </Group>
   );
+
+  if (!isLoading) return <div>loading...</div>;
 
   return (
     <>

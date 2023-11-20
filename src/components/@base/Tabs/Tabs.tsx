@@ -5,7 +5,6 @@ import {
   HTMLAttributes,
   createContext,
   isValidElement,
-  useEffect,
   useState,
 } from 'react';
 import { tabsBodyType } from './components/Body';
@@ -48,28 +47,17 @@ function TabsMain({
   const tabsButton = getComponentFromType(children, tabsButtonType);
   const tabsBody = getComponentFromType(children, tabsBodyType);
 
+  const onTabChange = (value: TabValueType) => {
+    setLocalTabState(value);
+    propsOnTabChange?.(value);
+  };
+
   const currentBody = Children.toArray(tabsBody).filter(
     (child) => isValidElement(child) && child.props['value'] === tabValue,
   );
 
-  useEffect(() => {
-    const firstTabButton = Children.toArray(tabsButton)[0];
-    if (
-      defaultValue === undefined &&
-      firstTabButton &&
-      isValidElement(firstTabButton)
-    ) {
-      const firstTabButtonValue = firstTabButton.props.value;
-      setLocalTabState(firstTabButtonValue);
-    }
-  }, []);
-
-  useEffect(() => {
-    propsOnTabChange?.(localTabValue);
-  }, [localTabValue]);
-
   return (
-    <TabsContext.Provider value={[tabValue, setLocalTabState]}>
+    <TabsContext.Provider value={[tabValue, onTabChange]}>
       <div {...props}>
         {tabsButton && (
           <Group
