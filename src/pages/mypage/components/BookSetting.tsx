@@ -5,12 +5,11 @@ import globalStyles from '@/utils/styles';
 import { Group, Stack, Stroke, Typography } from '@base';
 import Button from '@copmonents/Button';
 import { css } from '@emotion/react';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { RecipeBookType } from '..';
 
 const styles = {
   innerContent: {
-    wrapper: css({ width: '100%' }),
     stroke: css({
       background: DesignSystem.Color.background.disabled,
       marginTop: 16,
@@ -48,7 +47,7 @@ function BookSetting({ data, onSubmit, submitText }: BookSettingProps) {
   } = inputData;
 
   return (
-    <Stack css={styles.innerContent.wrapper}>
+    <Stack>
       <Typography variant="subtitle">레시피북 설정 편집</Typography>
       <Stroke css={styles.innerContent.stroke} />
       <Stack spacing={15} css={styles.innerContent.input.stack}>
@@ -120,29 +119,28 @@ function BookSetting({ data, onSubmit, submitText }: BookSettingProps) {
 }
 
 const textInputStyles = {
-  box: css(
-    {
-      background: DesignSystem.Color.background.gray,
-      color: DesignSystem.Color.text.black,
-      height: 42,
-      borderRadius: DesignSystem.Round.solid,
-      textIndent: 15,
-      padding: '0 70px 0 0',
-      width: 658,
-      boxSizing: 'border-box',
-      '&:focus': {
-        border: '1px solid',
-        borderColor: DesignSystem.Color.primary['yellow-hover'],
-      },
+  wrapper: css({
+    position: 'relative',
+  }),
+  box: css(DesignSystem.Text.button, {
+    background: DesignSystem.Color.background.gray,
+    color: DesignSystem.Color.text.black,
+    height: 42,
+    borderRadius: DesignSystem.Round.solid,
+    textIndent: 15,
+    padding: '0 70px 0 0',
+    width: 658,
+    boxSizing: 'border-box',
+    '&:focus': {
+      border: '1px solid',
+      borderColor: DesignSystem.Color.primary['yellow-hover'],
     },
-    DesignSystem.Text.button,
-  ),
+  }),
   counter: css({
     color: DesignSystem.Color.text.gray,
-    position: 'relative',
-    top: -35,
-    left: 590,
-    marginBottom: -24,
+    position: 'absolute',
+    top: '20%',
+    right: 17,
   }),
 };
 
@@ -153,18 +151,15 @@ interface TextInputProps {
 }
 
 function TextInput({ value, setValue, maxLength }: TextInputProps) {
-  const [inputCount, setInputCount] = useState(0);
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > maxLength) {
       e.target.value = e.target.value.slice(0, maxLength);
     }
     setValue(e.target.value);
   };
-  useEffect(() => {
-    setInputCount(value.length);
-  }, [value]);
+  const length = value.length;
   return (
-    <div>
+    <div css={textInputStyles.wrapper}>
       <input
         type="text"
         value={value}
@@ -173,7 +168,7 @@ function TextInput({ value, setValue, maxLength }: TextInputProps) {
         css={textInputStyles.box}
       />
       <Typography variant="info" css={textInputStyles.counter}>
-        ({inputCount}/{maxLength})
+        ({length}/{maxLength})
       </Typography>
     </div>
   );
