@@ -42,7 +42,7 @@ function PopoverContent({
         margin: 0,
         border: 0,
         padding: 0,
-        zIndex: 999,
+        zIndex: 2,
         ...rect,
       }}
       {...props}

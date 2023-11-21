@@ -1,6 +1,6 @@
-import { DEFAULT_PROPS_PREFIX } from '@/utils/constants';
 import { CSSProperties, HTMLAttributes, useContext } from 'react';
-import { TabValueType, TabsContext } from './TabsMain';
+import { TabValueType, TabsContext } from '../Tabs';
+import { DEFAULT_PROPS_PREFIX } from '../utils';
 
 export interface TabsButtonProps extends HTMLAttributes<HTMLButtonElement> {
   value: TabValueType;

@@ -60,6 +60,7 @@ function Group({
   gap,
   nowrap,
   wrapChild,
+  style,
   ...props
 }: GroupProps) {
   return (
@@ -71,7 +72,7 @@ function Group({
         nowrap && styles.nowrap,
         wrapChild && styles.wrapChild,
       ]}
-      style={{ gap, alignItems: align }}
+      style={{ gap, alignItems: align, ...style }}
       {...props}
     >
       {children}

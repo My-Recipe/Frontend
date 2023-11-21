@@ -53,6 +53,7 @@ function Tag({
   label,
   disableCloseOnHover,
   active: initialActive = false,
+  color,
   ...props
 }: TagProps) {
   const [isActive, setIsActive] = useState(initialActive);
@@ -78,6 +79,10 @@ function Tag({
           isActive && styles.active,
           DesignSystem.Text.button,
         ]}
+        style={{
+          backgroundColor: color,
+          color: color && DesignSystem.Color.background.white,
+        }}
         onClick={(e) => e.target === e.currentTarget && onClick?.(e, value)}
         {...props}
       >
@@ -86,6 +91,7 @@ function Tag({
           <IconCacel
             data-testid="tag-close-icon"
             width={24}
+            fill={color ? 'white' : '#292929'}
             onClick={(e) => onClose?.(e, value)}
           />
         )}

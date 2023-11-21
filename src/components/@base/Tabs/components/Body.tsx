@@ -1,6 +1,6 @@
-import { DEFAULT_PROPS_PREFIX } from '@/utils/constants';
 import { CSSProperties, HTMLAttributes } from 'react';
-import { TabValueType } from './TabsMain';
+import { TabValueType } from '../Tabs';
+import { DEFAULT_PROPS_PREFIX } from '../utils';
 
 export interface TabsBodyProps extends HTMLAttributes<HTMLDivElement> {
   value: TabValueType;

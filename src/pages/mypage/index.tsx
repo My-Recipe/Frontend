@@ -35,7 +35,6 @@ const styles = {
       borderRight: '1px solid black',
       height: '100%',
       boxSizing: 'border-box',
-      minWidth: 900,
     }),
     checkbox: css(globalStyles.button),
     edit: css({
@@ -45,13 +44,10 @@ const styles = {
       boxSizing: 'border-box',
       justifyContent: 'center',
     }),
-    editBtn: css(
-      {
-        width: 48,
-        marginTop: 106,
-      },
-      globalStyles.button,
-    ),
+    editBtn: css(globalStyles.button, {
+      width: 48,
+      marginTop: 106,
+    }),
     copyLink: {
       wrapper: css(globalStyles.center, { flexDirection: 'column' }),
       linkBox: css({
@@ -60,17 +56,14 @@ const styles = {
         padding: '11.5px 0px 11.5px 23px',
         boxSizing: 'border-box',
       }),
-      copyBtn: css(
-        {
-          backgroundColor: DesignSystem.Color.primary.yellow,
-          padding: '11.5px 19px',
-          textAlign: 'center',
-          '&:hover': {
-            backgroundColor: DesignSystem.Color.primary['yellow-hover'],
-          },
+      copyBtn: css(globalStyles.button, {
+        backgroundColor: DesignSystem.Color.primary.yellow,
+        padding: '11.5px 19px',
+        textAlign: 'center',
+        '&:hover': {
+          backgroundColor: DesignSystem.Color.primary['yellow-hover'],
         },
-        globalStyles.button,
-      ),
+      }),
     },
   },
 };
@@ -106,8 +99,8 @@ function MyPage({ ...props }) {
     intro: '',
     forPublic: true,
   });
-  const [linkOpened, setLinkOpened] = useState(false);
-  const [editOpened, setEditOpened] = useState(false);
+  const [linkModalOpened, setLinkModalOpened] = useState(false);
+  const [editModalOpened, setEditModalOpened] = useState(false);
   const URL = 'Link';
   const { title, intro, forPublic } = myData;
   const navigate = useNavigate();
@@ -117,21 +110,23 @@ function MyPage({ ...props }) {
   };
   const handleSubmit = (data: RecipeBookType) => {
     setMyData(data);
-    editOpened && setEditOpened(false);
+    editModalOpened && setEditModalOpened(false);
   };
   const handleLink = () => {
-    setLinkOpened(true);
+    setLinkModalOpened(true);
     handleCopy();
   };
   const handlePublic = (forPublic: boolean) => {
     setMyData({ ...myData, forPublic });
   };
   const handleEditClick = () => {
-    setEditOpened(true);
+    setEditModalOpened(true);
   };
 
   useEffect(() => {
-    if (!title && !intro) navigate('/mypage/initial');
+    if (!title && !intro) {
+      navigate('/mypage/initial', { replace: true });
+    }
   }, [title, intro]);
 
   type ToggleSelectType = {
@@ -193,14 +188,14 @@ function MyPage({ ...props }) {
           <Recipes recipes={mockData.recipes} />
         </Stack>
       </Stack>
-      <Modal opened={editOpened}>
+      <Modal opened={editModalOpened}>
         <BookSetting
           data={myData}
           onSubmit={handleSubmit}
           submitText="레시피북 수정 완료하기"
         />
       </Modal>
-      <Modal opened={linkOpened} css={styles.banner.copyLink.wrapper}>
+      <Modal opened={linkModalOpened} css={styles.banner.copyLink.wrapper}>
         <Typography variant="headline" css={{ alignSelf: 'flex-start' }}>
           링크가 복사되었어요.
         </Typography>
@@ -225,7 +220,7 @@ function MyPage({ ...props }) {
             동료들에게 링크를 공유해 마이 레시피를 소개해보세요.
           </Typography>
         </Stack>
-        <Button variant="icon" onClick={() => setLinkOpened(false)}>
+        <Button variant="icon" onClick={() => setLinkModalOpened(false)}>
           마이 레시피로 돌아가기
         </Button>
       </Modal>

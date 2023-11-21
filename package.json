@@ -17,11 +17,14 @@
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
+    "@types/textarea-caret": "^3.0.3",
     "framer-motion": "^10.16.4",
     "hangul-js": "^0.2.6",
+    "immer": "^10.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.15.0"
+    "react-router-dom": "^6.15.0",
+    "textarea-caret": "^3.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.7",
@@ -36,6 +39,8 @@
     "@storybook/react": "^7.3.2",
     "@storybook/react-vite": "^7.3.2",
     "@storybook/testing-library": "^0.2.0",
+    "@svgr/plugin-jsx": "^8.1.0",
+    "@svgr/plugin-svgo": "^8.1.0",
     "@swc/plugin-emotion": "^2.5.70",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",

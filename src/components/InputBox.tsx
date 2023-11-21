@@ -8,7 +8,6 @@ import hangul from 'hangul-js';
 import {
   CSSProperties,
   HTMLAttributes,
-  LegacyRef,
   MouseEvent,
   useEffect,
   useMemo,
@@ -144,37 +143,30 @@ function InputBox({
       position="full-width"
       {...props}
     >
-      <Popover.Trigger
-        preventTrigger={isTagSelected}
-        renderTriggerComponent={({ ref, onClick }) => (
-          <Stack spacing={24}>
-            <div
-              ref={ref as LegacyRef<HTMLDivElement>}
-              onClick={onClick}
-              css={styles.trigger.wrapper}
-              style={{ ...style }}
-            >
-              <Group css={styles.trigger.group} gap={13}>
-                <IconSearch />
-                {searchInput}
-              </Group>
-            </div>
-            <Group position={centerdTags ? 'center' : 'left'} gap={12}>
-              {restTags?.map(({ label, value }: TagDataType, index: number) => (
-                <Tag
-                  onClick={handleTagClick}
-                  onClose={handleTagClose}
-                  key={`${label}-${value}-${index}`}
-                  value={value}
-                  disableCloseOnHover
-                >
-                  {label}
-                </Tag>
-              ))}
+      <Stack spacing={24}>
+        <Popover.Trigger preventTrigger={isTagSelected}>
+          <div css={styles.trigger.wrapper} style={{ ...style }}>
+            <Group css={styles.trigger.group} gap={13}>
+              <IconSearch />
+              {searchInput}
             </Group>
-          </Stack>
-        )}
-      />
+          </div>
+        </Popover.Trigger>
+        <Group position={centerdTags ? 'center' : 'left'} gap={12}>
+          {restTags &&
+            restTags.map(({ label, value }: TagDataType, index: number) => (
+              <Tag
+                onClick={handleTagClick}
+                onClose={handleTagClose}
+                key={`${label}-${value}-${index}`}
+                value={value}
+                disableCloseOnHover
+              >
+                {label}
+              </Tag>
+            ))}
+        </Group>
+      </Stack>
       <Popover.Content triggerPopoverMargin={0} css={styles.content.wrapper}>
         {filterdSearchItems && (
           <Stack css={styles.content.stack} spacing={5}>
