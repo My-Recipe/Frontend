@@ -1,4 +1,5 @@
 import { useUserData } from '@/utils/hooks';
+import globalStyles from '@/utils/styles';
 import TopNav, { UserType } from '@copmonents/TopNav/TopNav';
 import { css } from '@emotion/react';
 import { ReactNode } from 'react';
@@ -12,15 +13,7 @@ const styles = {
     default: css({
       minWidth: '1264px',
     }),
-    mediaQuery: css({
-      '@media (min-width: 1600px)': {
-        margin: '0 168px',
-      },
-      '@media (max-width: 1600px)': {
-        margin: 'auto',
-        width: '1264px',
-      },
-    }),
+    mediaQuery: globalStyles.padding,
   },
 };
 
@@ -28,7 +21,7 @@ export interface LayoutProps {
   children: ReactNode;
 }
 
-const EXCEPT_PATH = ['/mypage/initial'];
+const EXCEPT_PATH = ['/mypage/initial', '/post'];
 
 function Layout({ children, ...props }: LayoutProps) {
   const [user, setUser] = useUserData<UserType>();

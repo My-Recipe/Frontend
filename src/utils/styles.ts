@@ -18,6 +18,15 @@ const globalStyles = {
     justifyContent: 'center',
     alignItems: 'center',
   }),
+  padding: css({
+    '@media (min-width: 1600px)': {
+      margin: '0 168px',
+    },
+    '@media (max-width: 1600px)': {
+      margin: 'auto',
+      width: '1264px',
+    },
+  }),
 };
 
 export default globalStyles;

@@ -8,7 +8,7 @@ import { css } from '@emotion/react';
 import Editor from './components/Editor';
 
 const styles = {
-  root: css({
+  root: css(globalStyles.padding, {
     padding: '97px 0',
   }),
   top: {
@@ -16,8 +16,8 @@ const styles = {
       height: 163,
       background: DesignSystem.Color.primary.yellow,
       padding: '0 89px',
-      margin: '0 -164px',
       borderBottom: '1px solid var(--background-black)',
+      width: '100%',
     }),
     back: {
       wrapper: css(globalStyles.button, { padding: 30 }),
