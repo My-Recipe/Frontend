@@ -1,12 +1,12 @@
 import DefaultProfile from '@/assets/default-profile.svg';
 import IconDropdown from '@/assets/icon-dropdown.svg';
 import IconSettings from '@/assets/icon-settings.svg';
+import { UserType } from '@/auth/stores';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group, Popover, Stack, Typography } from '@base';
 import { css } from '@emotion/react';
 import { ReactNode } from 'react';
-import { UserType } from './TopNav';
 
 const styles = {
   trigger: globalStyles.button,
@@ -32,7 +32,7 @@ function TopNavUser({ user, children }: TopNavUserProps) {
       <Popover.Trigger>
         <div>
           <Group nowrap gap={14} css={styles.trigger}>
-            <img src={user.img || DefaultProfile} />
+            <img src={user.profileImage || DefaultProfile} />
             <img src={IconDropdown} />
           </Group>
         </div>
@@ -42,7 +42,7 @@ function TopNavUser({ user, children }: TopNavUserProps) {
           <Stack>
             <Group position="apart" css={styles.content.user}>
               <Group gap={12}>
-                <img src={user.img || DefaultProfile} />
+                <img src={user.profileImage || DefaultProfile} />
                 <Stack justify="left">
                   <Typography variant="subtitle">{user.name}</Typography>
                   <Typography variant="info" color="#848484">

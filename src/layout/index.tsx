@@ -1,6 +1,7 @@
-import { useUserData } from '@/utils/hooks';
+import { useAuth } from '@/auth/hooks';
+import { useUserState } from '@/auth/stores';
 import globalStyles from '@/utils/styles';
-import TopNav, { UserType } from '@copmonents/TopNav/TopNav';
+import TopNav from '@copmonents/TopNav/TopNav';
 import { css } from '@emotion/react';
 import { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -24,7 +25,8 @@ export interface LayoutProps {
 const EXCEPT_PATH = ['/mypage/initial', '/post'];
 
 function Layout({ children, ...props }: LayoutProps) {
-  const [user, setUser] = useUserData<UserType>();
+  const { user } = useUserState();
+  const { setLogin, setLogout } = useAuth();
   const locaton = useLocation();
 
   const isExceptPath = EXCEPT_PATH.includes(locaton.pathname);
@@ -39,8 +41,15 @@ function Layout({ children, ...props }: LayoutProps) {
           { label: 'INVENTORY', path: '/inventory' },
           { label: 'SEARCH', path: '/search' },
         ]}
-        onLoginClick={() => setUser({ email: 'test@t.com', name: 'testUser' })}
-        onLogoutClick={() => setUser(null)}
+        onLoginClick={() =>
+          setLogin({
+            name: 'hi',
+            email: '',
+            profileImage: '',
+            token: 'temp token',
+          })
+        }
+        onLogoutClick={setLogout}
       />
       <div css={[styles.body.default, !isExceptPath && styles.body.mediaQuery]}>
         {children}

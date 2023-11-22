@@ -1,3 +1,4 @@
+import { UserType } from '@/auth/stores';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group, Stack, Stroke, Typography } from '@base';
@@ -35,13 +36,9 @@ export type NavBarMenuItemType = {
   label: string;
   path: string;
 };
-export interface UserType {
-  img?: string;
-  name: string;
-  email: string;
-}
+
 interface TopNavProps {
-  user: UserType | null;
+  user: UserType;
   navBarMenu: NavBarMenuItemType[];
   onLoginClick?: () => void;
   onLogoutClick: () => void;
@@ -66,7 +63,7 @@ function TopNav({
           </div>
           <TopNavTabs>{navBarMenu}</TopNavTabs>
         </Group>
-        {user ? (
+        {user.isLoggedIn ? (
           <TopNavUser user={user}>
             <MenuButtonItem label="마이 레시피 보기" />
             <MenuButtonItem label="피드백 남기기" />
