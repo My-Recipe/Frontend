@@ -3,6 +3,7 @@ import { Stack, Stroke } from '@base';
 import { css } from '@emotion/react';
 import { produce } from 'immer';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import Image from './Editor/Image';
 import Ingredient, { IngredientType } from './Editor/Ingredient';
 import TextInput, { TextInputValueItemType } from './Editor/TextInput';
@@ -72,6 +73,11 @@ function Editor({ onChange, ...props }: EditorProps) {
 
   useEffect(() => {
     onChange(data);
+  }, [data]);
+
+  useEffect(() => {
+    if (data.text.length > 1000)
+      setData({ ...data, text: data.text.slice(0, 1000) });
   }, [data]);
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -268,6 +274,7 @@ function Editor({ onChange, ...props }: EditorProps) {
           css={styles.input}
           placeholder="레시피의 이름을 알려주세요."
           onChange={handleTitleChange}
+          maxLength={13}
         />
         <Stroke css={styles.stroke} />
       </div>
@@ -334,7 +341,7 @@ function Editor({ onChange, ...props }: EditorProps) {
               onFocusBlur={(isFocus) => handleFocusBlur(isFocus, index)}
             />
           ) : (
-            <>hi</>
+            <Navigate to="/404" />
           ),
         )}
         <div
