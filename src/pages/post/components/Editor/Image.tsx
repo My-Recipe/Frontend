@@ -39,6 +39,7 @@ const styles = {
     {
       borderRadius: DesignSystem.Round.solid,
       margin: 2,
+      width: 672,
     },
     globalStyles.button,
   ),
