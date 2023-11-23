@@ -1,6 +1,5 @@
 import EmptyCheckbox from '@/assets/checkbox-empty.svg';
 import FillCheckbox from '@/assets/checkbox-fill.svg';
-import DefaultProfile from '@/assets/default-profile.svg';
 import EditIcon from '@/assets/icon-edit-box.svg';
 import BackgroundImg from '@/assets/newmypage-background.png';
 import DesignSystem from '@/utils/designSystem';
@@ -9,6 +8,7 @@ import { Group, Stack, Typography } from '@base';
 import Button from '@copmonents/Button';
 import Modal from '@copmonents/Modal';
 import ToggleButton from '@copmonents/Toggle/ToggleButton';
+import UserProfileImg from '@copmonents/UserProfileImg';
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -180,7 +180,7 @@ function MyPage({ ...props }) {
         <Stack spacing={73}>
           <Group position="apart">
             <Group gap={16}>
-              <img src={DefaultProfile} css={{ width: 36 }} />
+              <UserProfileImg width={36} />
               <Typography variant="headline">해피밀</Typography>
             </Group>
             <ToggleButton tabs={['모든 레시피', '내 레시피만']} />
