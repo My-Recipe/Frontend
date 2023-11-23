@@ -1,9 +1,10 @@
-import DefaultProfile from '@/assets/default-profile.svg';
 import { ReactComponent as IconDropdown } from '@/assets/icon-dropdown.svg';
+import { useCurrentUser } from '@/auth/hooks';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group, Stack, Typography } from '@base';
 import ToggleButton from '@copmonents/Toggle/ToggleButton';
+import UserProfileImg from '@copmonents/UserProfileImg';
 import { css } from '@emotion/react';
 import Editor from './components/Editor';
 
@@ -38,6 +39,7 @@ const styles = {
 export interface PostPageProps {}
 
 function PostPage({ ...props }: PostPageProps) {
+  useCurrentUser({ redirectTo: '/' });
   return (
     <>
       <Group position="apart" css={styles.top.root}>
@@ -55,7 +57,7 @@ function PostPage({ ...props }: PostPageProps) {
       <div css={styles.root}>
         <Stack spacing={28}>
           <Group gap={16}>
-            <img src={DefaultProfile} css={{ width: 36 }} />
+            <UserProfileImg width={36} />
             <Typography variant="headline">해피밀</Typography>
           </Group>
           <Editor onChange={(data) => data} />

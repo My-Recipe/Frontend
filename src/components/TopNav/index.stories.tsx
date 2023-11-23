@@ -10,6 +10,8 @@ const meta: Meta<typeof TopNav> = {
     user: {
       email: 'test@gmail.com',
       name: '테스트 유저',
+      isLoggedIn: true,
+      profileImage: '',
     },
     navBarMenu: [
       { label: 'MY RECIPE', path: '/mypage' },

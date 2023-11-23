@@ -5,9 +5,9 @@ import Layout from './layout';
 
 function App() {
   return (
-    <Suspense fallback={<p>Loading...</p>}>
-      <Layout>{useRoutes(routes)}</Layout>
-    </Suspense>
+    <Layout>
+      <Suspense fallback={<p>Loading...</p>}>{useRoutes(routes)}</Suspense>
+    </Layout>
   );
 }
 
