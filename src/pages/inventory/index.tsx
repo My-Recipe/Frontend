@@ -4,10 +4,14 @@ import { ReactComponent as IconList } from '@/assets/icon-list.svg';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group, Stack, Typography } from '@base';
+import Pagenumber from '@copmonents/Pagenumber';
+import Recipe from '@copmonents/Recipe';
 import { css } from '@emotion/react';
 import moment, { Moment } from 'moment';
 import { useEffect, useRef, useState } from 'react';
+import { mockRecipeData } from '../home';
 import IngrInputBox from './components/IngrInputBox';
+import ShortExpirationItem from './components/ShortExpirationItem';
 const styles = {
   wrapper: css({}),
   inventory: {
@@ -54,15 +58,62 @@ const styles = {
 
 export interface IngredientDataType {
   name: string;
-  number: string;
-  registerDate: Moment;
-  bestBefore: Moment | null;
+  quantity: string;
+  registrationDate: Moment;
+  expirationDate: Moment | null;
 }
 
 function Inventory() {
   const [data, setData] = useState<IngredientDataType[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [submit, setSubmit] = useState(false);
+  const [isOverflowed, setIsOverflowed] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const checkRef = useRef<HTMLDivElement>(null);
+
+  const mockIngredientData: IngredientDataType[][] = [
+    [
+      {
+        name: '김치',
+        quantity: '3개',
+        registrationDate: moment('2023-02-05'),
+        expirationDate: moment('2024-02-05'),
+      },
+      {
+        name: '소고기',
+        quantity: '300g',
+        registrationDate: moment('2023-02-05'),
+        expirationDate: moment('2023-02-05'),
+      },
+      {
+        name: '양파',
+        quantity: '5개',
+        registrationDate: moment('2023-02-05'),
+        expirationDate: moment('2023-02-05'),
+      },
+      {
+        name: '양파',
+        quantity: '5개',
+        registrationDate: moment('2023-02-05'),
+        expirationDate: moment('2023-02-05'),
+      },
+    ],
+    [
+      {
+        name: '양파',
+        quantity: '5개',
+        registrationDate: moment('2023-02-05'),
+        expirationDate: moment('2023-02-05'),
+      },
+      {
+        name: '양파',
+        quantity: '5개',
+        registrationDate: moment('2023-02-05'),
+        expirationDate: moment('2023-02-05'),
+      },
+    ],
+  ];
+
   const handleDataChange = (inputData: IngredientDataType) => {
     setData([{ ...inputData }, ...data]);
   };
@@ -72,9 +123,6 @@ function Inventory() {
   const handleDelete = (targetIdx: number) => {
     setData(data.filter((_, idx) => idx !== targetIdx));
   };
-  const checkRef = useRef<HTMLDivElement>(null);
-
-  const [isOverflowed, setIsOverflowed] = useState<boolean>(false);
 
   useEffect(() => {
     setIsOverflowed(
@@ -83,7 +131,7 @@ function Inventory() {
     );
   });
   return (
-    <Stack>
+    <Stack align="center">
       <Stack css={styles.inventory.background}>
         <Group position="apart" style={{ marginBottom: 31, width: 1264 }}>
           <Group gap={11}>
@@ -217,7 +265,7 @@ function Inventory() {
                       handleRemove={() => {
                         handleDelete(idx);
                       }}
-                      key={`${idx}-${item.name}-${item.registerDate}`}
+                      key={`${idx}-${item.name}-${item.registrationDate}`}
                     />
                   );
                 })}
@@ -228,6 +276,41 @@ function Inventory() {
             )}
           </Stack>
         </Stack>
+      </Stack>
+      <Stack css={{ margin: '148px 0 65px 0', width: 1265 }} spacing={53}>
+        <Typography variant="headline">
+          유통기한이 얼마 남지 않은 재료
+        </Typography>
+        <Group>
+          {mockIngredientData[currentPage - 1].map((item, idx) => {
+            return <ShortExpirationItem item={item} />;
+          })}
+        </Group>
+      </Stack>
+      <Pagenumber
+        pageCount={mockIngredientData.length}
+        onPageChange={(page) => {
+          setCurrentPage(page);
+        }}
+      />
+      <Stack>
+        <Typography variant="headline" css={{ margin: '190px 0 53px 0' }}>
+          재료 기반 추천 레시피
+        </Typography>
+        <div
+          css={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '53px 15px',
+          }}
+        >
+          {mockRecipeData.map((props, index) => (
+            <Recipe
+              {...props}
+              key={`recipe-${props.name}-${props.author}-${index}`}
+            />
+          ))}
+        </div>
       </Stack>
     </Stack>
   );

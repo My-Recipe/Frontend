@@ -62,24 +62,24 @@ function IngrInputBox({
   ...props
 }: IngrInputBoxProps) {
   moment.locale('ko');
-  const [registerDate, setRegisterDate] = useState<Moment>(
+  const [registrationDate, setRegistrationDate] = useState<Moment>(
     moment().locale('ko'),
   );
-  const [bestBefore, setBestBefore] = useState<Moment | null>(null);
+  const [expirationDate, setExpirationDate] = useState<Moment | null>(null);
 
   const [inputData, setInputData] = useState<IngredientDataType>(
     item
       ? {
           name: item.name,
-          number: item.number,
-          registerDate: item.registerDate,
-          bestBefore: item.bestBefore,
+          quantity: item.quantity,
+          registrationDate: item.registrationDate,
+          expirationDate: item.expirationDate,
         }
       : {
           name: '',
-          number: '',
-          registerDate: registerDate,
-          bestBefore: bestBefore,
+          quantity: '',
+          registrationDate: registrationDate,
+          expirationDate: expirationDate,
         },
   );
   const [isComposing, composeProps] = useComposing();
@@ -91,13 +91,13 @@ function IngrInputBox({
 
           if (e.code === 'Enter' && inputData.name) {
             handleDataChange && handleDataChange(inputData);
-            setRegisterDate(moment().locale('ko'));
-            setBestBefore(null);
+            setRegistrationDate(moment().locale('ko'));
+            setExpirationDate(null);
             setInputData({
               name: '',
-              number: '',
-              registerDate: registerDate,
-              bestBefore: bestBefore,
+              quantity: '',
+              registrationDate: registrationDate,
+              expirationDate: expirationDate,
             });
             inputRef.current?.focus();
           }
@@ -151,9 +151,9 @@ function IngrInputBox({
       />
       <input
         type="text"
-        value={inputData.number}
+        value={inputData.quantity}
         onChange={(e) => {
-          setInputData({ ...inputData, number: e.target.value });
+          setInputData({ ...inputData, quantity: e.target.value });
         }}
         onKeyDown={handleKeyDown}
         css={styles.input.default}
@@ -161,18 +161,18 @@ function IngrInputBox({
         {...composeProps}
       />
       <CustomCalender
-        inputDate={inputData.registerDate}
+        inputDate={inputData.registrationDate}
         setInputDate={(date: Moment) => {
-          setInputData({ ...inputData, registerDate: date });
+          setInputData({ ...inputData, registrationDate: date });
         }}
         targetRef={inputRef}
       >
         등록일자 설정
       </CustomCalender>
       <CustomCalender
-        inputDate={inputData.bestBefore}
+        inputDate={inputData.expirationDate}
         setInputDate={(date: Moment) => {
-          setInputData({ ...inputData, bestBefore: date });
+          setInputData({ ...inputData, expirationDate: date });
         }}
         placeholder="유통기한 날짜를 선택해주세요."
         targetRef={inputRef}
@@ -186,14 +186,14 @@ function IngrInputBox({
         {inputData.name}
       </Typography>
       <Typography variant="body" css={styles.input.default}>
-        {inputData.number}
+        {inputData.quantity}
       </Typography>
       <Typography variant="body" css={styles.input.default}>
-        {inputData.registerDate.format('YYYY/MM/DD').toString()}
+        {inputData.registrationDate.format('YYYY/MM/DD').toString()}
       </Typography>
       <Typography variant="body" css={styles.input.default}>
-        {inputData.bestBefore
-          ? inputData.bestBefore.format('YYYY/MM/DD').toString()
+        {inputData.expirationDate
+          ? inputData.expirationDate.format('YYYY/MM/DD').toString()
           : ''}
       </Typography>
     </Group>
