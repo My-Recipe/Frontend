@@ -277,15 +277,21 @@ function Inventory() {
           </Stack>
         </Stack>
       </Stack>
-      <Stack css={{ margin: '148px 0 65px 0', width: 1265 }} spacing={53}>
+      <Stack css={{ margin: '148px 0 65px 0', width: 1264 }} spacing={53}>
         <Typography variant="headline">
           유통기한이 얼마 남지 않은 재료
         </Typography>
-        <Group>
+        <div
+          css={{
+            display: 'table',
+            borderCollapse: 'collapse',
+            width: 'fit-content',
+          }}
+        >
           {mockIngredientData[currentPage - 1].map((item, idx) => {
             return <ShortExpirationItem item={item} />;
           })}
-        </Group>
+        </div>
       </Stack>
       <Pagenumber
         pageCount={mockIngredientData.length}
