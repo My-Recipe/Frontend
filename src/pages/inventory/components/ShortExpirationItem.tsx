@@ -12,13 +12,14 @@ const styles = {
     backgroundColor: DesignSystem.Color.background.gray,
     border: '1px solid',
     borderColor: DesignSystem.Color.background.black,
-    marginLeft: -1,
+    boxSizing: 'border-box',
+    width: 317,
     padding: '17.5px 119px 32px 18.6px',
   }),
 };
 function ShortExpirationItem({ item }: ShortExpirationItemProps) {
   return (
-    <Stack>
+    <td style={{ padding: 0 }}>
       <Group gap={3} css={{ marginBottom: 14 }}>
         <Typography variant="subtitle">{item.name}</Typography>
         {item.expirationDate?.isBefore(moment()) && (
@@ -43,7 +44,7 @@ function ShortExpirationItem({ item }: ShortExpirationItemProps) {
           유통기한 : {item.expirationDate?.format('YYYY/MM/DD').toString()}
         </Typography>
       </Stack>
-    </Stack>
+    </td>
   );
 }
 
