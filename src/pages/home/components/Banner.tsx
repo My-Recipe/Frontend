@@ -1,4 +1,4 @@
-import PlusMinusIcon from '@/assets/PlusMinusIcon';
+import PlusMinusIcon from '@/assets/components/PlusMinusIcon';
 import DesignSystem from '@/utils/designSystem';
 import { useInterval } from '@/utils/hooks';
 import globalStyles from '@/utils/styles';

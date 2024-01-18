@@ -1,5 +1,5 @@
-import { ReactComponent as IconClock } from '@/assets/icon-clock.svg';
-import { ReactComponent as IconStart } from '@/assets/icon-start.svg';
+import { ReactComponent as IconClock } from '@/assets/icons/icon-clock.svg';
+import { ReactComponent as IconStart } from '@/assets/icons/icon-start.svg';
 import { mergeRef } from '@/utils/components';
 import DesignSystem from '@/utils/designSystem';
 import { Group, Typography } from '@base';

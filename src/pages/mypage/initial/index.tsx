@@ -1,4 +1,4 @@
-import BackgroundImg from '@/assets/newmypage-background.png';
+import BackgroundImg from '@/assets/icons/newmypage-background.png';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { css } from '@emotion/react';

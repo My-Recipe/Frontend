@@ -1,4 +1,4 @@
-import { ReactComponent as IconTrash } from '@/assets/icon-trash.svg';
+import { ReactComponent as IconTrash } from '@/assets/icons/icon-trash.svg';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { css } from '@emotion/react';

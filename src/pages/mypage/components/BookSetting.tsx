@@ -1,5 +1,5 @@
-import EmptyCheckbox from '@/assets/checkbox-empty.svg';
-import FillCheckbox from '@/assets/checkbox-fill.svg';
+import EmptyCheckbox from '@/assets/icons/checkbox-empty.svg';
+import FillCheckbox from '@/assets/icons/checkbox-fill.svg';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group, Stack, Stroke, Typography } from '@base';

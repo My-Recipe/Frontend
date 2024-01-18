@@ -1,5 +1,5 @@
-import { ReactComponent as IconSearchXs } from '@/assets/icon-search-xs.svg';
-import { ReactComponent as IconSearch } from '@/assets/icon-search.svg';
+import { ReactComponent as IconSearchXs } from '@/assets/icons/icon-search-xs.svg';
+import { ReactComponent as IconSearch } from '@/assets/icons/icon-search.svg';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group, Popover, Stack, Typography } from '@base';

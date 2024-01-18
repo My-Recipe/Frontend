@@ -1,6 +1,6 @@
-import { ReactComponent as IconClock } from '@/assets/icon-clock.svg';
-import { ReactComponent as IconImage } from '@/assets/icon-image.svg';
-import { ReactComponent as IconTip } from '@/assets/icon-tip.svg';
+import { ReactComponent as IconClock } from '@/assets/icons/icon-clock.svg';
+import { ReactComponent as IconImage } from '@/assets/icons/icon-image.svg';
+import { ReactComponent as IconTip } from '@/assets/icons/icon-tip.svg';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Stack } from '@base';

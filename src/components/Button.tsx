@@ -1,4 +1,4 @@
-import { ReactComponent as IconNavigateXs } from '@/assets/icon-navigate-xs.svg';
+import { ReactComponent as IconNavigateXs } from '@/assets/icons/icon-navigate-xs.svg';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group, Typography } from '@base';

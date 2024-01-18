@@ -1,5 +1,5 @@
-import IconDropdown from '@/assets/icon-dropdown.svg';
-import IconSettings from '@/assets/icon-settings.svg';
+import IconDropdown from '@/assets/icons/icon-dropdown.svg';
+import IconSettings from '@/assets/icons/icon-settings.svg';
 import { UserType } from '@/auth/stores';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
