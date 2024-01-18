@@ -1,7 +1,7 @@
 import EmptyCheckbox from '@/assets/icons/checkbox-empty.svg';
 import FillCheckbox from '@/assets/icons/checkbox-fill.svg';
 import EditIcon from '@/assets/icons/icon-edit-box.svg';
-import BackgroundImg from '@/assets/icons/newmypage-background.png';
+import BackgroundImg from '@/assets/newmypage-background.png';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group, Stack, Typography } from '@base';
