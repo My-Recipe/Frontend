@@ -13,7 +13,7 @@ import { mockRecipeData } from '../home';
 import IngrInputBox from './components/IngrInputBox';
 import ShortExpirationItem from './components/ShortExpirationItem';
 const styles = {
-  wrapper: css({}),
+  wrapper: css({ paddingBottom: 100 }),
   inventory: {
     background: css(
       {
@@ -39,6 +39,37 @@ const styles = {
         boxSizing: 'border-box',
         overflow: 'hidden',
       }),
+      scrollBox: css({
+        overflowX: 'hidden',
+        overflowY: 'scroll',
+        marginRight: 37,
+        zIndex: 2,
+        '&::-webkit-scrollbar': {
+          borderRadius: 19,
+          width: 10,
+          zIndex: 1,
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: DesignSystem.Color.text.gray,
+          borderRadius: 19,
+        },
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: 'transparent',
+        },
+
+        '&::-webkit-scrollbar-track-piece:end': {
+          backgroundColor: 'transparent',
+          marginBottom: 13,
+        },
+      }),
+      scrollTrackStart: (isEditing: boolean) => {
+        return {
+          '&::-webkit-scrollbar-track-piece:start': {
+            backgroundColor: 'transparent',
+            marginTop: isEditing ? 125 : 38,
+          },
+        };
+      },
       scrollBar: css({
         backgroundColor: DesignSystem.Color.background.disabled,
         position: 'absolute',
@@ -55,7 +86,48 @@ const styles = {
     },
   },
 };
-
+const mockIngredientData: IngredientDataType[][] = [
+  [
+    {
+      name: '김치',
+      quantity: '3개',
+      registrationDate: moment('2023-02-05'),
+      expirationDate: moment('2026-02-05'),
+    },
+    {
+      name: '소고기',
+      quantity: '300g',
+      registrationDate: moment('2023-02-05'),
+      expirationDate: moment('2023-02-05'),
+    },
+    {
+      name: '양파',
+      quantity: '5개',
+      registrationDate: moment('2023-02-05'),
+      expirationDate: moment('2023-02-05'),
+    },
+    {
+      name: '양파',
+      quantity: '5개',
+      registrationDate: moment('2023-02-05'),
+      expirationDate: moment('2023-02-05'),
+    },
+  ],
+  [
+    {
+      name: '양파',
+      quantity: '5개',
+      registrationDate: moment('2023-02-05'),
+      expirationDate: moment('2023-02-05'),
+    },
+    {
+      name: '양파',
+      quantity: '5개',
+      registrationDate: moment('2023-02-05'),
+      expirationDate: moment('2023-02-05'),
+    },
+  ],
+];
 export interface IngredientDataType {
   name: string;
   quantity: string;
@@ -71,88 +143,48 @@ function Inventory() {
   const [currentPage, setCurrentPage] = useState(1);
   const checkRef = useRef<HTMLDivElement>(null);
 
-  const mockIngredientData: IngredientDataType[][] = [
-    [
-      {
-        name: '김치',
-        quantity: '3개',
-        registrationDate: moment('2023-02-05'),
-        expirationDate: moment('2024-02-05'),
-      },
-      {
-        name: '소고기',
-        quantity: '300g',
-        registrationDate: moment('2023-02-05'),
-        expirationDate: moment('2023-02-05'),
-      },
-      {
-        name: '양파',
-        quantity: '5개',
-        registrationDate: moment('2023-02-05'),
-        expirationDate: moment('2023-02-05'),
-      },
-      {
-        name: '양파',
-        quantity: '5개',
-        registrationDate: moment('2023-02-05'),
-        expirationDate: moment('2023-02-05'),
-      },
-    ],
-    [
-      {
-        name: '양파',
-        quantity: '5개',
-        registrationDate: moment('2023-02-05'),
-        expirationDate: moment('2023-02-05'),
-      },
-      {
-        name: '양파',
-        quantity: '5개',
-        registrationDate: moment('2023-02-05'),
-        expirationDate: moment('2023-02-05'),
-      },
-    ],
-  ];
-
   const handleDataChange = (inputData: IngredientDataType) => {
     setData([{ ...inputData }, ...data]);
   };
-  const handleEditing = (targetIdx: number, inputData: IngredientDataType) => {
+  const handleEdit = () => {
+    setIsEditing(!isEditing);
+    setSubmit(false);
+  };
+  const handleContentEdit = (
+    targetIdx: number,
+    inputData: IngredientDataType,
+  ) => {
     setData(data.map((item, idx) => (targetIdx === idx ? inputData : item)));
   };
   const handleDelete = (targetIdx: number) => {
     setData(data.filter((_, idx) => idx !== targetIdx));
   };
+  const handleComplete = () => {
+    setIsEditing(!isEditing);
+    setSubmit(true);
+  };
 
   useEffect(() => {
     setIsOverflowed(
       !!checkRef.current &&
-        checkRef?.current.scrollHeight > checkRef.current?.clientHeight,
+        checkRef.current?.scrollHeight > checkRef.current?.clientHeight,
     );
-  });
+  }, [checkRef.current?.clientHeight]);
+
   return (
-    <Stack align="center">
+    <Stack align="center" css={styles.wrapper}>
       <Stack css={styles.inventory.background}>
         <Group position="apart" style={{ marginBottom: 31, width: 1264 }}>
           <Group gap={11}>
             <IconList />
             <Typography variant="headline">INVENTORY</Typography>
           </Group>
-          {isEditing ? (
-            <IconComplete
-              onClick={() => {
-                setIsEditing(!isEditing);
-                setSubmit(true);
-              }}
-            />
-          ) : (
-            <IconEdit
-              onClick={() => {
-                data.length !== 0 && setIsEditing(!isEditing);
-                setSubmit(false);
-              }}
-            />
-          )}
+          {data.length !== 0 &&
+            (isEditing ? (
+              <IconComplete onClick={handleComplete} />
+            ) : (
+              <IconEdit onClick={handleEdit} />
+            ))}
         </Group>
         <Stack>
           <Group gap={1}>
@@ -223,32 +255,10 @@ function Inventory() {
                 />
               )}
               <Stack
-                css={{
-                  overflowX: 'hidden',
-                  overflowY: 'scroll',
-                  marginRight: 37,
-                  zIndex: 2,
-                  '&::-webkit-scrollbar': {
-                    borderRadius: 19,
-                    width: 10,
-                    zIndex: 1,
-                  },
-                  '&::-webkit-scrollbar-thumb': {
-                    backgroundColor: DesignSystem.Color.text.gray,
-                    borderRadius: 19,
-                  },
-                  '&::-webkit-scrollbar-track': {
-                    backgroundColor: 'transparent',
-                  },
-                  '&::-webkit-scrollbar-track-piece:start': {
-                    backgroundColor: 'transparent',
-                    marginTop: isEditing ? 125 : 38,
-                  },
-                  '&::-webkit-scrollbar-track-piece:end': {
-                    backgroundColor: 'transparent',
-                    marginBottom: 13,
-                  },
-                }}
+                css={[
+                  styles.inventory.ingredients.scrollBox,
+                  styles.inventory.ingredients.scrollTrackStart(isEditing),
+                ]}
                 spacing={17}
                 justify="flex-start"
                 ref={checkRef}
@@ -260,12 +270,12 @@ function Inventory() {
                       item={item}
                       submit={submit}
                       hanldeEdit={(input: IngredientDataType) => {
-                        handleEditing(idx, input);
+                        handleContentEdit(idx, input);
                       }}
                       handleRemove={() => {
                         handleDelete(idx);
                       }}
-                      key={`${idx}-${item.name}-${item.registrationDate}`}
+                      key={`ingredient-${item.name}-${item.registrationDate}`}
                     />
                   );
                 })}
@@ -281,17 +291,16 @@ function Inventory() {
         <Typography variant="headline">
           유통기한이 얼마 남지 않은 재료
         </Typography>
-        <div
-          css={{
-            display: 'table',
-            borderCollapse: 'collapse',
-            width: 'fit-content',
-          }}
-        >
-          {mockIngredientData[currentPage - 1].map((item, idx) => {
-            return <ShortExpirationItem item={item} />;
+        <Group>
+          {mockIngredientData[currentPage - 1].map((item) => {
+            return (
+              <ShortExpirationItem
+                item={item}
+                key={`short-exporation-${item.name}-${item.expirationDate}`}
+              />
+            );
           })}
-        </div>
+        </Group>
       </Stack>
       <Pagenumber
         pageCount={mockIngredientData.length}
@@ -313,7 +322,8 @@ function Inventory() {
           {mockRecipeData.map((props, index) => (
             <Recipe
               {...props}
-              key={`recipe-${props.name}-${props.author}-${index}`}
+              key={`recipe-${props.name}-${props.author}
+              `}
             />
           ))}
         </div>

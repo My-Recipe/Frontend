@@ -44,7 +44,7 @@ const styles = {
   }),
 };
 interface IngrInputBoxProps extends HTMLAttributes<HTMLDivElement> {
-  type: string;
+  type: 'input' | 'edit' | 'list';
   item?: IngredientDataType;
   submit?: boolean;
   handleDataChange?: (inputData: IngredientDataType) => void;
@@ -67,21 +67,12 @@ function IngrInputBox({
   );
   const [expirationDate, setExpirationDate] = useState<Moment | null>(null);
 
-  const [inputData, setInputData] = useState<IngredientDataType>(
-    item
-      ? {
-          name: item.name,
-          quantity: item.quantity,
-          registrationDate: item.registrationDate,
-          expirationDate: item.expirationDate,
-        }
-      : {
-          name: '',
-          quantity: '',
-          registrationDate: registrationDate,
-          expirationDate: expirationDate,
-        },
-  );
+  const [inputData, setInputData] = useState<IngredientDataType>({
+    name: item?.name || '',
+    quantity: item?.quantity || '',
+    registrationDate: item?.registrationDate || registrationDate,
+    expirationDate: item?.expirationDate || expirationDate,
+  });
   const [isComposing, composeProps] = useComposing();
 
   const handleKeyDown =
@@ -110,7 +101,8 @@ function IngrInputBox({
     }
   }, [type]);
   const inputRef = useRef<HTMLInputElement>(null);
-  return type === 'input' || type === 'edit' ? (
+
+  return (
     <Group css={styles.box} position="apart" style={style}>
       {type === 'edit' && (
         <motion.div
@@ -146,7 +138,8 @@ function IngrInputBox({
         onKeyDown={handleKeyDown}
         ref={inputRef}
         css={styles.input.default}
-        placeholder="재료를 입력해주세요."
+        readOnly={type === 'list'}
+        placeholder={type === 'list' ? undefined : '재료를 입력해주세요.'}
         {...composeProps}
       />
       <input
@@ -157,7 +150,8 @@ function IngrInputBox({
         }}
         onKeyDown={handleKeyDown}
         css={styles.input.default}
-        placeholder="수량을 입력해주세요."
+        readOnly={type === 'list'}
+        placeholder={type === 'list' ? undefined : '수량을 입력해주세요.'}
         {...composeProps}
       />
       <CustomCalender
@@ -165,6 +159,7 @@ function IngrInputBox({
         setInputDate={(date: Moment) => {
           setInputData({ ...inputData, registrationDate: date });
         }}
+        type={type}
         targetRef={inputRef}
       >
         등록일자 설정
@@ -174,28 +169,12 @@ function IngrInputBox({
         setInputDate={(date: Moment) => {
           setInputData({ ...inputData, expirationDate: date });
         }}
+        type={type}
         placeholder="유통기한 날짜를 선택해주세요."
         targetRef={inputRef}
       >
         유통기한 설정
       </CustomCalender>
-    </Group>
-  ) : (
-    <Group css={styles.box} gap={48}>
-      <Typography variant="body" css={styles.input.default}>
-        {inputData.name}
-      </Typography>
-      <Typography variant="body" css={styles.input.default}>
-        {inputData.quantity}
-      </Typography>
-      <Typography variant="body" css={styles.input.default}>
-        {inputData.registrationDate.format('YYYY/MM/DD').toString()}
-      </Typography>
-      <Typography variant="body" css={styles.input.default}>
-        {inputData.expirationDate
-          ? inputData.expirationDate.format('YYYY/MM/DD').toString()
-          : ''}
-      </Typography>
     </Group>
   );
 }
@@ -207,6 +186,7 @@ interface CustomCalenderProps extends HTMLAttributes<HTMLDivElement> {
   inputDate: Moment | null;
   setInputDate: (date: Moment) => void;
   targetRef: React.RefObject<HTMLInputElement>;
+  type: 'input' | 'edit' | 'list';
 }
 
 const CustomCalender = ({
@@ -214,10 +194,15 @@ const CustomCalender = ({
   inputDate,
   setInputDate,
   targetRef,
+  type,
   ...props
 }: CustomCalenderProps) => {
   const [focus, setFocus] = useState(false);
-  return (
+  return type === 'list' ? (
+    <Typography variant="body" css={styles.input.default}>
+      {inputDate?.format('YYYY/MM/DD').toString()}
+    </Typography>
+  ) : (
     <SingleDatePicker
       date={inputDate}
       onDateChange={(date) => {
@@ -281,8 +266,9 @@ const CustomCalender = ({
       appendToBody
       disableScroll
       daySize={48}
+      verticalSpacing={9}
       {...props}
-      id="unique-id"
+      id={`${children}-${type}`}
     />
   );
 };

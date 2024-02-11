@@ -9,6 +9,7 @@
   font-style: normal;
 }
 .SingleDatePicker_picker {
+  position: fixed;
   z-index: 3;
 }
 /*인풋박스*/
