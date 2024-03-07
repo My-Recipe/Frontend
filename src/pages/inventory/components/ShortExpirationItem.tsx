@@ -1,4 +1,4 @@
-import { ReactComponent as IconCaution } from '@/assets/icon-caution.svg';
+import { ReactComponent as IconCaution } from '@/assets/icons/icon-caution.svg';
 import DesignSystem from '@/utils/designSystem';
 import { Group, Stack, Typography } from '@base';
 import { css } from '@emotion/react';
