@@ -1,5 +1,5 @@
-import { ReactComponent as IconBack } from '@/assets/icon-back.svg';
-import { ReactComponent as IconDelete } from '@/assets/icon-minus.svg';
+import { ReactComponent as IconBack } from '@/assets/icons/icon-back.svg';
+import { ReactComponent as IconDelete } from '@/assets/icons/icon-minus.svg';
 import DesignSystem from '@/utils/designSystem';
 import { useComposing } from '@/utils/hooks';
 import globalStyles from '@/utils/styles';
