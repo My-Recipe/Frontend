@@ -1,4 +1,4 @@
-import { ReactComponent as IconCancel } from '@/assets/icon-cancel.svg';
+import { ReactComponent as IconCancel } from '@/assets/icons/icon-cancel.svg';
 import DesignSystem from '@/utils/designSystem';
 import { useComposing } from '@/utils/hooks';
 import globalStyles from '@/utils/styles';

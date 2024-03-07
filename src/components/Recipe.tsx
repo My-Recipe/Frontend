@@ -1,4 +1,4 @@
-import PlusMinusIcon from '@/assets/PlusMinusIcon';
+import PlusMinusIcon from '@/assets/components/PlusMinusIcon';
 import DesignSystem from '@/utils/designSystem';
 import { Group, Stack, Stroke, Typography } from '@base';
 import { css } from '@emotion/react';

@@ -1,4 +1,4 @@
-import { ReactComponent as IconDropdown } from '@/assets/icon-dropdown.svg';
+import { ReactComponent as IconDropdown } from '@/assets/icons/icon-dropdown.svg';
 import { useCurrentUser } from '@/auth/hooks';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';

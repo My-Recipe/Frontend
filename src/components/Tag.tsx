@@ -1,4 +1,4 @@
-import { ReactComponent as IconCacel } from '@/assets/icon-cancel.svg';
+import { ReactComponent as IconCacel } from '@/assets/icons/icon-cancel.svg';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group } from '@base';

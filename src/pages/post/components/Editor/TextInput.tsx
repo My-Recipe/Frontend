@@ -1,4 +1,4 @@
-import Numbers from '@/assets/Numbers';
+import Numbers from '@/assets/components/Numbers';
 import { mergeRef } from '@/utils/components';
 import DesignSystem from '@/utils/designSystem';
 import { useComposing } from '@/utils/hooks';

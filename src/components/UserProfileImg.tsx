@@ -1,4 +1,4 @@
-import DefaultProfile from '@/assets/default-profile.svg';
+import DefaultProfile from '@/assets/icons/default-profile.svg';
 import { useCurrentUser } from '@/auth/hooks';
 import { ImgHTMLAttributes } from 'react';
 

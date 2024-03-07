@@ -1,5 +1,5 @@
-import EmptyMenuIcon from '@/assets/menu-empty.svg';
-import FilledMenuIcon from '@/assets/menu-fill.svg';
+import EmptyMenuIcon from '@/assets/icons/menu-empty.svg';
+import FilledMenuIcon from '@/assets/icons/menu-fill.svg';
 import globalStyles from '@/utils/styles';
 import { Group, Tabs, Typography } from '@base';
 import { TabValueType } from '@base/Tabs/Tabs';
