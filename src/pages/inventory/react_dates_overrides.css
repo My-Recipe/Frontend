@@ -8,14 +8,14 @@
   color: var(--text_black);
   font-style: normal;
 }
+
 .SingleDatePicker_picker {
-  position: fixed;
   z-index: 3;
 }
 /*인풋박스*/
-.SingleDatePicker * {
+.DateInput {
   width: 222px;
-  height: 35px;
+
   box-sizing: border-box;
   background: transparent;
 }

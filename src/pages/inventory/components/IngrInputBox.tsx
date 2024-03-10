@@ -62,15 +62,11 @@ function IngrInputBox({
   ...props
 }: IngrInputBoxProps) {
   moment.locale('ko');
-  const [registrationDate, setRegistrationDate] = useState<Moment>(
-    moment().locale('ko'),
-  );
   const [expirationDate, setExpirationDate] = useState<Moment | null>(null);
-
   const [inputData, setInputData] = useState<IngredientDataType>({
     name: item?.name || '',
     quantity: item?.quantity || '',
-    registrationDate: item?.registrationDate || registrationDate,
+    registrationDate: moment(),
     expirationDate: item?.expirationDate || expirationDate,
   });
   const [isComposing, composeProps] = useComposing();
@@ -82,19 +78,30 @@ function IngrInputBox({
 
           if (e.code === 'Enter' && inputData.name) {
             handleDataChange && handleDataChange(inputData);
-            setRegistrationDate(moment().locale('ko'));
             setExpirationDate(null);
             setInputData({
               name: '',
               quantity: '',
-              registrationDate: registrationDate,
+              registrationDate: moment(),
               expirationDate: expirationDate,
             });
             inputRef.current?.focus();
           }
         }
       : undefined;
-
+  const handleCalendarClose = () => {
+    if (inputData.name) {
+      handleDataChange && handleDataChange(inputData);
+      setExpirationDate(null);
+      setInputData({
+        name: '',
+        quantity: '',
+        registrationDate: moment(),
+        expirationDate: expirationDate,
+      });
+      inputRef.current?.focus();
+    }
+  };
   useEffect(() => {
     if (submit) {
       hanldeEdit && hanldeEdit(inputData);
@@ -154,16 +161,9 @@ function IngrInputBox({
         placeholder={type === 'list' ? undefined : '수량을 입력해주세요.'}
         {...composeProps}
       />
-      <CustomCalender
-        inputDate={inputData.registrationDate}
-        setInputDate={(date: Moment) => {
-          setInputData({ ...inputData, registrationDate: date });
-        }}
-        type={type}
-        targetRef={inputRef}
-      >
-        등록일자 설정
-      </CustomCalender>
+      <Typography variant="body" css={styles.input.default}>
+        {inputData.registrationDate.format('YYYY/MM/DD')}
+      </Typography>
       <CustomCalender
         inputDate={inputData.expirationDate}
         setInputDate={(date: Moment) => {
@@ -171,7 +171,7 @@ function IngrInputBox({
         }}
         type={type}
         placeholder="유통기한 날짜를 선택해주세요."
-        targetRef={inputRef}
+        handleClose={handleCalendarClose}
       >
         유통기한 설정
       </CustomCalender>
@@ -185,7 +185,7 @@ interface CustomCalenderProps extends HTMLAttributes<HTMLDivElement> {
   children: string;
   inputDate: Moment | null;
   setInputDate: (date: Moment) => void;
-  targetRef: React.RefObject<HTMLInputElement>;
+  handleClose: () => void;
   type: 'input' | 'edit' | 'list';
 }
 
@@ -193,14 +193,15 @@ const CustomCalender = ({
   children,
   inputDate,
   setInputDate,
-  targetRef,
+  handleClose,
   type,
   ...props
 }: CustomCalenderProps) => {
   const [focus, setFocus] = useState(false);
+
   return type === 'list' ? (
     <Typography variant="body" css={styles.input.default}>
-      {inputDate?.format('YYYY/MM/DD').toString()}
+      {inputDate?.format('YYYY/MM/DD')}
     </Typography>
   ) : (
     <SingleDatePicker
@@ -227,9 +228,7 @@ const CustomCalender = ({
           }}
         />
       }
-      onClose={() => {
-        targetRef.current?.focus();
-      }}
+      onClose={handleClose}
       renderCalendarInfo={() => {
         return (
           <div
@@ -251,7 +250,7 @@ const CustomCalender = ({
               inputDate
                 ? () => {
                     setFocus(false);
-                    targetRef.current?.focus();
+                    handleClose();
                   }
                 : undefined
             }
@@ -263,8 +262,6 @@ const CustomCalender = ({
       hideKeyboardShortcutsPanel
       enableOutsideDays
       keepOpenOnDateSelect
-      appendToBody
-      disableScroll
       daySize={48}
       verticalSpacing={9}
       {...props}
