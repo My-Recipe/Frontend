@@ -1,6 +1,6 @@
-import { ReactComponent as IconComplete } from '@/assets/icon-complete-edit-text.svg';
-import { ReactComponent as IconEdit } from '@/assets/icon-edit-text.svg';
-import { ReactComponent as IconList } from '@/assets/icon-list.svg';
+import { ReactComponent as IconComplete } from '@/assets/icons/icon-complete-edit-text.svg';
+import { ReactComponent as IconEdit } from '@/assets/icons/icon-edit-text.svg';
+import { ReactComponent as IconList } from '@/assets/icons/icon-list.svg';
 import DesignSystem from '@/utils/designSystem';
 import globalStyles from '@/utils/styles';
 import { Group, Stack, Typography } from '@base';
@@ -37,7 +37,6 @@ const styles = {
         position: 'relative',
         width: 1264,
         boxSizing: 'border-box',
-        overflow: 'hidden',
       }),
       scrollBox: css({
         overflowX: 'hidden',
@@ -93,38 +92,37 @@ const mockIngredientData: IngredientDataType[][] = [
       quantity: '3개',
       registrationDate: moment('2023-02-05'),
       expirationDate: moment('2026-02-05'),
+      uniqueId: 1,
+    },
+    {
+      name: '양파',
+      quantity: '2개',
+      registrationDate: moment('2023-02-05'),
+      expirationDate: moment('2023-02-05'),
+      uniqueId: 2,
+    },
+    {
+      name: '당근',
+      quantity: '1개',
+      registrationDate: moment('2023-02-05'),
+      expirationDate: moment('2023-02-05'),
+      uniqueId: 3,
     },
     {
       name: '소고기',
       quantity: '300g',
       registrationDate: moment('2023-02-05'),
       expirationDate: moment('2023-02-05'),
-    },
-    {
-      name: '양파',
-      quantity: '5개',
-      registrationDate: moment('2023-02-05'),
-      expirationDate: moment('2023-02-05'),
-    },
-    {
-      name: '양파',
-      quantity: '5개',
-      registrationDate: moment('2023-02-05'),
-      expirationDate: moment('2023-02-05'),
+      uniqueId: 4,
     },
   ],
   [
     {
-      name: '양파',
-      quantity: '5개',
+      name: '돼지고기',
+      quantity: '300g',
       registrationDate: moment('2023-02-05'),
       expirationDate: moment('2023-02-05'),
-    },
-    {
-      name: '양파',
-      quantity: '5개',
-      registrationDate: moment('2023-02-05'),
-      expirationDate: moment('2023-02-05'),
+      uniqueId: 5,
     },
   ],
 ];
@@ -133,6 +131,7 @@ export interface IngredientDataType {
   quantity: string;
   registrationDate: Moment;
   expirationDate: Moment | null;
+  uniqueId?: number;
 }
 
 function Inventory() {
@@ -147,7 +146,7 @@ function Inventory() {
     setData([{ ...inputData }, ...data]);
   };
   const handleEdit = () => {
-    setIsEditing(!isEditing);
+    setIsEditing(true);
     setSubmit(false);
   };
   const handleContentEdit = (
@@ -160,7 +159,7 @@ function Inventory() {
     setData(data.filter((_, idx) => idx !== targetIdx));
   };
   const handleComplete = () => {
-    setIsEditing(!isEditing);
+    setIsEditing(false);
     setSubmit(true);
   };
 
@@ -169,8 +168,13 @@ function Inventory() {
       !!checkRef.current &&
         checkRef.current?.scrollHeight > checkRef.current?.clientHeight,
     );
-  }, [checkRef.current?.clientHeight]);
+  }, [checkRef.current?.scrollHeight, isEditing]);
 
+  useEffect(() => {
+    if (data.length === 0) {
+      handleComplete();
+    }
+  }, [data]);
   return (
     <Stack align="center" css={styles.wrapper}>
       <Stack css={styles.inventory.background}>
@@ -247,8 +251,9 @@ function Inventory() {
                 *{moment().add(1, 'months').format('YYYY/MM/DD').toString()}
               </Typography>
             </Group>
+
             <Stack spacing={17} style={{ maxHeight: 592 }}>
-              {!isEditing && (
+              {(!isEditing || data.length === 0) && (
                 <IngrInputBox
                   type="input"
                   handleDataChange={handleDataChange}
@@ -275,7 +280,7 @@ function Inventory() {
                       handleRemove={() => {
                         handleDelete(idx);
                       }}
-                      key={`ingredient-${item.name}-${item.registrationDate}`}
+                      key={`ingredient-${item.name}-${item.registrationDate}-${item.uniqueId}`}
                     />
                   );
                 })}
@@ -296,7 +301,7 @@ function Inventory() {
             return (
               <ShortExpirationItem
                 item={item}
-                key={`short-exporation-${item.name}-${item.expirationDate}`}
+                key={`short-exporation-${item.name}-${item.expirationDate}-${item.uniqueId}`}
               />
             );
           })}
@@ -319,10 +324,10 @@ function Inventory() {
             gap: '53px 15px',
           }}
         >
-          {mockRecipeData.map((props, index) => (
+          {mockRecipeData.map((props, idx) => (
             <Recipe
               {...props}
-              key={`recipe-${props.name}-${props.author}
+              key={`recipe-${props.name}-${props.author}-${idx}
               `}
             />
           ))}
