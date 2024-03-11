@@ -15,7 +15,7 @@ const styles = {
     marginLeft: -1,
     boxSizing: 'border-box',
     width: 317,
-    padding: '17.5px 119px 32px 18.6px',
+    padding: '17.5px 118px 32px 18.6px',
   }),
   bgColor: (expirationDate: Moment | null) => {
     return {
